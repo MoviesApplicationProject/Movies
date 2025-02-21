@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 
@@ -79,6 +78,7 @@ class ForgetpasswordScreenState extends State<ForgetpasswordScreen> {
           onPressed: () {
             Navigator.of(context).pop();
           },
+          //
         ),
         title: Text(appLocalizations.forgetPasswordScreen),
       ),
