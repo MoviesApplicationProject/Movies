@@ -43,9 +43,9 @@ class _MovieDetalisState extends State<MovieDetalis> {
       ),
       body: Stack(
         children: [
-          Positioned.fill(
+          Positioned(
+            height: MediaQuery.of(context).size.height * 0.82,
             child: Image.asset(
-              height: MediaQuery.of(context).size.height * 0.82,
               AppAssets.movieDetalies,
               fit: BoxFit.cover,
             ),
@@ -58,13 +58,14 @@ class _MovieDetalisState extends State<MovieDetalis> {
                   begin: Alignment.bottomCenter,
                   end: Alignment.topCenter,
                   colors: [
-                    Colors.black.withOpacity(0.9),
+                    AppColors.black.withOpacity(0.9),
                     Colors.transparent,
                   ],
                 ),
               ),
             ),
           ),
+          // IconButton(onPressed: (){}, icon: AppIcon(AssetImage(AppIcons.)))
         ],
       ),
     );
