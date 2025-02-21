@@ -17,6 +17,10 @@
   "password": "Password",
   "forgetPassword": "Forget Password ?",
   "forgetPasswordScreen": "Forget Password",
+  "search": "Search",
+  "browse": "Browse",
+  "profile": "Profile",
+
   "login": "Login",
   "googleLogin": "Login with Google",
   "dontHaveAccount": "Don't have an account?",

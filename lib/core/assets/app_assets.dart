@@ -16,4 +16,6 @@ class AppAssets {
   //Forget Password
   static const String forgetPassword = "assets/images/forgotPassword.png";
 
+  //Movies Detalies
+  static const String movieDetalies = "assets/images/movie.png";
 }

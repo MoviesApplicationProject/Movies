@@ -17,6 +17,10 @@
   "password": "كلمة المرور",
   "forgetPassword": "نسيت كلمة المرور ؟",
   "forgetPasswordScreen": "نسيت كلمة المرور",
+  "search": "بحث",
+  "browse": "تصفح",
+  "profile": "الملف الشخصي",
+
   "login": "تسجيل الدخول",
   "googleLogin": "تسجيل الدخول باستخدام Google",
   "dontHaveAccount": "ليس لديك حساب؟",

@@ -7,7 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
-import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 import 'package:movies/ui/shared_widgets/language_switch.dart';
@@ -98,10 +97,10 @@ class _RegisterScreen extends State<RegisterScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading:IconButton(
-      icon: const Icon(
-      Icons.arrow_back_outlined,
-      ),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_outlined,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -114,12 +113,11 @@ class _RegisterScreen extends State<RegisterScreen> {
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 30),
-              child:Image.asset(
+              child: Image.asset(
                 AppAssets.register,
                 height: MediaQuery.of(context).size.height * 0.17,
                 width: double.infinity,
               ),
-
             ),
             CustomTextField(
                 controller: usernameController,
@@ -145,7 +143,7 @@ class _RegisterScreen extends State<RegisterScreen> {
             buildRegisterButton(context),
             const SizedBox(height: 16),
             buildSignInTextRow(context),
-            const SizedBox(height:16 ),
+            const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
