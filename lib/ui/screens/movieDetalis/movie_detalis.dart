@@ -7,6 +7,7 @@ import 'package:movies/ui/shared_widgets/custom_button.dart';
 class MovieDetalis extends StatefulWidget {
   static const String routeName = "/movieDetalies";
 
+//
   const MovieDetalis({super.key});
 
   @override
