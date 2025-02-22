@@ -15,4 +15,9 @@ class AppIcons {
   static const String browseIcon = "assets/icons/browseIcon.png";
   static const String profileIcon = "assets/icons/profielIcon.png";
   static const String saveIcon = "assets/icons/save.png";
+
+  static const String videoButton = "assets/icons/videoButton.png";
+  static const String lovedIcon = "assets/icons/loved.png";
+  static const String starIcon = "assets/icons/star.png";
+  static const String timeIcon = "assets/icons/time.png";
 }

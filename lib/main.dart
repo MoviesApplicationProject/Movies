@@ -58,7 +58,6 @@ class MyApp extends StatelessWidget {
       },
       initialRoute: MovieDetalis.routeName,
       theme: AppTheme.generalTheme,
-
     );
   }
 }

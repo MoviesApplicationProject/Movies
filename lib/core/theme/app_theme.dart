@@ -21,16 +21,18 @@ class AppTheme {
       ),
     ),
     textTheme: const TextTheme(
+      headlineLarge: TextStyle(
+          color: AppColors.white, fontSize: 20, fontWeight: FontWeight.bold),
       bodyLarge: TextStyle(
           color: AppColors.white, fontSize: 16, fontWeight: FontWeight.w500),
       bodyMedium: TextStyle(
           color: AppColors.white, fontSize: 14, fontWeight: FontWeight.w500),
-    //   bodySmall: TextStyle(
-    //       color: AppColors.dark, fontSize: 12, fontWeight: FontWeight.w500),
-    //   labelLarge: TextStyle(
-    //       color: AppColors.purple, fontSize: 22, fontWeight: FontWeight.bold),
-    //   labelMedium: TextStyle(
-    //       color: AppColors.purple, fontSize: 20, fontWeight: FontWeight.bold),
+      bodySmall: TextStyle(
+          color: AppColors.white, fontSize: 16, fontWeight: FontWeight.normal),
+      labelLarge: TextStyle(
+          color: AppColors.white, fontSize: 24, fontWeight: FontWeight.bold),
+      labelMedium: TextStyle(
+          color: AppColors.white, fontSize: 20, fontWeight: FontWeight.normal),
       labelSmall: TextStyle(
           color: AppColors.yellow, fontSize: 16, fontWeight: FontWeight.bold),
   ),
