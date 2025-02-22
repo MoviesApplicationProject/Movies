@@ -22,8 +22,10 @@ class AppTheme {
     ),
     textTheme: const TextTheme(
       bodyLarge: TextStyle(
-          color: AppColors.white, fontSize: 16, fontWeight: FontWeight.w500),
+          color: AppColors.white, fontSize: 24, fontWeight: FontWeight.bold),
       bodyMedium: TextStyle(
+          color: AppColors.white, fontSize: 16, fontWeight: FontWeight.w500),
+      bodySmall: TextStyle(
           color: AppColors.white, fontSize: 14, fontWeight: FontWeight.w500),
     //   bodySmall: TextStyle(
     //       color: AppColors.dark, fontSize: 12, fontWeight: FontWeight.w500),
@@ -45,6 +47,8 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
+        textStyle: TextStyle(
+            color: AppColors.black, fontSize: 20, fontWeight: FontWeight.w600)
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
