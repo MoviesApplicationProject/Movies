@@ -9,6 +9,7 @@ import 'package:movies/ui/screens/auth/register/register.dart';
 import 'package:movies/ui/screens/home/home.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/screens/onBoarding_screens/explore/explore_now.dart';
+import 'package:movies/ui/screens/onBoarding_screens/on_boarding/onboarding_screen.dart';
 import 'package:movies/ui/screens/onBoarding_screens/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -49,6 +50,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         SplashScreen.routeName: (_) => const SplashScreen(),
+        OnBoardingScreen.routeName: (_) => const OnBoardingScreen(),
         ExploreNowScreen.routeName: (_) => ExploreNowScreen(),
         LoginScreen.routeName : (_) => LoginScreen(),
         RegisterScreen.routeName : (_) => RegisterScreen(),
@@ -56,7 +58,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         MovieDetalis.routeName: (_) => MovieDetalis(),
       },
-      initialRoute: MovieDetalis.routeName,
+      initialRoute: SplashScreen.routeName,
       theme: AppTheme.generalTheme,
     );
   }
