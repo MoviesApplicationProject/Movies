@@ -17,7 +17,7 @@ class AppAssets {
   static const String forgetPassword = "assets/images/forgotPassword.png";
 
   //Movies Detalies
-  static const String movieDetalies = "assets/images/movie.png";
+  static const String movieDetalies = "assets/images/onBoarding5.png";
   static const String screenShot1 = "assets/images/large-screenshot1.png";
   static const String screenShot2 = "assets/images/large-screenshot2.png";
   static const String screenShot3 = "assets/images/large-screenshot3.png";
