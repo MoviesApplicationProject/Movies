@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
 import 'package:movies/core/assets/app_assets.dart';
@@ -9,6 +10,7 @@ import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/screens/auth/register/register.dart';
+import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/screens/onBoarding_screens/explore/explore_now.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
@@ -179,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (formKey.currentState!.validate()) {
             loginUser(emailController.text, passwordController.text);
           }
+          Navigator.pushNamed(context, MovieDetalis.routeName);
         },
         title: appLocalizations.login);
   }
