@@ -4,6 +4,8 @@ import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
+import 'package:movies/ui/screens/movieDetalis/cast.dart';
+import 'package:movies/ui/screens/movieDetalis/movie_screenshoots.dart';
 import 'package:movies/ui/screens/movieDetalis/suggestion.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 
@@ -162,9 +164,7 @@ class _MovieDetalisState extends State<MovieDetalis> {
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          buildScreenShot(movie.largeCoverImage),
-                          buildScreenShot(movie.largeCoverImage),
-                          buildScreenShot(movie.largeCoverImage),
+                          MovieScreenshots(movieId: movie.id),
                           Text(
                             "Similar",
                             textAlign: TextAlign.start,
@@ -211,10 +211,7 @@ class _MovieDetalisState extends State<MovieDetalis> {
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          buildCastWidget(context),
-                          buildCastWidget(context),
-                          buildCastWidget(context),
-                          buildCastWidget(context),
+                          MovieCastWidget(movieId: movie.id), // movieId هو معرف الفيلم الذي تريد عرض الطاقم الخاص به
                           SizedBox(
                             height: 8,
                           ),
