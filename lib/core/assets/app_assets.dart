@@ -23,5 +23,5 @@ class AppAssets {
   static const String screenShot3 = "assets/images/large-screenshot3.png";
 
   static const String emptySearch = "assets/images/emptySearch.png";
-
+  static const String placeHolder ='assets/images/placeholder_image.png';
 }
