@@ -21,4 +21,7 @@ class AppAssets {
   static const String screenShot1 = "assets/images/large-screenshot1.png";
   static const String screenShot2 = "assets/images/large-screenshot2.png";
   static const String screenShot3 = "assets/images/large-screenshot3.png";
+
+  static const String emptySearch = "assets/images/emptySearch.png";
+
 }
