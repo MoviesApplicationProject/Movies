@@ -25,7 +25,7 @@ class MovieSuggestionsGrid extends StatelessWidget {
         final suggestions = snapshot.data!;
         final moviesToShow =
             suggestions.length >= 4 ? suggestions.sublist(0, 4) : suggestions;
-
+//
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
