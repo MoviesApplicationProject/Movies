@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
-import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/onBoarding_screens/explore/explore_now.dart';
 import 'package:provider/provider.dart';
 

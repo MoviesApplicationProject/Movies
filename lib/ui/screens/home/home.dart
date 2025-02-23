@@ -22,8 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late AppLocalizations appLocalizations;
 
   List<Widget> tabs = [
-    const HomeTab(),
-    const SearchTab(),
+    HomeTab(),
+    SearchTab(),
     BrowseTab(),
     const ProfileTab(),
   ];
