@@ -31,8 +31,7 @@ class _HomeTabState extends State<HomeTab> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text('No movies found.'));
           }
-
-          final movies = snapshot.data!;
+          final movies = snapshot.data ?? [];
           return ListView.builder(
             itemCount: movies.length,
             itemBuilder: (context, index) {

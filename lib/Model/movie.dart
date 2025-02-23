@@ -56,36 +56,41 @@ class Movie {
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
-    var genresFromJson = json['genres'] as List<dynamic>;
-    var torrentsFromJson = json['torrents'] as List<dynamic>;
+    var genresFromJson = json['genres'] as List?;
+    var torrentsFromJson = json['torrents'] as List?;
 
     return Movie(
-      id: json['id'] ?? "",
-      url: json['url'] ?? "",
-      imdbCode: json['imdb_code'] ?? "",
-      title: json['title'] ?? "",
-      titleEnglish: json['title_english'] ?? "",
-      titleLong: json['title_long'] ?? "",
-      slug: json['slug'] ?? "",
-      year: json['year'] ?? "",
-      rating: (json['rating'] as num).toDouble(),
-      runtime: json['runtime'] ?? "",
-      genres: genresFromJson.map((e) => e as String).toList(),
-      summary: json['summary'] ?? "",
-      descriptionFull: json['description_full'] ?? "",
-      synopsis: json['synopsis'] ?? "",
-      ytTrailerCode: json['yt_trailer_code'] ?? "",
-      language: json['language'],
-      mpaRating: json['mpa_rating'] ?? "",
-      backgroundImage: json['background_image'] ?? "",
-      backgroundImageOriginal: json['background_image_original'] ?? "",
-      smallCoverImage: json['small_cover_image'] ?? "",
-      mediumCoverImage: json['medium_cover_image'] ?? "",
-      largeCoverImage: json['large_cover_image'] ?? "",
-      state: json['state'] ?? "",
-      torrents: torrentsFromJson.map((e) => Torrent.fromJson(e)).toList(),
-      dateUploaded: json['date_uploaded'] ?? "",
-      dateUploadedUnix: json['date_uploaded_unix'] ?? "",
+      id: json['id'] as int? ?? 0,
+      url: json['url'] as String? ?? '',
+      imdbCode: json['imdb_code'] as String? ?? '',
+      title: json['title'] as String? ?? '',
+      titleEnglish: json['title_english'] as String? ?? '',
+      titleLong: json['title_long'] as String? ?? '',
+      slug: json['slug'] as String? ?? '',
+      year: json['year'] as int? ?? 0,
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      runtime: json['runtime'] as int? ?? 0,
+      genres: genresFromJson != null
+          ? genresFromJson.map((e) => e as String).toList()
+          : [],
+      summary: json['summary'] as String? ?? '',
+      descriptionFull: json['description_full'] as String? ?? '',
+      synopsis: json['synopsis'] as String? ?? '',
+      ytTrailerCode: json['yt_trailer_code'] as String? ?? '',
+      language: json['language'] as String? ?? '',
+      mpaRating: json['mpa_rating'] as String? ?? '',
+      backgroundImage: json['background_image'] as String? ?? '',
+      backgroundImageOriginal:
+          json['background_image_original'] as String? ?? '',
+      smallCoverImage: json['small_cover_image'] as String? ?? '',
+      mediumCoverImage: json['medium_cover_image'] as String? ?? '',
+      largeCoverImage: json['large_cover_image'] as String? ?? '',
+      state: json['state'] as String? ?? '',
+      torrents: torrentsFromJson != null
+          ? torrentsFromJson.map((e) => Torrent.fromJson(e)).toList()
+          : [],
+      dateUploaded: json['date_uploaded'] as String? ?? '',
+      dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
     );
   }
 
@@ -156,20 +161,20 @@ class Torrent {
 
   factory Torrent.fromJson(Map<String, dynamic> json) {
     return Torrent(
-      url: json['url'],
-      hash: json['hash'],
-      quality: json['quality'],
-      type: json['type'],
-      isRepack: json['is_repack'],
-      videoCodec: json['video_codec'],
-      bitDepth: json['bit_depth'],
-      audioChannels: json['audio_channels'],
-      seeds: json['seeds'],
-      peers: json['peers'],
-      size: json['size'],
-      sizeBytes: json['size_bytes'],
-      dateUploaded: json['date_uploaded'],
-      dateUploadedUnix: json['date_uploaded_unix'],
+      url: json['url'] as String? ?? '',
+      hash: json['hash'] as String? ?? '',
+      quality: json['quality'] as String? ?? '',
+      type: json['type'] as String? ?? '',
+      isRepack: json['is_repack'] as String? ?? '',
+      videoCodec: json['video_codec'] as String? ?? '',
+      bitDepth: json['bit_depth'] as String? ?? '',
+      audioChannels: json['audio_channels'] as String? ?? '',
+      seeds: json['seeds'] as int? ?? 0,
+      peers: json['peers'] as int? ?? 0,
+      size: json['size'] as String? ?? '',
+      sizeBytes: json['size_bytes'] as int? ?? 0,
+      dateUploaded: json['date_uploaded'] as String? ?? '',
+      dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
     );
   }
 

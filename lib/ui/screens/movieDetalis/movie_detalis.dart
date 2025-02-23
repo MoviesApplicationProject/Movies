@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:movies/API/api_service.dart';
+import 'package:movies/API/featchMovieSuggestions.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/movieDetalis/cast.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_screenshoots.dart';
-import 'package:movies/ui/screens/movieDetalis/suggestion.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 
 class MovieDetalis extends StatefulWidget {
@@ -24,28 +24,12 @@ class _MovieDetalisState extends State<MovieDetalis> {
   @override
   void initState() {
     super.initState();
-    // جلب الأفلام من API
     futureMovies = fetchMovies();
   }
 
   @override
   Widget build(BuildContext context) {
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
-
-    List<String> Movies = [
-      AppAssets.movieDetalies,
-      AppAssets.movieDetalies,
-      AppAssets.movieDetalies,
-      AppAssets.movieDetalies,
-    ];
-
-    List<String> Genres = [
-      "Action",
-      "Sci-Fi",
-      "Adventure",
-      "Fantasy",
-      "Horror"
-    ];
 
     return Scaffold(
         extendBodyBehindAppBar: true,
@@ -148,9 +132,11 @@ class _MovieDetalisState extends State<MovieDetalis> {
                           Container(
                             child: Row(
                               children: [
-                                buildRatesIcon(AppIcons.lovedIcon),
-                                buildRatesIcon(AppIcons.timeIcon),
-                                buildRatesIcon(AppIcons.starIcon),
+                                buildRatesIcon(AppIcons.lovedIcon, "15"),
+                                buildRatesIcon(AppIcons.timeIcon,
+                                    movie.runtime.toString()),
+                                buildRatesIcon(
+                                    AppIcons.starIcon, movie.rating.toString()),
                               ],
                             ),
                             margin: EdgeInsets.all(0),
@@ -170,32 +156,73 @@ class _MovieDetalisState extends State<MovieDetalis> {
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          // GridView.builder(
-                          //   shrinkWrap: true,
-                          //   physics: NeverScrollableScrollPhysics(),
-                          //   padding: EdgeInsets.all(0),
-                          //   gridDelegate:
-                          //   const SliverGridDelegateWithFixedCrossAxisCount(
-                          //       crossAxisCount: 2,
-                          //       crossAxisSpacing: 8,
-                          //       childAspectRatio: 0.67),
-                          //   itemCount: Movies.length,
-                          //   itemBuilder: (context, index) {
-                          //     return buildSimilarMovies(context, Movies[index]);
-                          //   },
-                          // ),
-                          MovieSuggestionsGrid(
-                            movieId: movie.id,
-                          ),
+                          FutureBuilder<List<Movie>>(
+                              future: fetchMovieSuggestions(movieId: movie.id),
+                              // استبدلي yourMovieId بالمعرّف المناسب
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                      child: Text('Error: ${snapshot.error}'));
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  return const Center(
+                                      child: Text('No related movies found.'));
+                                }
+                                final relatedMovies = snapshot.data!;
+                                final moviesToShow = relatedMovies.length >= 4
+                                    ? relatedMovies.sublist(0, 4)
+                                    : relatedMovies;
 
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Text(
-                            "Summary",
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
+                                return GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.all(8),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, // 2 أفلام في الصف
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 8,
+                                    childAspectRatio: 0.67,
+                                  ),
+                                  itemCount: moviesToShow.length,
+                                  itemBuilder: (context, index) {
+                                    final movie = moviesToShow[index];
+                                    return InkWell(
+                                        onTap: () {
+                                          Navigator.of(context).pushNamed(
+                                            MovieDetalis.routeName,
+                                            arguments: movie,
+                                          );
+                                        },
+                                        child:
+                                            buildSimilarMovies(context, movie));
+                                  },
+                                );
+                              }),
+                          movie.descriptionFull != ""
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Summary",
+                                      textAlign: TextAlign.start,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      movie.descriptionFull.toString(),
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ],
+                                )
+                              : Container(),
                           SizedBox(
                             height: 8,
                           ),
@@ -220,22 +247,22 @@ class _MovieDetalisState extends State<MovieDetalis> {
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          // GridView.builder(
-                          //   shrinkWrap: true,
-                          //   physics: NeverScrollableScrollPhysics(),
-                          //   padding: EdgeInsets.all(0),
-                          //   gridDelegate:
-                          //   const SliverGridDelegateWithFixedCrossAxisCount(
-                          //     crossAxisCount: 3,
-                          //     crossAxisSpacing: 8,
-                          //     mainAxisSpacing: 5,
-                          //     childAspectRatio: 2,
-                          //   ),
-                          //   itemCount: movie.genres.length,
-                          //   itemBuilder: (context, index) {
-                          //     return buildGenres(movie.genres[index]);
-                          //   },
-                          // )
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.all(0),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 0,
+                              mainAxisSpacing: 2,
+                              childAspectRatio: 2,
+                            ),
+                            itemCount: movie.genres.length,
+                            itemBuilder: (context, index) {
+                              return buildGenres(movie.genres[index]);
+                            },
+                          )
                         ],
                       ),
                     )
@@ -303,7 +330,7 @@ class _MovieDetalisState extends State<MovieDetalis> {
     );
   }
 
-  Expanded buildRatesIcon(String icon) {
+  Expanded buildRatesIcon(String icon, String text) {
     return Expanded(
       flex: 1,
       child: Container(
@@ -314,11 +341,19 @@ class _MovieDetalisState extends State<MovieDetalis> {
           borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
         child: Center(
-          child: ImageIcon(
-            AssetImage(icon),
-            color: AppColors.yellow,
-          ),
-        ),
+            child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "$text",
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            ImageIcon(
+              AssetImage(icon),
+              color: AppColors.yellow,
+            ),
+          ],
+        )),
       ),
     );
   }
@@ -339,6 +374,52 @@ class _MovieDetalisState extends State<MovieDetalis> {
           style: Theme.of(context).textTheme.bodySmall,
         )),
       ),
+    );
+  }
+
+  Stack buildSimilarMovies(BuildContext context, Movie movie) {
+    return Stack(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child: Image.network(
+            movie.mediumCoverImage,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+        ),
+        Positioned(
+          top: 8,
+          left: 8,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 4,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            child: Row(
+              children: [
+                ImageIcon(
+                  AssetImage(AppIcons.starIcon),
+                  color: AppColors.yellow,
+                ),
+                SizedBox(width: 4),
+                Text(
+                  movie.rating.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -36,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     themeProvider = Provider.of<ThemeProvider>(context);
     appLocalizations = AppLocalizations.of(context)!;
 
-    final keyboardIsOpen = MediaQuery.of(context).viewInsets.bottom != 0;
 
     return GestureDetector(
         onTap: () {

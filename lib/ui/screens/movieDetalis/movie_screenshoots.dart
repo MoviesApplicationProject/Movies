@@ -27,6 +27,7 @@ class MovieScreenshots extends StatelessWidget {
   Widget buildScreenshotsList(List<String> screenshots) {
     return Container(
       child: ListView.builder(
+        padding: EdgeInsets.all(0),
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: screenshots.length,
@@ -38,7 +39,7 @@ class MovieScreenshots extends StatelessWidget {
               child: Image.network(
                 screenshots[index],
                 fit: BoxFit.cover,
-                height: MediaQuery.of(context).size.height * 0.3,
+                height: MediaQuery.of(context).size.height * 0.2,
                 width: double.infinity,
               ),
             ),

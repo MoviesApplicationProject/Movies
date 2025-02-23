@@ -37,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
   var passwordController = TextEditingController();
 
   bool obscurePassword = true;
-  String? _emptyFieldError;
 
   String? emailError;
   String? passwordError;
