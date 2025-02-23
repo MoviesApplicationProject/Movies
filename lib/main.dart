@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         MovieDetalis.routeName: (_) => MovieDetalis(),
       },
-      initialRoute: SplashScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       theme: AppTheme.generalTheme,
     );
   }
