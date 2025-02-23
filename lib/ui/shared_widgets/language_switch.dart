@@ -2,7 +2,6 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:movies/core/providers/locale_provider.dart';
-import 'package:movies/core/theme/app_colors.dart';
 import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
