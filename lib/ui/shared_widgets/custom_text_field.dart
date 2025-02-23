@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:provider/provider.dart';
 
 class CustomTextField extends StatelessWidget {
 
@@ -13,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final String? Function(String?)? validator;
+  final Function(String)? onChange;
 
   CustomTextField({
     super.key,
@@ -20,10 +20,11 @@ class CustomTextField extends StatelessWidget {
     required this.hint,
     this.iconData,
     this.error,
-    this.obscureText =false,
+    this.obscureText = false,
     this.suffixIcon,
     this.prefixIcon,
     this.validator,
+    this.onChange,
     this.minLines = 1,
   });
 
@@ -40,6 +41,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           minLines: minLines,
           maxLines: minLines > 1 ? minLines : 1,
+          onChanged: onChange,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
             hintMaxLines: minLines,
