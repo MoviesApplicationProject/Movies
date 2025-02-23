@@ -29,8 +29,9 @@ class MovieCastWidget extends StatelessWidget {
   }
 
   Widget buildCastWidget(BuildContext context, CastMember member) {
-    return Container(
-      padding: EdgeInsets.all(11),
+    return member != ""
+        ? Container(
+            padding: EdgeInsets.all(11),
       width: double.infinity,
       height: MediaQuery.of(context).size.height * 0.1,
       margin: EdgeInsets.symmetric(vertical: 4),
@@ -78,6 +79,7 @@ class MovieCastWidget extends StatelessWidget {
           ),
         )
       ]),
-    );
+          )
+        : Container();
   }
 }

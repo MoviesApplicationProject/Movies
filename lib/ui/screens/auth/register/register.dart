@@ -48,8 +48,6 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   Future<void> registerUser() async {
     const String apiUrl = 'http://1724.245..35.134:9090/api/v1/auth/register';
-    DateTime formatDay =
-        DateTime(selectedDate.year, selectedDate.month, selectedDate.day);
     final Map<String, dynamic> userData = {
       'username': usernameController.text,
       'email': emailController.text,
