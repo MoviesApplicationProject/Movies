@@ -16,12 +16,14 @@ class MovieCastWidget extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text(''));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(child: Text('No cast found.'));
         } else {
           return Column(
-            children: snapshot.data!.map((member) => buildCastWidget(context, member)).toList(),
+            children: snapshot.data!
+                .map((member) => buildCastWidget(context, member))
+                .toList(),
           );
         }
       },
@@ -32,53 +34,53 @@ class MovieCastWidget extends StatelessWidget {
     return member != ""
         ? Container(
             padding: EdgeInsets.all(11),
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.1,
-      margin: EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.gray,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(children: [
-        Expanded(
-          flex: 7,
-          child: Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.1,
+            margin: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
+              color: AppColors.gray,
+              borderRadius: BorderRadius.circular(16),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-            member.urlSmallImage.isNotEmpty
-            ? member.urlSmallImage
-              : 'https://via.placeholder.com/150.png',
-              fit: BoxFit.fill,
-              errorBuilder: (context, error, stackTrace) {
-                return Image.asset(AppAssets.placeHolder);
-              },
-            ),
-          ),
-          ),
-        ),
-        Expanded(flex: 1, child: Container()),
-        Expanded(
-          flex: 32,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                "Name: ${member.name}",
-                style: Theme.of(context).textTheme.labelMedium,
+            child: Row(children: [
+              Expanded(
+                flex: 7,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.network(
+                      member.urlSmallImage.isNotEmpty
+                          ? member.urlSmallImage
+                          : 'https://via.placeholder.com/150.png',
+                      fit: BoxFit.fill,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(AppAssets.placeHolder);
+                      },
+                    ),
+                  ),
+                ),
               ),
-              Text(
-                "Character: ${member.characterName}",
-                style: Theme.of(context).textTheme.labelMedium,
+              Expanded(flex: 1, child: Container()),
+              Expanded(
+                flex: 32,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      "Name: ${member.name}",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                    Text(
+                      "Character: ${member.characterName}",
+                      style: Theme.of(context).textTheme.labelMedium,
+                    )
+                  ],
+                ),
               )
-            ],
-          ),
-        )
-      ]),
+            ]),
           )
         : Container();
   }

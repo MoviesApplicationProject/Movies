@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+import 'package:movies/API/auth_service.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
@@ -25,7 +22,6 @@ class _RegisterScreen extends State<RegisterScreen> {
   late ThemeProvider themeProvider;
   late AppLocalizations appLocalizations;
 
-  DateTime selectedDate = DateTime.now();
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
   var phoneController = TextEditingController();
@@ -37,54 +33,82 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   String? _passwordMatchError;
   String? _emptyFieldError;
+  String? _emailError;
+  String? _phoneError;
 
-  bool? isMale;
-  bool smoke = false;
-  bool haveCancer = false;
-  bool familyCancer = false;
+  bool validateInput() {
+    if (usernameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        repasswordController.text.isEmpty ||
+        phoneController.text.isEmpty) {
+      _emptyFieldError = 'يجب ملء جميع الحقول';
+      return false;
+    }
 
-  String cancerType = 'None';
-  String familyCancerType = 'None';
+    if (!isValidEmail(emailController.text)) {
+      _emailError = 'البريد الإلكتروني غير صالح';
+      return false;
+    }
+
+    if (!isValidPhone(phoneController.text)) {
+      _phoneError = 'رقم الهاتف غير صالح';
+      return false;
+    }
+
+    if (passwordController.text != repasswordController.text) {
+      _passwordMatchError = 'كلمة المرور غير متطابقة';
+      return false;
+    }
+
+    _emptyFieldError = null;
+    _passwordMatchError = null;
+    _emailError = null;
+    _phoneError = null;
+    return true;
+  }
+
+  bool isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(email);
+  }
+
+  bool isValidPhone(String phone) {
+    final phoneRegex = RegExp(r'^\+?\d{10,15}$');
+    return phoneRegex.hasMatch(phone);
+  }
 
   Future<void> registerUser() async {
-    const String apiUrl = 'http://1724.245..35.134:9090/api/v1/auth/register';
-    final Map<String, dynamic> userData = {
-      'username': usernameController.text,
-      'email': emailController.text,
-      'password': passwordController.text,
-      'phone': phoneController.text,
-      'isMale': isMale,
-      'smoker': smoke,
-      'haveCancer': haveCancer,
-      'type': cancerType,
-      'haveAFamilyCancer': familyCancer,
-      'familyType': familyCancerType,
-      'dateOfBirth': "${DateFormat('yyyy-MM-dd').format(selectedDate)}",
-    };
+    if (!validateInput()) {
+      setState(() {});
+      return;
+    }
 
     try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: json.encode(userData),
+      bool success = await AuthService().registerUser(
+        name: usernameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+        confirmPassword: repasswordController.text,
+        phone: phoneController.text,
       );
-      if (response.statusCode == 2400) {
+
+      if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('تم التسجيل بنجاح!')),
         );
         Navigator.pushNamed(context, LoginScreen.routeName);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('حدث خطأ في التسجيل!')),
+          const SnackBar(content: Text('حدث خطأ في التسجيل. تأكد من صحة البيانات!')),
         );
       }
     } catch (e) {
-      print('حدث خطأ: $e');
+      // معالجة الأخطاء وعرض رسالة للمستخدم
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('فشل في الاتصال بالخادم!')),
+        SnackBar(content: Text('خطأ أثناء التسجيل: $e')),
       );
+      print('Error during registration: $e'); // طباعة الخطأ في الـ console للتصحيح
     }
   }
 
@@ -96,9 +120,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_outlined,
-          ),
+          icon: const Icon(Icons.arrow_back_outlined),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -110,7 +132,7 @@ class _RegisterScreen extends State<RegisterScreen> {
           padding: const EdgeInsets.all(24),
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 30),
+              margin: const EdgeInsets.only(bottom: 30),
               child: Image.asset(
                 AppAssets.register,
                 height: MediaQuery.of(context).size.height * 0.17,
@@ -118,13 +140,15 @@ class _RegisterScreen extends State<RegisterScreen> {
               ),
             ),
             CustomTextField(
-                controller: usernameController,
-                hint: appLocalizations.name,
-                prefixIcon: const ImageIcon(AssetImage(AppIcons.userIcon))),
+              controller: usernameController,
+              hint: appLocalizations.name,
+              prefixIcon: const ImageIcon(AssetImage(AppIcons.userIcon)),
+            ),
             const SizedBox(height: 24),
             CustomTextField(
               controller: emailController,
               hint: appLocalizations.email,
+              error: _emailError,
               prefixIcon: const ImageIcon(AssetImage(AppIcons.emailIcon)),
             ),
             const SizedBox(height: 24),
@@ -135,6 +159,7 @@ class _RegisterScreen extends State<RegisterScreen> {
             CustomTextField(
               controller: phoneController,
               hint: appLocalizations.phone,
+              error: _phoneError,
               prefixIcon: const ImageIcon(AssetImage(AppIcons.phoneIcon)),
             ),
             const SizedBox(height: 24),
@@ -144,10 +169,8 @@ class _RegisterScreen extends State<RegisterScreen> {
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LanguageSwitch(),
-              ],
-            )
+              children: [LanguageSwitch()],
+            ),
           ],
         ),
       ),
@@ -221,7 +244,7 @@ class _RegisterScreen extends State<RegisterScreen> {
             Navigator.pushNamed(context, LoginScreen.routeName);
           },
           child: Text(appLocalizations.login),
-        )
+        ),
       ],
     );
   }

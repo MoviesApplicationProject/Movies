@@ -9,16 +9,16 @@ import 'package:movies/ui/screens/movieDetalis/cast.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_screenshoots.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 
-class MovieDetalis extends StatefulWidget {
+class MovieDetails extends StatefulWidget {
   static const String routeName = "/movieDetalies";
 
-  const MovieDetalis({super.key});
+  const MovieDetails({super.key});
 
   @override
-  State<MovieDetalis> createState() => _MovieDetalisState();
+  State<MovieDetails> createState() => _MovieDetailsState();
 }
 
-class _MovieDetalisState extends State<MovieDetalis> {
+class _MovieDetailsState extends State<MovieDetails> {
   late Future<List<Movie>> futureMovies;
 
   @override
@@ -132,7 +132,8 @@ class _MovieDetalisState extends State<MovieDetalis> {
                           Container(
                             child: Row(
                               children: [
-                                buildRatesIcon(AppIcons.lovedIcon, "15"),
+                                buildRatesIcon(AppIcons.lovedIcon,
+                                    movie.likeCount.toString()),
                                 buildRatesIcon(AppIcons.timeIcon,
                                     movie.runtime.toString()),
                                 buildRatesIcon(
@@ -158,7 +159,6 @@ class _MovieDetalisState extends State<MovieDetalis> {
                           ),
                           FutureBuilder<List<Movie>>(
                               future: fetchMovieSuggestions(movieId: movie.id),
-                              // استبدلي yourMovieId بالمعرّف المناسب
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -183,7 +183,7 @@ class _MovieDetalisState extends State<MovieDetalis> {
                                   padding: const EdgeInsets.all(8),
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2, // 2 أفلام في الصف
+                                    crossAxisCount: 2,
                                     crossAxisSpacing: 8,
                                     mainAxisSpacing: 8,
                                     childAspectRatio: 0.67,
@@ -191,15 +191,19 @@ class _MovieDetalisState extends State<MovieDetalis> {
                                   itemCount: moviesToShow.length,
                                   itemBuilder: (context, index) {
                                     final movie = moviesToShow[index];
+
+                                    // Print the image URL for debugging purposes
+                                    print('Movie image URL: ${movie.mediumCoverImage}'); // Check if the URL is valid
+
                                     return InkWell(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                            MovieDetalis.routeName,
-                                            arguments: movie,
-                                          );
-                                        },
-                                        child:
-                                            buildSimilarMovies(context, movie));
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                          MovieDetails.routeName,
+                                          arguments: movie,
+                                        );
+                                      },
+                                      child: buildSimilarMovies(context, movie),
+                                    );
                                   },
                                 );
                               }),
@@ -238,7 +242,8 @@ class _MovieDetalisState extends State<MovieDetalis> {
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          MovieCastWidget(movieId: movie.id), // movieId هو معرف الفيلم الذي تريد عرض الطاقم الخاص به
+                          MovieCastWidget(
+                              movieId: movie.id),
                           SizedBox(
                             height: 8,
                           ),
@@ -271,53 +276,6 @@ class _MovieDetalisState extends State<MovieDetalis> {
               }
             }));
   }
-
-  Container buildCastWidget(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(11),
-      width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.1,
-      margin: EdgeInsets.symmetric(vertical: 4),
-      decoration: BoxDecoration(
-        color: AppColors.gray,
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(children: [
-        Expanded(
-            flex: 7,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), // نصف قطر الحواف = 10
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  AppAssets.onBoarding4,
-                  fit: BoxFit.fill,
-                ),
-              ),
-            )),
-        Expanded(flex: 1, child: Container()),
-        Expanded(
-            flex: 32,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  "Name : Hayley Atwell",
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-                Text(
-                  "Characther : Captain Certen",
-                  style: Theme.of(context).textTheme.labelMedium,
-                )
-              ],
-            ))
-      ]),
-    );
-  }
-
   static Container buildScreenShot(String screenShot) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 8),
@@ -325,7 +283,7 @@ class _MovieDetalisState extends State<MovieDetalis> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(16),
           child: Image.network(screenShot)),
     );
   }

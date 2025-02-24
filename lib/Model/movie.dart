@@ -25,6 +25,7 @@ class Movie {
   final List<Torrent> torrents;
   final String dateUploaded;
   final int dateUploadedUnix;
+  final int likeCount;
 
   Movie({
     required this.id,
@@ -53,6 +54,7 @@ class Movie {
     required this.torrents,
     required this.dateUploaded,
     required this.dateUploadedUnix,
+    required this.likeCount,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
@@ -91,6 +93,7 @@ class Movie {
           : [],
       dateUploaded: json['date_uploaded'] as String? ?? '',
       dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
+      likeCount: json['like_count'] as int? ?? 0,
     );
   }
 
@@ -122,6 +125,7 @@ class Movie {
       'torrents': torrents.map((torrent) => torrent.toJson()).toList(),
       'date_uploaded': dateUploaded,
       'date_uploaded_unix': dateUploadedUnix,
+      'like_count': likeCount,
     };
   }
 }
