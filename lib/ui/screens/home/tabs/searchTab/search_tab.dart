@@ -1,8 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
+import 'package:movies/core/theme/app_colors.dart';
+import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 
 class SearchTab extends StatefulWidget {
@@ -11,9 +15,10 @@ class SearchTab extends StatefulWidget {
   @override
   State<SearchTab> createState() => _SearchTabState();
 }
+
 class _SearchTabState extends State<SearchTab> {
-  List<Map<String, dynamic>> allMovies = [];
-  List<Map<String, dynamic>> filteredMovies = [];
+  List<Movie> allMovies = [];
+  List<Movie> filteredMovies = [];
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -38,13 +43,8 @@ class _SearchTabState extends State<SearchTab> {
         List<dynamic> movies = data['data']['movies'] ?? [];
 
         setState(() {
-          allMovies = movies
-              .map((movie) => {
-            "image": movie['medium_cover_image'] ?? '',
-            "rating": movie['rating']?.toString() ?? 'N/A',
-          })
-          .toList();
-
+          List<Movie> allMovies =
+              movies.map((movieMap) => Movie.fromJson(movieMap)).toList();
           filteredMovies = allMovies;
         });
       } else {
@@ -58,6 +58,7 @@ class _SearchTabState extends State<SearchTab> {
   void onSearchChanged(String query) {
     fetchMovies(query: query);
   }
+
   Stack buildSimilarMovies(BuildContext context, String image, String rating) {
     return Stack(
       children: [
@@ -84,10 +85,9 @@ class _SearchTabState extends State<SearchTab> {
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.star,
-                  color: Colors.yellow,
-                  size: 16,
+                ImageIcon(
+                  AssetImage(AppIcons.starIcon),
+                  color: AppColors.yellow,
                 ),
                 SizedBox(width: 4),
                 Text(
@@ -107,8 +107,8 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child:
-      Padding(
+    return SafeArea(
+        child: Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
@@ -118,7 +118,9 @@ class _SearchTabState extends State<SearchTab> {
             prefixIcon: const ImageIcon(AssetImage(AppIcons.searchIcon)),
             onChange: onSearchChanged,
           ),
-          SizedBox(height: 16,),
+          SizedBox(
+            height: 16,
+          ),
           if (searchController.text.isEmpty)
             Expanded(
               child: Center(
@@ -153,13 +155,20 @@ class _SearchTabState extends State<SearchTab> {
                 itemCount: filteredMovies.length,
                 itemBuilder: (context, index) {
                   final movie = filteredMovies[index];
-                  return Card(
-                    child: buildSimilarMovies(
-                      context,
-                      movie['image']!,
-                      movie['rating']!,
-                    ),
-                  );
+                  return InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(
+                          MovieDetalis.routeName,
+                          arguments: movie,
+                        );
+                      },
+                      child: Card(
+                        child: buildSimilarMovies(
+                          context,
+                          movie.largeCoverImage,
+                          movie.rating.toString(),
+                        ),
+                      ));
                 },
               ),
             )

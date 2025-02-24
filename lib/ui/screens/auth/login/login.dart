@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
+import 'package:movies/API/login_service.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
@@ -27,11 +27,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   late AppLocalizations appLocalizations;
   late ThemeProvider themeProvider;
-
-
 
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -43,44 +40,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var formKey = GlobalKey<FormState>();
 
-  Future<void> loginUser(String email, String password) async {
-    const String apiUrl = 'http://172.25..35.134:9090/api/v1/auth/authenticate';
-    try {
-      final response = await http.post(
-        Uri.parse(apiUrl),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': email,
-          'password': password,
-        }),
-      );
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = jsonDecode(response.body);
-        Navigator.pushNamed(context, ExploreNowScreen.routeName);
-        print('Login successful: ${data['token']}');
+  // استخدام AuthService لتسجيل الدخول
+  Future<void> loginUser() async {
+    String? token = await LoginService().loginUser(
+      email: emailController.text,
+      password: passwordController.text,
+    );
 
-        setState(() {
-          emailError = null;
-          passwordError = null;
-        });
-      } else {
-        setState(() {
-          emailError = 'Email or password may be incorrect';
-          passwordError = 'Email or password may be incorrect';
-        });
-      }
-    } catch (e) {
-      print('Error during login: $e');
+    if (token != null) {
+      Navigator.pushNamed(context, ExploreNowScreen.routeName);
+      print('Login successful, Token: $token');
+      setState(() {
+        emailError = null;
+        passwordError = null;
+      });
+    } else {
+      setState(() {
+        emailError = 'Email or password may be incorrect';
+        passwordError = 'Email or password may be incorrect';
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
 
-    appLocalizations = AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -89,8 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             children: [
               Container(
-                margin: EdgeInsets.all(70),
-                child:Image.asset(
+                margin: const EdgeInsets.all(70),
+                child: Image.asset(
                   AppAssets.login,
                   width: MediaQuery.of(context).size.width * 0.27,
                   height: MediaQuery.of(context).size.height * 0.12,
@@ -139,17 +126,18 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: passwordController,
       obscureText: obscurePassword,
       hint: appLocalizations.password,
-        prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
-        suffixIcon: IconButton(
-          icon: Icon(
-            obscurePassword ? Icons.visibility_off : Icons.visibility,
-          ),
-          onPressed: () {
-            setState(() {
-              obscurePassword = !obscurePassword;
-            });
-          },),
-        error: passwordError,
+      prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
+      suffixIcon: IconButton(
+        icon: Icon(
+          obscurePassword ? Icons.visibility_off : Icons.visibility,
+        ),
+        onPressed: () {
+          setState(() {
+            obscurePassword = !obscurePassword;
+          });
+        },
+      ),
+      error: passwordError,
     );
   }
 
@@ -164,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
           return "Please enter email";
         }
         final bool emailValid = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(email);
         if (!emailValid) {
           return "The email address is badly formatted";
@@ -176,31 +164,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget buildLoginButton(BuildContext context) {
     return CustomButton(
-        onClick: () {
-          if (formKey.currentState!.validate()) {
-            loginUser(emailController.text, passwordController.text);
-          }
-          Navigator.pushNamed(context, MovieDetalis.routeName);
-        },
-        title: appLocalizations.login);
+      onClick: () {
+        if (formKey.currentState!.validate()) {
+          loginUser();
+        }
+      },
+      title: appLocalizations.login,
+    );
   }
 
   Widget buildSignUpRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-         Text(
-            appLocalizations.dontHaveAccount,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        Text(
+          appLocalizations.dontHaveAccount,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, RegisterScreen.routeName);
-              },
-              child: Text(
-                appLocalizations.createAccount,
-              ),
-            )
+          onPressed: () {
+            Navigator.pushNamed(context, RegisterScreen.routeName);
+          },
+          child: Text(appLocalizations.createAccount),
+        )
       ],
     );
   }
@@ -227,8 +213,7 @@ class _LoginScreenState extends State<LoginScreen> {
   FilledButton buildGoogleSignInButton(BuildContext context) {
     return FilledButton(
       onPressed: () {},
-      style: FilledButton.styleFrom(
-      ),
+      style: FilledButton.styleFrom(),
       child: SizedBox(
           width: double.infinity,
           child: Row(
@@ -236,10 +221,13 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               Expanded(
                 flex: 1,
-                child: Brand(Brands.google ,colorFilter:  ColorFilter.mode(
-                  AppColors.black,
-                  BlendMode.srcIn,
-                ), ),
+                child: Brand(
+                  Brands.google,
+                  colorFilter: ColorFilter.mode(
+                    AppColors.black,
+                    BlendMode.srcIn,
+                  ),
+                ),
               ),
               const SizedBox(width: 8),
               Expanded(

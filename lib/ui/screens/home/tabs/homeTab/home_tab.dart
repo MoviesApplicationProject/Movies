@@ -43,7 +43,7 @@ class _HomeTabState extends State<HomeTab> {
                 subtitle: Text('Rating: ${movie.rating}'),
                 onTap: () {
                   Navigator.of(context).pushNamed(
-                    MovieDetalis.routeName,
+                    MovieDetails.routeName,
                     arguments: movie,
                   );
                   print('Download: ${movie.torrents}');

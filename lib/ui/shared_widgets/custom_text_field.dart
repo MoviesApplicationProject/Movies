@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movies/core/theme/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
-
   final TextEditingController controller;
   final String hint;
   final IconData? iconData;
@@ -14,7 +13,7 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final Function(String)? onChange;
 
-  CustomTextField({
+  const CustomTextField({
     super.key,
     required this.controller,
     required this.hint,
@@ -30,43 +29,46 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return Stack(
-      children: [
-        TextFormField(
-          validator: validator,
-          style: Theme.of(context).textTheme.bodyLarge,
-          cursorColor: Theme.of(context).primaryColor,
-          obscureText: obscureText,
-          controller: controller,
-          minLines: minLines,
-          maxLines: minLines > 1 ? minLines : 1,
-          onChanged: onChange,
-          decoration: InputDecoration(
-            prefixIcon: prefixIcon,
-            hintMaxLines: minLines,
-            hintText: hint,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: error != null
-                      ? AppColors.red
-                      : AppColors.gray),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                  color: error != null ? AppColors.red : AppColors.gray),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            errorText: error,
+    return TextFormField(
+      validator: validator,
+      style: Theme.of(context).textTheme.bodyLarge,
+      cursorColor: Theme.of(context).primaryColor,
+      obscureText: obscureText,
+      controller: controller,
+      minLines: minLines,
+      maxLines: obscureText ? 1 : minLines > 1 ? minLines : 1,
+      onChanged: onChange,
+      decoration: InputDecoration(
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
+        hintMaxLines: minLines,
+        hintText: hint,
+        errorText: error,
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: error != null ? AppColors.red : AppColors.gray,
           ),
+          borderRadius: BorderRadius.circular(16),
         ),
-        Positioned(
-          right: 8, // Padding from the right
-          top: 8, // Padding from the top
-          child: suffixIcon ?? Container(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: error != null ? AppColors.red : Theme.of(context).primaryColor,
+          ),
+          borderRadius: BorderRadius.circular(16),
         ),
-      ],
+        errorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.red,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.red,
+          ),
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
     );
   }
 }
