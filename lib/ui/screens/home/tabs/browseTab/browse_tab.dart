@@ -18,20 +18,19 @@ class _BrowseTabState extends State<BrowseTab> {
   List<String> genres = [];
   String selectedGenre = '';
   bool _isGenresLoaded = false;
-  bool _isMoviesLoading = true; // Boolean to track loading state for movies
+  bool _isMoviesLoading = true;
 
   @override
   void initState() {
     super.initState();
-    // Fetch genres only once when the widget is initialized for the first time
     if (!_isGenresLoaded) {
       Genres().fetchGenres().then((genreList) {
-        genreList.sort(); // Sort genres alphabetically
+        genreList.sort();
         setState(() {
           genres = genreList;
-          selectedGenre = genreList.first; // Automatically select the first genre
-          _isGenresLoaded = true; // Mark genres as loaded
-          fetchMoviesByGenre(selectedGenre); // Fetch movies for the selected genre
+          selectedGenre = genreList.first;
+          _isGenresLoaded = true;
+          fetchMoviesByGenre(selectedGenre);
         });
       });
     }
@@ -39,11 +38,11 @@ class _BrowseTabState extends State<BrowseTab> {
 
   void fetchMoviesByGenre(String genre) {
     setState(() {
-      _isMoviesLoading = true; // Start loading movies
+      _isMoviesLoading = true;
       selectedGenre = genre;
       movies = Genres().fetchMovies(genre: genre).then((movieList) {
         setState(() {
-          _isMoviesLoading = false; // Stop loading once movies are fetched
+          _isMoviesLoading = false;
         });
         return movieList;
       });
@@ -65,19 +64,19 @@ class _BrowseTabState extends State<BrowseTab> {
                   itemCount: genres.length,
                   itemBuilder: (context, index) {
                     final genre = genres[index];
-                    final isSelected = selectedGenre == genre; // Check if the genre is selected
+                    final isSelected = selectedGenre == genre;
 
                     return GestureDetector(
                       onTap: () {
-                        fetchMoviesByGenre(genre); // Fetch movies when genre is tapped
+                        fetchMoviesByGenre(genre);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        margin: const EdgeInsets.symmetric(horizontal: 8.0), // Add horizontal margin for spacing between items
+                        margin: const EdgeInsets.symmetric(horizontal: 8.0),
                         decoration: BoxDecoration(
-                          color: isSelected ? AppColors.yellow : Colors.transparent, // Yellow background for selected genre
+                          color: isSelected ? AppColors.yellow : Colors.transparent,
                           border: Border.all(
-                            color: AppColors.yellow, // Border color for unselected genres
+                            color: AppColors.yellow,
                             width: 2.0, // Border width
                           ),
                           borderRadius: BorderRadius.circular(16), // Rounded corners
@@ -87,7 +86,7 @@ class _BrowseTabState extends State<BrowseTab> {
                             genre,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: isSelected ? AppColors.black : AppColors.yellow, // Change text color based on selection
+                              color: isSelected ? AppColors.black : AppColors.yellow,
                             ),
                           ),
                         ),
@@ -121,14 +120,14 @@ class _BrowseTabState extends State<BrowseTab> {
                         return InkWell(
                           onTap: () {
                             Navigator.of(context).pushNamed(
-                              MovieDetails.routeName, // Navigate to movie details
+                              MovieDetails.routeName,
                               arguments: movie,
                             );
                           },
                           child: Card(
                             child: buildSimilarMovies(
                               context,
-                              movie.mediumCoverImage, // Now accessing Movie properties
+                              movie.mediumCoverImage,
                               movie.rating.toString(),
                             ),
                           ),
