@@ -55,8 +55,8 @@ class AppTheme {
     ),
     inputDecorationTheme: InputDecorationTheme(
       fillColor: AppColors.gray,
-      iconColor: AppColors.white,
-      contentPadding:
+        iconColor: AppColors.yellow,
+        contentPadding:
       const EdgeInsets.all(15),
       errorStyle: const TextStyle(color: AppColors.red),
       filled: true,
@@ -80,8 +80,8 @@ class AppTheme {
       unselectedItemColor: AppColors.white,
     ),
   iconTheme: IconThemeData(
-    color: AppColors.white,
-  ),
+      color: AppColors.yellow,
+    ),
   );
 
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/api_service.dart';
 import 'package:movies/API/fetchGenres.dart';
 import 'package:movies/Model/movie.dart';
-import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart'; // Make sure you import the MovieDetails route
+import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class BrowseTab extends StatefulWidget {
   const BrowseTab({super.key});
@@ -117,22 +115,8 @@ class _BrowseTabState extends State<BrowseTab> {
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         var movie = snapshot.data![index];
-                        return InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                              MovieDetails.routeName,
-                              arguments: movie,
-                            );
-                          },
-                          child: Card(
-                            child: buildSimilarMovies(
-                              context,
-                              movie.mediumCoverImage,
-                              movie.rating.toString(),
-                            ),
-                          ),
-                        );
-                      },
+                              return MovieDesign(movie: movie);
+                            },
                     );
                   },
                 ),
@@ -144,46 +128,4 @@ class _BrowseTabState extends State<BrowseTab> {
     );
   }
 
-  Stack buildSimilarMovies(BuildContext context, String image, String rating) {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(
-            image,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-        Positioned(
-          top: 8,
-          left: 8,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: Colors.black54,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Row(
-              children: [
-                ImageIcon(
-                  AssetImage(AppIcons.starIcon),
-                  color: AppColors.yellow,
-                ),
-                const SizedBox(width: 4),
-                Text(
-                  rating,
-                  style: const TextStyle(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

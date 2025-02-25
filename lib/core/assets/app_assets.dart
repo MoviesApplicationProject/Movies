@@ -24,4 +24,19 @@ class AppAssets {
 
   static const String emptySearch = "assets/images/emptySearch.png";
 
+  //Avatars
+  static const String avatar1 ="assets/avatar/avatar1.png";
+  static const String avatar2 ="assets/avatar/avatar2.png";
+  static const String avatar3 ="assets/avatar/avatar3.png";
+  static const String avatar4 ="assets/avatar/avatar4.png";
+  static const String avatar5 ="assets/avatar/avatar5.png";
+  static const String avatar6 ="assets/avatar/avatar6.png";
+  static const String avatar7 ="assets/avatar/avatar7.png";
+  static const String avatar8 ="assets/avatar/avatar8.png";
+  static const String avatar9 ="assets/avatar/avatar9.png";
+
+  //popcorn
+
+  static const String popcorn ="assets/images/popcorn.png";
+  static const String movieHistory ="assets/images/historymovie.png";
 }

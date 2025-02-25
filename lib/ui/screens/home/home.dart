@@ -25,9 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
     HomeTab(),
     SearchTab(),
     BrowseTab(),
-    const ProfileTab(),
+    ProfileTab(),
   ];
-  int currentIndex = 0;
+  int currentIndex = 3;
 
   @override
   Widget build(BuildContext context) {

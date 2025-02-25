@@ -7,6 +7,7 @@ import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/screens/auth/register/register.dart';
 import 'package:movies/ui/screens/home/home.dart';
+import 'package:movies/ui/screens/home/tabs/profileTab/profile_update.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/screens/onBoarding_screens/explore/explore_now.dart';
 import 'package:movies/ui/screens/onBoarding_screens/on_boarding/onboarding_screen.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
         ForgetpasswordScreen.routeName : (_) => ForgetpasswordScreen(),
         HomeScreen.routeName: (_) => HomeScreen(),
         MovieDetails.routeName: (_) => MovieDetails(),
+        ProfileUpdate.routeName: (_) => ProfileUpdate(),
       },
       initialRoute: HomeScreen.routeName,
       theme: AppTheme.generalTheme,

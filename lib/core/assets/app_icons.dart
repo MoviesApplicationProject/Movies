@@ -20,4 +20,7 @@ class AppIcons {
   static const String lovedIcon = "assets/icons/loved.png";
   static const String starIcon = "assets/icons/star.png";
   static const String timeIcon = "assets/icons/time.png";
+
+  // Profile Icons
+  static const String exit = "assets/icons/exit.png";
 }

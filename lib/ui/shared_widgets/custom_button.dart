@@ -4,17 +4,27 @@ import 'package:movies/core/theme/app_colors.dart';
 class CustomButton extends StatelessWidget {
   final Function onClick;
   final String title;
-  final Color color;
+  final Color? color;
+  final Color? textColor;
 
-  const CustomButton({super.key, required this.title, required this.onClick,this.color=AppColors.yellow});
+  const CustomButton(
+      {super.key,
+        required this.title,
+        required this.onClick,
+        this.color = AppColors.yellow,
+        this.textColor = AppColors.black});
 
   @override
   Widget build(BuildContext context) {
     return FilledButton(
-      style: FilledButton.styleFrom(backgroundColor: color),
-        onPressed: () async {
-          onClick();
-        },
-        child: Text(title));
+      onPressed: () async {
+        onClick();
+      },
+      child: Text(title),
+      style: ButtonStyle(
+        foregroundColor: MaterialStateProperty.all(textColor),
+        backgroundColor: MaterialStateProperty.all(color),
+      ),
+    );
   }
 }

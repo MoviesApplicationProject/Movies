@@ -158,7 +158,7 @@ class _SearchTabState extends State<SearchTab> {
                   return InkWell(
                       onTap: () {
                         Navigator.of(context).pushNamed(
-                          MovieDetalis.routeName,
+                          MovieDetails.routeName,
                           arguments: movie,
                         );
                       },
