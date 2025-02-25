@@ -33,9 +33,8 @@ class MovieCastWidget extends StatelessWidget {
   Widget buildCastWidget(BuildContext context, CastMember member) {
     return member != ""
         ? Container(
-            padding: EdgeInsets.all(11),
+            padding: EdgeInsets.symmetric(horizontal: 11, vertical: 5),
             width: double.infinity,
-            height: MediaQuery.of(context).size.height * 0.1,
             margin: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
               color: AppColors.gray,

@@ -5,9 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
+import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class SearchTab extends StatefulWidget {
   const SearchTab({Key? key}) : super(key: key);
@@ -57,52 +56,6 @@ class _SearchTabState extends State<SearchTab> {
 
   void onSearchChanged(String query) {
     fetchMovies(query: query);
-  }
-
-  Stack buildSimilarMovies(BuildContext context, String image, String rating) {
-    return Stack(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.network(
-            image,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
-          ),
-        ),
-        Positioned(
-          top: 8,
-          left: 8,
-          child: Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 8,
-              vertical: 4,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.black54,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Row(
-              children: [
-                ImageIcon(
-                  AssetImage(AppIcons.starIcon),
-                  color: AppColors.yellow,
-                ),
-                SizedBox(width: 4),
-                Text(
-                  rating,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   @override
@@ -155,20 +108,7 @@ class _SearchTabState extends State<SearchTab> {
                 itemCount: filteredMovies.length,
                 itemBuilder: (context, index) {
                   final movie = filteredMovies[index];
-                  return InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          MovieDetails.routeName,
-                          arguments: movie,
-                        );
-                      },
-                      child: Card(
-                        child: buildSimilarMovies(
-                          context,
-                          movie.largeCoverImage,
-                          movie.rating.toString(),
-                        ),
-                      ));
+                  return MovieDesign(movie: movie);
                 },
               ),
             )
