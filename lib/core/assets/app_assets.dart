@@ -39,4 +39,7 @@ class AppAssets {
 
   static const String popcorn ="assets/images/popcorn.png";
   static const String movieHistory ="assets/images/historymovie.png";
+
+  static const String available ='assets/images/AvailableNow.png';
+  static const String watch ='assets/images/watch.png';
 }

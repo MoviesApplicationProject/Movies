@@ -197,14 +197,15 @@
 //   );
 // }
 import 'package:flutter/material.dart';
+import 'package:movies/API/fetch_user_profile_data.dart';
+import 'package:movies/Model/get_user_profile_data.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/ui/screens/home/tabs/profileTab/profile_update.dart';
 
-import '../../../../../API/fetch_user_profile_data.dart';
-import '../../../../../Model/get_user_profile_data.dart';
+
 
 class ProfileTab extends StatefulWidget {
   ProfileTab({super.key, this.historyCount = 0, this.wishListCount = 0, this.userName});
