@@ -166,7 +166,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return CustomButton(
       onClick: () {
         if (formKey.currentState!.validate()) {
-          loginUser();
+          LoginService().loginUser(
+            email: emailController.text,
+            password: passwordController.text,
+          );
         }
       },
       title: appLocalizations.login,

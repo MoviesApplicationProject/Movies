@@ -75,7 +75,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                         Positioned(
                           height: MediaQuery.of(context).size.height * 0.82,
                           child: Image.network(
-                            movie.largeCoverImage,
+                            movie.largeCoverImage.isNotEmpty ? movie.largeCoverImage : movie.mediumCoverImage,
                             fit: BoxFit.cover,
                           ),
                         ),

@@ -24,4 +24,9 @@ class AppAssets {
 
   static const String emptySearch = "assets/images/emptySearch.png";
   static const String placeHolder ='assets/images/placeholder_image.png';
+
+  static const String available ='assets/images/AvailableNow.png';
+  static const String watch ='assets/images/watch.png';
+
+
 }

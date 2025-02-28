@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/API/fetchMovieScreenshots.dart';
+import 'package:movies/core/theme/app_colors.dart';
 
 class MovieScreenshots extends StatelessWidget {
   final int movieId;
@@ -12,7 +13,7 @@ class MovieScreenshots extends StatelessWidget {
       future: fetchMovieScreenshots(movieId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(color: AppColors.yellow));
         } else if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
