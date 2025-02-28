@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/auth_service.dart';
 import 'package:movies/Model/avatar.dart';
-import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
@@ -148,8 +145,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                       onPageChanged: (index) {
                         setState(() {
                           selectedAvatarId = Avatar.avatars[index]['id']; // حفظ ID الصورة المختارة
-
-                          currentPage = index.toDouble();
+//
+                            currentPage = index.toDouble();
                         });
                       },
                       itemBuilder: (context, index) {
