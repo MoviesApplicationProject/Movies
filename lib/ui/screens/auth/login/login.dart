@@ -10,6 +10,7 @@ import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/screens/auth/register/register.dart';
+import 'package:movies/ui/screens/home/home.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/screens/onBoarding_screens/explore/explore_now.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
@@ -41,26 +42,26 @@ class _LoginScreenState extends State<LoginScreen> {
   var formKey = GlobalKey<FormState>();
 
   // استخدام AuthService لتسجيل الدخول
-  Future<void> loginUser() async {
-    String? token = await LoginService().loginUser(
-      email: emailController.text,
-      password: passwordController.text,
-    );
-
-    if (token != null) {
-      Navigator.pushNamed(context, ExploreNowScreen.routeName);
-      print('Login successful, Token: $token');
-      setState(() {
-        emailError = null;
-        passwordError = null;
-      });
-    } else {
-      setState(() {
-        emailError = 'Email or password may be incorrect';
-        passwordError = 'Email or password may be incorrect';
-      });
-    }
-  }
+  // Future<void> loginUser() async {
+  //   String? token = await LoginService().loginUser(
+  //     email: emailController.text,
+  //     password: passwordController.text,
+  //   );
+  //
+  //   if (token != null) {
+  //     Navigator.pushNamed(context, HomeScreen.routeName);
+  //     print('Login successful, Token: $token');
+  //     setState(() {
+  //       emailError = null;
+  //       passwordError = null;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       emailError = 'Email or password may be incorrect';
+  //       passwordError = 'Email or password may be incorrect';
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +167,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return CustomButton(
       onClick: () {
         if (formKey.currentState!.validate()) {
-          loginUser();
+          //loginUser();
+          LoginService().loginUser(
+            context: context,
+            email: emailController.text,
+            password: passwordController.text,
+          );
+
         }
       },
       title: appLocalizations.login,

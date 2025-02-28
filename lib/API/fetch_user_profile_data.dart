@@ -5,9 +5,10 @@ import '../Model/get_user_profile_data.dart';
 
 
 class UserProfileService {
+
   String apiUrl = "https://route-movie-apis.vercel.app/profile";
 
-  UserProfileService({ required this.apiUrl});
+  // UserProfileService({ required this.apiUrl});
 
   Future<GetUserProfileData?> fetchUserProfile() async {
     try {

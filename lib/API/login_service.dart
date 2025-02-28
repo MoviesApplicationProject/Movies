@@ -1,10 +1,18 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/core/theme/app_colors.dart';
+import 'package:movies/ui/screens/home/home.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
   static const String apiUrl = 'https://route-movie-apis.vercel.app/auth/login';
 
-  Future<String?> loginUser({
+  Future<void> loginUser({
+    required BuildContext context,
     required String email,
     required String password,
   }) async {
@@ -14,6 +22,7 @@ class LoginService {
     };
 
     try {
+   //   Center(child: CircularProgressIndicator(color: AppColors.yellow,));
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -22,15 +31,26 @@ class LoginService {
         body: json.encode(loginData),
       );
 
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> data = json.decode(response.body);
-        return data['data'];
+        String token = data['data']; // هذا هو التوكن
+
+        // ✅ حفظ التوكن في SharedPreferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', token);
+
+        print('Login successful! Token saved.');
+       // hideLoading(context);
+        Navigator.pushNamed(context, HomeScreen.routeName);
       } else {
-        return null;
+        print('Login failed! Status code: ${response.statusCode}');
+
       }
     } catch (e) {
       print('Error during login: $e');
-      return null;  // Error during request
+      // showMessage(context,
+      //     e.toString() ?? "Something went wrong please try again later",
+      //     posButtonTitle: "ok");
     }
   }
 }

@@ -224,20 +224,21 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   void initState() {
     super.initState();
-    fetchUserProfile();
+  //  fetchUserProfile();
+  //  UserProfileService();
   }
 
-  Future<void> fetchUserProfile() async {
-    UserProfileService userProfileService = UserProfileService(apiUrl: "https://route-movie-apis.vercel.app/profile");
-    GetUserProfileData? data = await userProfileService.fetchUserProfile();
-
-    if (mounted) {
-      setState(() {
-        userProfile = data;
-        isLoading = false;
-      });
-    }
-  }
+  // Future<void> fetchUserProfile() async {
+  //   UserProfileService userProfileService = UserProfileService(apiUrl: "https://route-movie-apis.vercel.app/profile");
+  //   GetUserProfileData? data = await userProfileService.fetchUserProfile();
+  //
+  //   if (mounted) {
+  //     setState(() {
+  //       userProfile = data;
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
