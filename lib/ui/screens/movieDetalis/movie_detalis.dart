@@ -6,7 +6,7 @@ import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/cast.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/genres_widget.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/movie_screenshoots.dart';
-import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/rateIcons.dart';
+import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/rate_icons.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/suggestion.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 
@@ -128,7 +128,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                           SizedBox(
                             height: 16,
                           ),
-                          Rateicons(movie: movie),
+                          RateIcons(movie: movie),
                           SizedBox(
                             height: 16,
                           ),

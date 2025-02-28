@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 class AuthService {
   static const String apiUrl = 'https://route-movie-apis.vercel.app/auth/register';
 
-  // دالة للتسجيل
   Future<bool> registerUser({
     required String name,
     required String email,

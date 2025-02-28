@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/Model/movie.dart';
+import 'package:movies/ui/screens/home/home.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 
 class GenreSection extends StatelessWidget {
@@ -22,16 +23,17 @@ class GenreSection extends StatelessWidget {
               children: [
                 Text(
                   genre,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: Theme.of(context).textTheme.headlineLarge
                 ),
-                Text(
-                  "See More →",
-                  style: TextStyle(color: Colors.yellow),
-                ),
+               InkWell(
+                 child:  Text(
+                   "See More →",
+                   style: Theme.of(context).textTheme.labelSmall,
+                 ),
+                 onTap: () {
+                    Navigator.pushNamed(context, HomeScreen.routeName , arguments:{ "indexArg" : 2 , "genres" : genre } ,);
+                 },
+               )
               ],
             ),
           ),
@@ -39,7 +41,7 @@ class GenreSection extends StatelessWidget {
               height: MediaQuery.of(context).size.height * .32,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: movies.length,
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   final movie = movies[index];
                   return Padding(

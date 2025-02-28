@@ -13,7 +13,6 @@ class Genres {
       final jsonResponse = json.decode(response.body);
       List<dynamic> movieJsonList = jsonResponse['data']['movies'] ?? [];
 
-      // Convert each dynamic map to a Movie object
       return movieJsonList.map((movieJson) => Movie.fromJson(movieJson)).toList();
     } else {
       throw Exception('Failed to load movies');

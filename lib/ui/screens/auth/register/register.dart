@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/auth_service.dart';
+import 'package:movies/Model/avatar.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
@@ -21,6 +24,9 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreen extends State<RegisterScreen> {
   late ThemeProvider themeProvider;
   late AppLocalizations appLocalizations;
+  PageController _pageController = PageController(initialPage: 5, viewportFraction: 0.5);
+  double currentPage = 5.0;
+  int selectedAvatarId = Avatar.avatars[1]['id']; //
 
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
@@ -133,11 +139,46 @@ class _RegisterScreen extends State<RegisterScreen> {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 30),
-              child: Image.asset(
-                AppAssets.register,
-                height: MediaQuery.of(context).size.height * 0.17,
-                width: double.infinity,
-              ),
+
+              child:  SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: PageView.builder(
+                      controller: _pageController,
+                      itemCount: Avatar.avatars.length,
+                      onPageChanged: (index) {
+                        setState(() {
+                          selectedAvatarId = Avatar.avatars[index]['id']; // حفظ ID الصورة المختارة
+
+                          currentPage = index.toDouble();
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        double distanceFromCenter = (currentPage - index).abs();
+                        double scaleFactor = (1 - distanceFromCenter * 0.4).clamp(0.4, 1.0);
+                        double widthFactor = (1 - distanceFromCenter * 0.03).clamp(0.4, 1.0);
+                        return Center(
+                          child: Transform.scale(
+                            scale: scaleFactor,
+                              child:Container(
+                                  width: MediaQuery.of(context).size.width * 0.35 * widthFactor,
+                                  child:  Image.asset(Avatar
+                                    .avatars[index]['asset']),
+                          ),
+                          )
+                        );
+                      }
+                  )
+                  )
+      //   Transform.scale(
+      //   scale: scaleFactor,
+      //   child: Container(
+      //     width: MediaQuery.of(context).size.width * 0.7 * widthFactor,
+      //     child: Padding(
+      //       padding: const EdgeInsets.symmetric(horizontal: 0),
+      //       child: MovieDesign(movie: movie),
+      //     ),
+      //   ),
+      // ),
             ),
             CustomTextField(
               controller: usernameController,
@@ -237,7 +278,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       children: [
         Text(
           appLocalizations.alreadyHaveAccount,
-          style: Theme.of(context).textTheme.bodyLarge,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         TextButton(
           onPressed: () {

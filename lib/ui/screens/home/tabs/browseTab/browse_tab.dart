@@ -5,7 +5,9 @@ import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class BrowseTab extends StatefulWidget {
-  const BrowseTab({super.key});
+  final String? genre ;
+
+  const BrowseTab({super.key , this.genre});
 
   @override
   State<BrowseTab> createState() => _BrowseTabState();
@@ -26,9 +28,15 @@ class _BrowseTabState extends State<BrowseTab> {
         genreList.sort();
         setState(() {
           genres = genreList;
-          selectedGenre = genreList.first;
+          if (widget.genre != null && genres.contains(widget.genre)) {
+            selectedGenre = widget.genre!;
+          } else {
+            selectedGenre = genreList.isNotEmpty ? genreList.first : '';
+          }
           _isGenresLoaded = true;
-          fetchMoviesByGenre(selectedGenre);
+          if (selectedGenre.isNotEmpty) {
+            fetchMoviesByGenre(selectedGenre);
+          }
         });
       });
     }

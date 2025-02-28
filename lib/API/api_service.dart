@@ -10,6 +10,7 @@ Future<List<Movie>> fetchMovies() async {
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
     final List moviesJson = data['data']['movies'];
+
     return moviesJson.map((movie) => Movie.fromJson(movie)).toList();
   } else {
     throw Exception('Failed to load movies');

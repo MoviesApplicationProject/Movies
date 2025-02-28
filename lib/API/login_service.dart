@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/home/home.dart';
-import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 

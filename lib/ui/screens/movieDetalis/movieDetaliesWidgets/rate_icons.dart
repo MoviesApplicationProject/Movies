@@ -1,26 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:movies/API/fetch_liked.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
 
-class Rateicons extends StatelessWidget {
+class RateIcons extends StatelessWidget {
   final Movie movie;
 
-  const Rateicons({super.key, required this.movie});
+  const RateIcons({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(0),
+      padding: EdgeInsets.all(0),
       child: Row(
         children: [
-          buildRatesIcon(
-              AppIcons.lovedIcon, movie.likeCount.toString(), context),
+          FutureBuilder<int>(
+            future: fetchLikeCount(movie.id),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return buildRatesIcon(AppIcons.lovedIcon, '...', context);
+              } else if (snapshot.hasError) {
+                return buildRatesIcon(AppIcons.lovedIcon, '0', context);
+              } else {
+                return buildRatesIcon(AppIcons.lovedIcon, snapshot.data.toString(), context);
+              }
+            },
+          ),
           buildRatesIcon(AppIcons.timeIcon, movie.runtime.toString(), context),
           buildRatesIcon(AppIcons.starIcon, movie.rating.toString(), context),
         ],
       ),
-      margin: EdgeInsets.all(0),
-      padding: EdgeInsets.all(0),
     );
   }
 
@@ -39,7 +50,7 @@ class Rateicons extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "$text",
+              text,
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             ImageIcon(

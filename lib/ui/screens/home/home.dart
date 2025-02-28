@@ -18,19 +18,41 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   late ThemeProvider themeProvider;
   late AppLocalizations appLocalizations;
+  late String genre = "" ;
 
-  List<Widget> tabs = [
-    HomeTab(),
-    SearchTab(),
-    BrowseTab(),
-    ProfileTab(),
-  ];
-  int currentIndex = 3;
+
+  int currentIndex = 0;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args is Map<String, dynamic>) {
+      if (args["indexArg"] is int && args["indexArg"] >= 0 && args["indexArg"] < 4) {
+        currentIndex = args["indexArg"];
+      }
+
+      genre = args["genres"];
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    List<Widget> tabs = [
+      HomeTab(),
+      SearchTab(),
+      BrowseTab(genre : genre),
+      ProfileTab(),
+    ];
+
+
     themeProvider = Provider.of<ThemeProvider>(context);
 
     themeProvider = Provider.of<ThemeProvider>(context);

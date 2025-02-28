@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/API/fetchMovieCast.dart';
+import 'package:movies/Model/cast_dm.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
 
@@ -10,7 +11,7 @@ class MovieCastWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CastMember>>(
+    return FutureBuilder<List<CastDM>>(
       future: fetchMovieCast(movieId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -30,7 +31,7 @@ class MovieCastWidget extends StatelessWidget {
     );
   }
 
-  Widget buildCastWidget(BuildContext context, CastMember member) {
+  Widget buildCastWidget(BuildContext context, CastDM member) {
     return member != ""
         ? Container(
             padding: EdgeInsets.symmetric(horizontal: 11, vertical: 5),
