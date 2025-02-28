@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:movies/core/assets/app_assets.dart';
+import 'package:movies/core/theme/app_colors.dart';
 
-import '../../../../../core/assets/app_assets.dart';
-import '../../../../../core/theme/app_colors.dart';
+
 
 class ProfileUpdate extends StatefulWidget {
 
