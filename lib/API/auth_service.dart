@@ -1,15 +1,21 @@
 import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/core/utils/dialog_utils.dart';
+import 'package:movies/ui/screens/auth/login/login.dart';
 
 class AuthService {
   static const String apiUrl = 'https://route-movie-apis.vercel.app/auth/register';
 
   Future<bool> registerUser({
+    required BuildContext context,
     required String name,
     required String email,
     required String password,
     required String confirmPassword,
     required String phone,
+    required int avaterId,
   }) async {
     final Map<String, dynamic> userData = {
       'name': name,
@@ -17,10 +23,11 @@ class AuthService {
       'password': password,
       'confirmPassword': confirmPassword,
       'phone': phone,
-      'avatarId': 1,
+      'avaterId': avaterId,
     };
 
     try {
+      showLoading(context);
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -28,15 +35,41 @@ class AuthService {
         },
         body: json.encode(userData),
       );
+      hideLoading(context);
 
       if (response.statusCode == 201) {
+        Navigator.pushNamed(context, LoginScreen.routeName);
         return true;
       } else {
-        print('Error: ${response.body}');
+        final responseData = json.decode(response.body);
+        String errorMessage;
+
+        if (responseData['message'] is List) {
+          errorMessage = (responseData['message'] as List).join("\n");
+        } else if (responseData['message'] is String) {
+          errorMessage = responseData['message'];
+        } else {
+          errorMessage = "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى.";
+        }
+
+        showMessage(
+          context,
+          errorMessage,
+          title: "Error",
+          posButtonTitle: "OK",
+        );
         return false;
       }
     } catch (e) {
-      print('Connection error: $e');
+      hideLoading(context);
+
+      showMessage(
+        context,
+        "خطأ في الاتصال: $e",
+        title: "Network Error",
+        posButtonTitle: "OK",
+      );
+
       return false;
     }
   }

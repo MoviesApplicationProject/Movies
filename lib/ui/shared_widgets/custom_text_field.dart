@@ -31,7 +31,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       validator: validator,
-      style: Theme.of(context).textTheme.bodyLarge,
+      style: Theme.of(context).textTheme.bodyMedium,
       cursorColor: Theme.of(context).primaryColor,
       obscureText: obscureText,
       controller: controller,

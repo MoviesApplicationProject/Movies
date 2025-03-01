@@ -1,6 +1,7 @@
 class Avatar {
 
   static final List<Map<String, dynamic>> avatars = [
+    {'id': 0, 'asset': 'assets/avatar/avatar9.png'},
     {'id': 1, 'asset': 'assets/avatar/avatar1.png'},
     {'id': 2, 'asset': 'assets/avatar/avatar2.png'},
     {'id': 3, 'asset': 'assets/avatar/avatar3.png'},
@@ -9,6 +10,13 @@ class Avatar {
     {'id': 6, 'asset': 'assets/avatar/avatar6.png'},
     {'id': 7, 'asset': 'assets/avatar/avatar7.png'},
     {'id': 8, 'asset': 'assets/avatar/avatar8.png'},
-    {'id': 9, 'asset': 'assets/avatar/avatar9.png'},
+
   ];
+
+  static String getAvatarById(int id) {
+    return avatars.firstWhere(
+          (avatar) => avatar['id'] == id,
+      orElse: () => {'asset': 'assets/avatar/default.png'}, // Default avatar
+    )['asset'];
+  }
 }
