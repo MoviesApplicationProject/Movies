@@ -36,28 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var formKey = GlobalKey<FormState>();
 
-  // استخدام AuthService لتسجيل الدخول
-  // Future<void> loginUser() async {
-  //   String? token = await LoginService().loginUser(
-  //     email: emailController.text,
-  //     password: passwordController.text,
-  //   );
-  //
-  //   if (token != null) {
-  //     Navigator.pushNamed(context, HomeScreen.routeName);
-  //     print('Login successful, Token: $token');
-  //     setState(() {
-  //       emailError = null;
-  //       passwordError = null;
-  //     });
-  //   } else {
-  //     setState(() {
-  //       emailError = 'Email or password may be incorrect';
-  //       passwordError = 'Email or password may be incorrect';
-  //     });
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     themeProvider = Provider.of<ThemeProvider>(context);

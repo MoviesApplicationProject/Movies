@@ -23,7 +23,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   late AppLocalizations appLocalizations;
   PageController _pageController = PageController(initialPage: 5, viewportFraction: 0.5);
   double currentPage = 5.0;
-  int selectedAvatarId = Avatar.avatars[1]['id']; //
+  int selectedAvatarId = Avatar.avatars[0]['id']; //
 
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
@@ -81,39 +81,6 @@ class _RegisterScreen extends State<RegisterScreen> {
     return phoneRegex.hasMatch(phone);
   }
 
-  Future<void> registerUser() async {
-    if (!validateInput()) {
-      setState(() {});
-      return;
-    }
-
-    try {
-      bool success = await AuthService().registerUser(
-        name: usernameController.text,
-        email: emailController.text,
-        password: passwordController.text,
-        confirmPassword: repasswordController.text,
-        phone: phoneController.text,
-      );
-
-      if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('تم التسجيل بنجاح!')),
-        );
-        Navigator.pushNamed(context, LoginScreen.routeName);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('حدث خطأ في التسجيل. تأكد من صحة البيانات!')),
-        );
-      }
-    } catch (e) {
-      // معالجة الأخطاء وعرض رسالة للمستخدم
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('خطأ أثناء التسجيل: $e')),
-      );
-      print('Error during registration: $e'); // طباعة الخطأ في الـ console للتصحيح
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,8 +111,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       itemCount: Avatar.avatars.length,
                       onPageChanged: (index) {
                         setState(() {
-                          selectedAvatarId = Avatar.avatars[index]['id']; // حفظ ID الصورة المختارة
-//
+                            selectedAvatarId = Avatar.avatars[index]['id'];
                             currentPage = index.toDouble();
                         });
                       },
@@ -216,14 +182,11 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Widget passwordTextField(BuildContext context) {
-    return TextFormField(
+    return CustomTextField(
       controller: passwordController,
-      style: Theme.of(context).textTheme.bodyLarge,
-      cursorColor: Theme.of(context).primaryColor,
       obscureText: obscureNewPassword,
-      decoration: InputDecoration(
-        hintText: appLocalizations.password,
-        prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
+      hint: appLocalizations.password,
+      prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
         suffixIcon: IconButton(
           icon: Icon(
             obscureNewPassword ? Icons.visibility_off : Icons.visibility,
@@ -234,20 +197,16 @@ class _RegisterScreen extends State<RegisterScreen> {
             });
           },
         ),
-        errorText: _emptyFieldError,
-      ),
+      error: _emptyFieldError,
     );
   }
 
   Widget confirmPasswordTextField(BuildContext context) {
-    return TextFormField(
+    return CustomTextField(
       controller: repasswordController,
-      style: Theme.of(context).textTheme.bodyLarge,
-      cursorColor: Theme.of(context).primaryColor,
       obscureText: _obscureConfirmPassword,
-      decoration: InputDecoration(
-        hintText: appLocalizations.confirmNewPass,
-        prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
+      hint: appLocalizations.confirmNewPass,
+      prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
         suffixIcon: IconButton(
           icon: Icon(
             _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
@@ -258,17 +217,22 @@ class _RegisterScreen extends State<RegisterScreen> {
             });
           },
         ),
-        errorText: _passwordMatchError ?? _emptyFieldError,
-      ),
+      error: _passwordMatchError ?? _emptyFieldError,
     );
   }
 
   FilledButton buildRegisterButton(BuildContext context) => FilledButton(
       onPressed: () {
-        registerUser();
+        AuthService().registerUser(
+            context: context,
+            name: usernameController.text,
+            email: emailController.text,
+            phone: phoneController.text,
+            password: passwordController.text,
+            confirmPassword: repasswordController.text,
+            avaterId: selectedAvatarId);
       },
       child: Text(appLocalizations.createAccount));
-
   Row buildSignInTextRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

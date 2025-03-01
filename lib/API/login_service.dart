@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/core/theme/app_colors.dart';
+import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/home/home.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
@@ -20,7 +21,11 @@ class LoginService {
     };
 
     try {
-   //   Center(child: CircularProgressIndicator(color: AppColors.yellow,));
+      showLoading(context);
+      Center(
+          child: CircularProgressIndicator(
+        color: AppColors.red,
+      ));
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -41,14 +46,24 @@ class LoginService {
        // hideLoading(context);
         Navigator.pushNamed(context, HomeScreen.routeName);
       } else {
+        final responseData = json.decode(response.body);
+        String errorMessage;
+        if (responseData['message'] is List) {
+          errorMessage = (responseData['message'] as List).join("\n");
+        } else if (responseData['message'] is String) {
+          errorMessage = responseData['message'];
+        } else {
+          errorMessage = "Something went wrong, please try again later.";
+        }
         print('Login failed! Status code: ${response.statusCode}');
-
+        showMessage(context, errorMessage,
+            title: "Error", posButtonTitle: "ok");
       }
     } catch (e) {
       print('Error during login: $e');
-      // showMessage(context,
-      //     e.toString() ?? "Something went wrong please try again later",
-      //     posButtonTitle: "ok");
+      showMessage(context,
+          e.toString() ?? "Something went wrong please try again later",
+          posButtonTitle: "ok");
     }
   }
 }
