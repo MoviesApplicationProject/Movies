@@ -1,12 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:movies/API/get_user_profile_data.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
-import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:movies/ui/screens/home/tabs/profileTab/profile_update.dart';
+import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../../core/assets/app_assets.dart';
@@ -50,8 +48,8 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<void> fetchUserProfile(String token) async {
-    GetUserProfile fetchUserProfile = GetUserProfile(
-        baseUrl: "https://route-movie-apis.vercel.app/");
+    GetUserProfile fetchUserProfile =
+        GetUserProfile(baseUrl: "https://route-movie-apis.vercel.app/");
     GetUserProfileData? data = await fetchUserProfile.fetchUserProfile(token);
 
     if (mounted) {
@@ -65,209 +63,184 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.gray,
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : userProfile?.data == null
-          ? Center(child: Text("Failed to load profile"))
-          :DefaultTabController(
-          length: 2, // Only two tabs now
-          child: Scaffold(
-
-            body: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(6.0),
-                child: Column(
-                  children: [
-                    /// Profile Section
-                    Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40),
-                          child: Column(
+              ? Center(child: Text("Failed to load profile"))
+              : DefaultTabController(
+                  length: 2, // Only two tabs now
+                  child: Scaffold(
+                    body: SafeArea(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              CircleAvatar(
-                                backgroundColor: AppColors.gray,
-                                radius: 70,
-                                child: Image.asset(
-                                  Avatar.getAvatarById(userProfile!.data!.avaterId ?? 0),
-                                  height: 118,
-                                  width: 118,
-                                  fit: BoxFit.contain,
-                                ),
+                          Container(
+                            color: AppColors.gray,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: CircleAvatar(
+                                          radius: 55,
+                                          child: Image.asset(
+                                            Avatar.getAvatarById(
+                                                userProfile!.data!.avaterId ??
+                                                    0),
+                                            height: 118,
+                                            width: 118,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                          flex: 2,
+                                          child: customWidget(
+                                            widget.wishListCount,
+                                            "Wish List",
+                                          )),
+                                      Expanded(
+                                        flex: 2,
+                                        child: customWidget(
+                                          widget.historyCount,
+                                          "History",
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.all(15),
+                                    child: Row(
+                                      children: [
+                                        Text(userProfile!.data!.name ?? 'N/A',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineMedium),
+                                      ],
+                                    ),
+                                  ),
+                                  Row(children: [
+                                    Expanded(
+                                        flex: 2,
+                                        child: CustomButton(
+                                          onClick: () {
+                                            if (token != null) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ProfileUpdate(
+                                                          token: token,
+                                                          avatarId: userProfile!
+                                                              .data!.avaterId,
+                                                          userName: userProfile!
+                                                              .data!.name,
+                                                          phone: userProfile!
+                                                              .data!.phone,
+                                                          email: userProfile!
+                                                              .data!.email,
+                                                        )),
+                                              ).then((value) {
+                                                if (value == true) {
+                                                  fetchUserProfile(
+                                                      token!); // Refresh the screen
+                                                }
+                                              });
+                                            } else {
+                                              print(
+                                                  "Token is null, cannot proceed to Profile Update");
+                                            }
+                                          },
+                                          title: "Edit Profile",
+                                        )),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                        child: CustomButton(
+                                      title: "Exit",
+                                      onClick: () {},
+                                      color: AppColors.red,
+                                      textColor: AppColors.white,
+                                    )),
+                                  ]),
+                                  const SizedBox(height: 10),
+                                ],
                               ),
-                              Text(
-                                userProfile!.data!.name ?? 'N/A', // Defaults to "Guest User" if null
-                                style: const TextStyle(
-                                  color: AppColors.white,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 15),
-                        counterTextAndCounter(widget.wishListCount, "Wish List", 22, 32),
-                        const SizedBox(width: 20),
-                        counterTextAndCounter(widget.historyCount, "History", 22, 32),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-
-                    /// Buttons Section
-                    Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            if (token != null ) {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => ProfileUpdate(
-                              //       token: token,
-                              //       avatarId: userProfile!.data!.avaterId,
-                              //       userName: userProfile!.data!.name,
-                              //       phone:userProfile!.data!.phone ,
-                              //       email: userProfile!.data!.email,
-                              //
-                              //     ),
-                              //   ),
-                              // );
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ProfileUpdate(
-                                  token: token,
-                                  avatarId: userProfile!.data!.avaterId,
-                                  userName: userProfile!.data!.name,
-                                  phone: userProfile!.data!.phone,
-                                  email: userProfile!.data!.email,
-                                )),
-                              ).then((value) {
-                                if (value == true) {
-                                  fetchUserProfile(token!); // Refresh the screen
-                                }
-                              });
-
-
-                            } else {
-                              print("Token is null, cannot proceed to Profile Update");
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.yellow,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
                             ),
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                            minimumSize: const Size(230, 56),
                           ),
-                          child: Text(
-                            "Edit Profile",
-                            style: GoogleFonts.roboto(
-                              color: AppColors.black,
-                              fontSize: 18,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.red,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                            minimumSize: const Size(130, 56),
-                          ),
-                          child: Row(
-                            children: [
-                              Text(
-                                "Exit",
-                                style: GoogleFonts.roboto(
-                                  color: AppColors.white,
-                                  fontSize: 18,
+                          Container(
+                            color: AppColors.gray,
+                            child: TabBar(
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              indicatorColor: AppColors.yellow,
+                              // Active tab indicator color
+                              labelColor: AppColors.white,
+                              // Active tab text color
+                              unselectedLabelColor: AppColors.white,
+                              // Inactive tab text color
+                              indicatorWeight: 3,
+                              // Makes the indicator more visible
+                              tabs: [
+                                Tab(
+                                  icon: Icon(Icons.list,
+                                      size: 34, color: AppColors.yellow),
+                                  text: "Wish List",
                                 ),
-                              ),
-                              const SizedBox(width: 10),
-                              ImageIcon(
-                                AssetImage(AppIcons.exit),
-                                color: AppColors.white,
-                                size: 22,
-                              ),
-                            ],
+                                Tab(
+                                  icon: Icon(Icons.folder,
+                                      size: 34, color: AppColors.yellow),
+                                  text: "History",
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(color: AppColors.gray, width: 2), // Removes white line
-                        ),
-                      ),
-                      child: const TabBar(
-                        indicatorColor: AppColors.yellow, // Active tab indicator color
-                        labelColor: AppColors.white, // Active tab text color
-                        unselectedLabelColor: AppColors.white, // Inactive tab text color
-                        indicatorWeight: 3, // Makes the indicator more visible
-                        tabs: [
-                          Tab(
-                            icon: Icon(Icons.list, size: 34, color: AppColors.yellow),
-                            text: "Wish List",
-                          ),
-                          Tab(
-                            icon: Icon(Icons.folder, size: 34, color: AppColors.yellow),
-                            text: "History",
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    /// TabBarView for two tabs
                     Expanded(
                       child: TabBarView(
                         children: [
-                          Center(child: Image.asset(AppAssets.emptySearch, width: 200, height: 200)),
-                          Center(child: Image.asset(AppAssets.movieHistory, color: AppColors.white, width: 150, height: 150)),
+                          Center(
+                              child: Image.asset(AppAssets.emptySearch,
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.3
+                                  , height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.13
+                              )),
+                          Center(
+                              child: Image.asset(AppAssets.movieHistory,
+                                  color: AppColors.white,
+                                  width: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .width * 0.3
+                                  , height: MediaQuery
+                                      .of(context)
+                                      .size
+                                      .height * 0.13
+                              )),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        )
-
+                  ])),
+        ),
+      ),
     );
   }
-  Widget counterTextAndCounter(int counter, String text, double textSize, double counterSize) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 60),
-    child: Column(
-      children: [
-        Text(
-          "$counter",
-          style: TextStyle(
-            color: AppColors.white,
-            fontSize: counterSize,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        Text(
-          text,
-          style: TextStyle(
-            color: AppColors.white,
-            fontSize: textSize,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ],
-    ),
-  );
-}
+
+  Widget customWidget(int counter, String text) {
+    return Padding(
+      padding: EdgeInsets.all(0),
+      child: Column(
+        children: [
+          Text("$counter", style: Theme.of(context).textTheme.headlineMedium),
+          Text(text, style: Theme.of(context).textTheme.headlineMedium),
+        ],
+      ),
+    );
+  }
 }

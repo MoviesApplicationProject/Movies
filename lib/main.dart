@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         MovieDetails.routeName: (_) => MovieDetails(),
         ProfileUpdate.routeName: (_) => ProfileUpdate(),
       },
-      initialRoute: LoginScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       theme: AppTheme.generalTheme,
     );
   }
