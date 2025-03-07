@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movies/API/add_to_watch_list.dart';
 import 'package:movies/API/api_service.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
@@ -27,6 +28,7 @@ class _MovieDetailsState extends State<MovieDetails> {
     super.initState();
     futureMovies = fetchMovies();
   }
+
   @override
   Widget build(BuildContext context) {
     final movie = ModalRoute.of(context)!.settings.arguments as Movie;
@@ -51,8 +53,14 @@ class _MovieDetailsState extends State<MovieDetails> {
                 color: AppColors.white,
                 AssetImage(AppIcons.saveIcon),
               ),
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                await WatchList.addToFavorites(
+                  movieId: movie.id,
+                  movieName: movie.title,
+                  movieRating: movie.rating,
+                  imageURL: movie.mediumCoverImage,
+                  releaseYear: movie.year.toString(),
+                );
               },
             ),
           ],
@@ -75,7 +83,9 @@ class _MovieDetailsState extends State<MovieDetails> {
                         Positioned(
                           height: MediaQuery.of(context).size.height * 0.82,
                           child: Image.network(
-                            movie.largeCoverImage.isNotEmpty ? movie.largeCoverImage : movie.mediumCoverImage,
+                            movie.largeCoverImage.isNotEmpty
+                                ? movie.largeCoverImage
+                                : movie.mediumCoverImage,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -96,8 +106,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                         ),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.70,
-                          child:
-                              Center(child: Image.asset(AppIcons.videoButton)),
+                          child: Center(
+                              child: Image.asset(AppIcons.videoButton)),
                         ),
                       ],
                     ),
@@ -115,7 +125,9 @@ class _MovieDetailsState extends State<MovieDetails> {
                             margin: const EdgeInsets.all(16),
                             child: Text(
                               movie.year.toString(),
-                              style: Theme.of(context).textTheme.headlineLarge,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineLarge,
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -146,31 +158,25 @@ class _MovieDetailsState extends State<MovieDetails> {
                           Suggestion(movie: movie),
                           movie.descriptionFull != ""
                               ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Summary",
-                                      textAlign: TextAlign.start,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelLarge,
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      movie.descriptionFull.toString(),
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    ),
-                                  ],
-                                )
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Summary",
+                                textAlign: TextAlign.start,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                movie.descriptionFull.toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall,
+                              ),
+                            ],
+                          )
                               : Container(),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          // Text(
-                          //   movie.summary.toString(),
-                          //   style: Theme.of(context).textTheme.bodySmall,
-                          // ),
                           SizedBox(
                             height: 8,
                           ),
@@ -179,8 +185,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
-                          MovieCastWidget(
-                              movieId: movie.id),
+                          MovieCastWidget(movieId: movie.id),
                           SizedBox(
                             height: 8,
                           ),
