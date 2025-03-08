@@ -9,6 +9,7 @@ import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileUpdate extends StatefulWidget {
   static const String routeName = "updateProfile";
@@ -23,6 +24,7 @@ class ProfileUpdate extends StatefulWidget {
 }
 
 class _ProfileUpdateState extends State<ProfileUpdate> {
+  late AppLocalizations appLocalizations;
   late String selectedAvatarAsset;
   late int selectedAvatarId;
 
@@ -36,11 +38,13 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
 
   @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.black,
         appBar: AppBar(
-          title: const Text("Pick Avatar"),
+          title: Text(appLocalizations.pickAvatar),
           backgroundColor: AppColors.black,
           iconTheme: IconThemeData(color: AppColors.yellow),
           leading: IconButton(
@@ -87,14 +91,14 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                         context, ForgetpasswordScreen.routeName);
                   },
                   child: Text(
-                    "Reset Password",
+                    appLocalizations.resetPassword,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
               ),
               Spacer(),
               CustomButton(
-                title: "Delete Account",
+                title: appLocalizations.deleteAccount,
                 onClick: () async {
                   await DeleteService().deleteProfile(context);
                 },
@@ -103,7 +107,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
               ),
               const SizedBox(height: 20),
               CustomButton(
-                title: "Update Account",
+                title: appLocalizations.updateAccount,
                 onClick: () async {
                   final avatarService = AvatarService(token: widget.token!);
 

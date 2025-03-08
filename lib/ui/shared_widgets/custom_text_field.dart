@@ -10,8 +10,10 @@ class CustomTextField extends StatelessWidget {
   final String? error;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
+  final Widget? prefix;
   final String? Function(String?)? validator;
   final Function(String)? onChange;
+
 
   const CustomTextField({
     super.key,
@@ -25,6 +27,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.onChange,
     this.minLines = 1,
+    this.prefix,
   });
 
   @override
@@ -44,6 +47,7 @@ class CustomTextField extends StatelessWidget {
         hintMaxLines: minLines,
         hintText: hint,
         errorText: error,
+        prefix: prefix,
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
             color: error != null ? AppColors.red : AppColors.gray,

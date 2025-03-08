@@ -3,23 +3,33 @@ import 'package:movies/API/fetchMovieCast.dart';
 import 'package:movies/Model/cast_dm.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MovieCastWidget extends StatelessWidget {
+class MovieCastWidget extends StatefulWidget {
   final int movieId;
 
   MovieCastWidget({required this.movieId});
 
   @override
+  State<MovieCastWidget> createState() => _MovieCastWidgetState();
+}
+
+class _MovieCastWidgetState extends State<MovieCastWidget> {
+  late AppLocalizations appLocalizations;
+
+  @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return FutureBuilder<List<CastDM>>(
-      future: fetchMovieCast(movieId),
+      future: fetchMovieCast(widget.movieId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator(color: AppColors.yellow,));
         } else if (snapshot.hasError) {
           return Center(child: Text(''));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No cast found.'));
+          return  Center(child: Text(appLocalizations.noCastFound));
         } else {
           return Column(
             children: snapshot.data!
@@ -70,11 +80,11 @@ class MovieCastWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      "Name: ${member.name}",
+                      "${appLocalizations.name}: ${member.name}",
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                     Text(
-                      "Character: ${member.characterName}",
+                      "${appLocalizations.character}: ${member.characterName}",
                       style: Theme.of(context).textTheme.labelMedium,
                     )
                   ],

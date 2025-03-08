@@ -4,6 +4,7 @@ import 'package:movies/API/auth_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
+import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 import 'package:movies/ui/shared_widgets/language_switch.dart';
@@ -23,7 +24,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   late AppLocalizations appLocalizations;
   PageController _pageController = PageController(initialPage: 5, viewportFraction: 0.5);
   double currentPage = 5.0;
-  int selectedAvatarId = Avatar.avatars[5]['id']; //
+  int selectedAvatarId = Avatar.avatars[5]['id'];
 
   var usernameController = TextEditingController();
   var emailController = TextEditingController();
@@ -39,28 +40,34 @@ class _RegisterScreen extends State<RegisterScreen> {
   String? _emailError;
   String? _phoneError;
 
+  @override
+  void initState() {
+    super.initState();
+    phoneController.text = '+20';
+  }
+
   bool validateInput() {
     if (usernameController.text.isEmpty ||
         emailController.text.isEmpty ||
         passwordController.text.isEmpty ||
         repasswordController.text.isEmpty ||
         phoneController.text.isEmpty) {
-      _emptyFieldError = 'يجب ملء جميع الحقول';
+      _emptyFieldError = appLocalizations.allFieldsMustBeFilled;
       return false;
     }
 
     if (!isValidEmail(emailController.text)) {
-      _emailError = 'البريد الإلكتروني غير صالح';
+      _emailError = appLocalizations.invalidEmailAddress;
       return false;
     }
 
     if (!isValidPhone(phoneController.text)) {
-      _phoneError = 'رقم الهاتف غير صالح';
+      _phoneError = appLocalizations.invalidPhoneNumber;
       return false;
     }
 
     if (passwordController.text != repasswordController.text) {
-      _passwordMatchError = 'كلمة المرور غير متطابقة';
+      _passwordMatchError = appLocalizations.passwordsDoNotMatch;
       return false;
     }
 

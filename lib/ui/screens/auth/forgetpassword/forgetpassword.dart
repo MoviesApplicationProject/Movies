@@ -107,7 +107,7 @@ class ForgetpasswordScreenState extends State<ForgetpasswordScreen> {
                 // }
                 Navigator.pushNamed(context, LoginScreen.routeName);
               },
-              child: Text(appLocalizations.verify),
+              child: Text(appLocalizations.verifyEmail),
             ),
           ],
         ),

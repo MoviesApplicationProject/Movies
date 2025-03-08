@@ -12,6 +12,7 @@ import 'package:movies/ui/screens/home/tabs/profileTab/wish_list.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileTab extends StatefulWidget {
   ProfileTab({super.key, this.historyCount = 0, this.wishListCount = 0});
@@ -24,6 +25,7 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  late AppLocalizations appLocalizations;
   GetUserProfileData? userProfile;
   bool isLoading = true;
   String? token;
@@ -91,6 +93,8 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return Scaffold(
       body: userProfile?.data == null
           ? Center(child: CircularProgressIndicator(color: AppColors.yellow))
@@ -126,13 +130,13 @@ class _ProfileTabState extends State<ProfileTab> {
                                     flex: 2,
                                     child: customWidget(
                                       widget.wishListCount,
-                                      "Wish List",
+                                      appLocalizations.wishList,
                                     )),
                                 Expanded(
                                   flex: 2,
                                   child: customWidget(
                                     widget.historyCount,
-                                    "History",
+                                    appLocalizations.history,
                                   ),
                                 )
                               ],
@@ -173,12 +177,12 @@ class _ProfileTabState extends State<ProfileTab> {
                                             "Token is null, cannot proceed to Profile Update");
                                       }
                                     },
-                                    title: "Edit Profile",
+                                    title: appLocalizations.editProfile,
                                   )),
                               const SizedBox(width: 10),
                               Expanded(
                                   child: CustomButton(
-                                    title: "Exit",
+                                    title: appLocalizations.exit,
                                   onClick: () {
                                     LogoutService().logoutUser(context);
                                   },
@@ -207,12 +211,12 @@ class _ProfileTabState extends State<ProfileTab> {
                           Tab(
                             icon: Icon(Icons.list,
                                 size: 34, color: AppColors.yellow),
-                            text: "Wish List",
+                            text: appLocalizations.wishList,
                           ),
                           Tab(
                             icon: Icon(Icons.folder,
                                 size: 34, color: AppColors.yellow),
-                            text: "History",
+                            text: appLocalizations.history,
                           ),
                         ],
                       ),

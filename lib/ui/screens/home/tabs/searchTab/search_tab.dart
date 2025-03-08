@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/Model/movie.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
@@ -17,6 +18,7 @@ class SearchTab extends StatefulWidget {
 }
 
 class _SearchTabState extends State<SearchTab> {
+  late AppLocalizations appLocalizations;
   List<Movie> allMovies = [];
   List<Movie> filteredMovies = [];
   TextEditingController searchController = TextEditingController();
@@ -107,6 +109,8 @@ class _SearchTabState extends State<SearchTab> {
 
   @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return SafeArea(
         child: Padding(
       padding: const EdgeInsets.all(16.0),
@@ -114,7 +118,7 @@ class _SearchTabState extends State<SearchTab> {
         children: [
           CustomTextField(
             controller: searchController,
-            hint: "Search",
+            hint: appLocalizations.search,
             prefixIcon: const ImageIcon(AssetImage(AppIcons.searchIcon)),
             onChange: onSearchChanged,
           ),
@@ -138,7 +142,7 @@ class _SearchTabState extends State<SearchTab> {
             Expanded(
               child: Center(
                 child: Text(
-                  'No movies found.',
+                  appLocalizations.noMovieFound,
                   style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
               ),

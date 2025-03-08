@@ -2,15 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/ui/screens/home/home.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class GenreSection extends StatelessWidget {
+class GenreSection extends StatefulWidget {
   final String genre;
   final List<Movie> movies;
 
   const GenreSection({required this.genre, required this.movies});
 
   @override
+  State<GenreSection> createState() => _GenreSectionState();
+}
+
+class _GenreSectionState extends State<GenreSection> {
+  late AppLocalizations appLocalizations;
+
+  @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,16 +32,17 @@ class GenreSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  genre,
+                  widget.genre,
                   style: Theme.of(context).textTheme.headlineLarge
                 ),
                InkWell(
                  child:  Text(
-                   "See More →",
+                   '${appLocalizations.seeMore} >',
                    style: Theme.of(context).textTheme.labelSmall,
                  ),
+
                  onTap: () {
-                    Navigator.pushNamed(context, HomeScreen.routeName , arguments:{ "indexArg" : 2 , "genres" : genre } ,);
+                    Navigator.pushNamed(context, HomeScreen.routeName , arguments:{ "indexArg" : 2 , "genres" : widget.genre } ,);
                  },
                )
               ],
@@ -43,7 +54,7 @@ class GenreSection extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: 4,
                 itemBuilder: (context, index) {
-                  final movie = movies[index];
+                  final movie = widget.movies[index];
                   return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: InkWell(

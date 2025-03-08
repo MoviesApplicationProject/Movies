@@ -11,6 +11,7 @@ import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/movie_screen
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/rate_icons.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/suggestion.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovieDetails extends StatefulWidget {
   static const String routeName = "/movieDetalies";
@@ -23,6 +24,7 @@ class MovieDetails extends StatefulWidget {
 
 class _MovieDetailsState extends State<MovieDetails> {
   late Future<List<Movie>> futureMovies;
+  late AppLocalizations appLocalizations;
 
   @override
   void initState() {
@@ -45,7 +47,8 @@ class _MovieDetailsState extends State<MovieDetails> {
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
-
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     late Movie movie;
     if (args is FavoriteMovie) {
       movie = convertFavoriteMovieToMovie(args);
@@ -94,7 +97,7 @@ class _MovieDetailsState extends State<MovieDetails> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('No movies found.'));
+            return Center(child: Text(appLocalizations.noMovieFound));
           } else {
             return ListView(
               padding: EdgeInsets.all(0),
@@ -161,13 +164,13 @@ class _MovieDetailsState extends State<MovieDetails> {
                       RateIcons(movie: movie),
                       SizedBox(height: 16),
                       Text(
-                        "Screen Shots",
+                        appLocalizations.screenshot,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       MovieScreenshots(movieId: movie.id),
                       Text(
-                        "Similar",
+                        appLocalizations.similar,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
@@ -177,7 +180,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Summary",
+                              appLocalizations.summary,
                               textAlign: TextAlign.start,
                               style: Theme.of(context).textTheme.labelLarge,
                             ),
@@ -190,14 +193,14 @@ class _MovieDetailsState extends State<MovieDetails> {
                         ),
                       SizedBox(height: 8),
                       Text(
-                        "Cast",
+                        appLocalizations.cast,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.labelLarge,
                       ),
                       MovieCastWidget(movieId: movie.id),
                       SizedBox(height: 8),
                       Text(
-                        "Genres",
+                        appLocalizations.genres,
                         textAlign: TextAlign.start,
                         style: Theme.of(context).textTheme.labelLarge,
                       ),

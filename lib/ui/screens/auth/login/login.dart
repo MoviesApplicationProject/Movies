@@ -123,13 +123,13 @@ class _LoginScreenState extends State<LoginScreen> {
       error: emailError,
       validator: (email) {
         if (email == null || email.isEmpty) {
-          return "Please enter email";
+          return appLocalizations.pleaseEnterEmail;
         }
         final bool emailValid = RegExp(
                 r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
             .hasMatch(email);
         if (!emailValid) {
-          return "The email address is badly formatted";
+          return appLocalizations.badlyFormatted;
         }
         return null;
       },
@@ -180,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              "OR",
+              appLocalizations.or,
               style: Theme.of(context).textTheme.labelSmall,
             ),
           ),

@@ -3,17 +3,26 @@ import 'package:movies/API/fetchMovieSuggestions.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Suggestion extends StatelessWidget {
-
+class Suggestion extends StatefulWidget {
   final Movie movie;
 
   const Suggestion({super.key, required this.movie});
 
   @override
+  State<Suggestion> createState() => _SuggestionState();
+}
+
+class _SuggestionState extends State<Suggestion> {
+  late AppLocalizations appLocalizations;
+
+  @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return FutureBuilder<List<Movie>>(
-        future: fetchMovieSuggestions(movieId: movie.id),
+        future: fetchMovieSuggestions(movieId: widget.movie.id),
         builder: (context, snapshot) {
           if (snapshot.connectionState ==
               ConnectionState.waiting) {
@@ -24,8 +33,8 @@ class Suggestion extends StatelessWidget {
                 child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData ||
               snapshot.data!.isEmpty) {
-            return const Center(
-                child: Text('No related movies found.'));
+            return  Center(
+                child: Text(appLocalizations.noMovieFound));
           }
           final relatedMovies = snapshot.data!;
           final moviesToShow = relatedMovies.length >= 4
@@ -57,5 +66,4 @@ class Suggestion extends StatelessWidget {
         })
     ;
   }
-
 }

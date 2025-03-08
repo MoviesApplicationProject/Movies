@@ -4,14 +4,18 @@ import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/onBoarding_screens/on_boarding/onboarding_screen.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_gradient.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExploreNowScreen extends StatelessWidget {
   static const String routeName = "/ExploreNowScreen";
+  late AppLocalizations appLocalizations;
 
   ExploreNowScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -32,7 +36,7 @@ class ExploreNowScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "Find Your Next Favorite Movie Here",
+                    appLocalizations.setupTitle,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 36,
@@ -42,7 +46,7 @@ class ExploreNowScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "Get access to a huge library of movies to suit all tastes. You will surely like it.",
+                    appLocalizations.setupDescription,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,

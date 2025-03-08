@@ -6,6 +6,7 @@ import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/home/tabs/homeTab/genre_section.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -13,6 +14,7 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  late AppLocalizations appLocalizations;
   late Future<List<Movie>> movies;
   List<String> genres = [];
   String selectedGenre = '';
@@ -73,6 +75,8 @@ class _HomeTabState extends State<HomeTab> {
 
   @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return Scaffold(
       body: SafeArea(
         child: _isMoviesLoading
@@ -88,7 +92,7 @@ class _HomeTabState extends State<HomeTab> {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No movies found.'));
+                    return Center(child: Text(appLocalizations.noMovieFound));
                   }
                   final movies = snapshot.data ?? [];
 
