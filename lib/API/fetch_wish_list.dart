@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:movies/Model/movie.dart';
+import 'package:movies/Model/fav_movies.dart';
+import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FetchWatchList {
+class FetchWishList {
   static const String baseUrl = 'https://route-movie-apis.vercel.app';
 
   static Future<String?> getToken() async {
@@ -11,7 +12,7 @@ class FetchWatchList {
     return prefs.getString('auth_token');
   }
 
-  static Future<List<Movie>> fetchFavorites() async {
+  static Future<List<FavoriteMovie>> fetchFavorites() async {
     final url = Uri.parse('$baseUrl/favorites/all');
     final token = await getToken();
 
@@ -33,9 +34,8 @@ class FetchWatchList {
         final Map<String, dynamic> data = json.decode(response.body);
         print('Fetched favorite movies successfully!');
 
-        // تحويل JSON إلى كائنات Movie
         return (data['data'] as List)
-            .map((movieJson) => Movie.fromJson(movieJson))
+            .map((movieJson) => FavoriteMovie.fromJson(movieJson))
             .toList();
       } else {
         print('Failed to fetch favorite movies: ${response.statusCode}');

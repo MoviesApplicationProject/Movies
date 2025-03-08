@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movies/API/fetchMovieSuggestions.dart';
 import 'package:movies/Model/movie.dart';
+import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class Suggestion extends StatelessWidget {
@@ -17,7 +18,7 @@ class Suggestion extends StatelessWidget {
           if (snapshot.connectionState ==
               ConnectionState.waiting) {
             return const Center(
-                child: CircularProgressIndicator());
+                child: CircularProgressIndicator(color: AppColors.yellow,));
           } else if (snapshot.hasError) {
             return Center(
                 child: Text('Error: ${snapshot.error}'));

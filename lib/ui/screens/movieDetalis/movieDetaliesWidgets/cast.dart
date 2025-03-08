@@ -15,7 +15,7 @@ class MovieCastWidget extends StatelessWidget {
       future: fetchMovieCast(movieId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator(color: AppColors.yellow,));
         } else if (snapshot.hasError) {
           return Center(child: Text(''));
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -53,10 +53,10 @@ class MovieCastWidget extends StatelessWidget {
                     child: Image.network(
                       member.urlSmallImage.isNotEmpty
                           ? member.urlSmallImage
-                          : 'https://via.placeholder.com/150.png',
+                          : AppAssets.placeHolder,
                       fit: BoxFit.fill,
                       errorBuilder: (context, error, stackTrace) {
-                        return Image.asset(AppAssets.onBoarding1);
+                        return Image.asset(AppAssets.placeHolder);
                       },
                     ),
                   ),

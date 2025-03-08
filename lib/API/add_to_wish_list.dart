@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class WatchList {
+class WishList {
   static const String baseUrl = 'https://route-movie-apis.vercel.app';
 
   static Future<String?> getToken() async {
@@ -11,11 +13,13 @@ class WatchList {
   }
 
   static Future<void> addToFavorites({
+    required BuildContext context,
     required int movieId,
     required String movieName,
     required double movieRating,
     required String imageURL,
     required String releaseYear,
+
   }) async {
     final url = Uri.parse('$baseUrl/favorites/add');
 
@@ -47,7 +51,9 @@ class WatchList {
         print('Redirecting to: $redirectUrl');
       } else if (response.statusCode == 201) {
         print('Movie added to favorites successfully!');
-      } else {
+        showMessage(context, "Movie added to Wish list successfully!",
+             posButtonTitle: "ok");
+    } else {
         print('Failed to add movie to favorites: ${response.statusCode}');
         print('Response body: ${response.body}');
       }

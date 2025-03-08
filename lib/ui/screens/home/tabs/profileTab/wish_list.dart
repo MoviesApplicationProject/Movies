@@ -1,0 +1,147 @@
+import 'package:flutter/material.dart';
+import 'package:movies/API/fetch_wish_list.dart'; // لاستيراد API لاسترجاع المفضلة
+import 'package:movies/Model/fav_movies.dart';
+import 'package:movies/core/assets/app_assets.dart';
+import 'package:movies/core/assets/app_icons.dart';
+import 'package:movies/core/theme/app_colors.dart';
+import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
+
+class FavoritesScreen extends StatefulWidget {
+  @override
+  _FavoritesScreenState createState() => _FavoritesScreenState();
+}
+
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  Future<List<FavoriteMovie>>? favoriteMoviesFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchFavoriteMovies();
+  }
+
+  void fetchFavoriteMovies() {
+    setState(() {
+      favoriteMoviesFuture = FetchWishList.fetchFavorites() as Future<List<FavoriteMovie>>?;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: FutureBuilder<List<FavoriteMovie>>(
+          future: favoriteMoviesFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.yellow,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Center(
+                child: Image.asset(
+                  AppAssets.emptySearch,
+                  color: AppColors.white,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  height: MediaQuery.of(context).size.height * 0.13,
+                ),
+              );
+            }
+            return GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                var favoriteMovie = snapshot.data![index];
+                return MovieCard(
+                  movie: favoriteMovie,
+                  onMovieSelected: () async {
+                    final result = await Navigator.of(context).pushNamed(
+                      MovieDetails.routeName,
+                      arguments: favoriteMovie,
+                    );
+
+                    // عند الرجوع من صفحة الفيلم إذا كانت النتيجة true، قم بتحديث القائمة
+                    if (result == true) {
+                      fetchFavoriteMovies();
+                    }
+                  },
+                );
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class MovieCard extends StatelessWidget {
+  final FavoriteMovie movie;
+  final VoidCallback onMovieSelected;
+
+  const MovieCard({
+    super.key,
+    required this.movie,
+    required this.onMovieSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onMovieSelected,
+      child: Stack(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            child: Image.network(
+              movie.imageURL,
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: double.infinity,
+            ),
+          ),
+          Positioned(
+            top: 8,
+            left: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8,
+                vertical: 4,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.black54,
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              child: Row(
+                children: [
+                  ImageIcon(
+                    const AssetImage(AppIcons.starIcon),
+                    color: AppColors.yellow,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    movie.rating != null ? "${movie.rating}" : "N/A",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

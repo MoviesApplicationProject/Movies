@@ -1,3 +1,5 @@
+import 'package:movies/Model/fav_movies.dart';
+
 class Movie {
   final int id;
   final String url;
@@ -22,10 +24,9 @@ class Movie {
   final String mediumCoverImage;
   final String largeCoverImage;
   final String state;
-  final List<Torrent> torrents;
   final String dateUploaded;
   final int dateUploadedUnix;
-   int? likeCount;
+  int? likeCount;
 
   Movie({
     required this.id,
@@ -51,17 +52,13 @@ class Movie {
     required this.mediumCoverImage,
     required this.largeCoverImage,
     required this.state,
-    required this.torrents,
     required this.dateUploaded,
     required this.dateUploadedUnix,
-     this.likeCount,
+    this.likeCount,
   });
 
   factory Movie.fromJson(Map<String, dynamic> json) {
-
     var genresFromJson = json['genres'] as List?;
-    var torrentsFromJson = json['torrents'] as List?;
-
     return Movie(
       id: json['id'] as int? ?? 0,
       url: json['url'] as String? ?? '',
@@ -70,7 +67,7 @@ class Movie {
       titleEnglish: json['title_english'] as String? ?? '',
       titleLong: json['title_long'] as String? ?? '',
       slug: json['slug'] as String? ?? '',
-      year: json['year'] as int? ?? 0,
+      year: int.tryParse(json['year'].toString()) ?? 0,
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       runtime: json['runtime'] as int? ?? 0,
       genres: genresFromJson != null
@@ -84,20 +81,16 @@ class Movie {
       mpaRating: json['mpa_rating'] as String? ?? '',
       backgroundImage: json['background_image'] as String? ?? '',
       backgroundImageOriginal:
-          json['background_image_original'] as String? ?? '',
+      json['background_image_original'] as String? ?? '',
       smallCoverImage: json['small_cover_image'] as String? ?? '',
       mediumCoverImage: json['medium_cover_image'] as String? ?? '',
       largeCoverImage: json['large_cover_image'] as String? ?? '',
       state: json['state'] as String? ?? '',
-      torrents: torrentsFromJson != null
-          ? torrentsFromJson.map((e) => Torrent.fromJson(e)).toList()
-          : [],
       dateUploaded: json['date_uploaded'] as String? ?? '',
       dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
-      likeCount: json['like_count'],
+      likeCount: int.tryParse(json['like_count'].toString()) ?? null,
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -124,82 +117,21 @@ class Movie {
       'medium_cover_image': mediumCoverImage,
       'large_cover_image': largeCoverImage,
       'state': state,
-      'torrents': torrents.map((torrent) => torrent.toJson()).toList(),
       'date_uploaded': dateUploaded,
       'date_uploaded_unix': dateUploadedUnix,
       'like_count': likeCount,
     };
   }
-}
 
-class Torrent {
-  final String url;
-  final String hash;
-  final String quality;
-  final String type;
-  final String isRepack;
-  final String videoCodec;
-  final String bitDepth;
-  final String audioChannels;
-  final int seeds;
-  final int peers;
-  final String size;
-  final int sizeBytes;
-  final String dateUploaded;
-  final int dateUploadedUnix;
-
-  Torrent({
-    required this.url,
-    required this.hash,
-    required this.quality,
-    required this.type,
-    required this.isRepack,
-    required this.videoCodec,
-    required this.bitDepth,
-    required this.audioChannels,
-    required this.seeds,
-    required this.peers,
-    required this.size,
-    required this.sizeBytes,
-    required this.dateUploaded,
-    required this.dateUploadedUnix,
-  });
-
-  factory Torrent.fromJson(Map<String, dynamic> json) {
-    return Torrent(
-      url: json['url'] as String? ?? '',
-      hash: json['hash'] as String? ?? '',
-      quality: json['quality'] as String? ?? '',
-      type: json['type'] as String? ?? '',
-      isRepack: json['is_repack'] as String? ?? '',
-      videoCodec: json['video_codec'] as String? ?? '',
-      bitDepth: json['bit_depth'] as String? ?? '',
-      audioChannels: json['audio_channels'] as String? ?? '',
-      seeds: json['seeds'] as int? ?? 0,
-      peers: json['peers'] as int? ?? 0,
-      size: json['size'] as String? ?? '',
-      sizeBytes: json['size_bytes'] as int? ?? 0,
-      dateUploaded: json['date_uploaded'] as String? ?? '',
-      dateUploadedUnix: json['date_uploaded_unix'] as int? ?? 0,
+  Movie convertFavoriteMovieToMovie(FavoriteMovie favoriteMovie) {
+    return Movie(
+      id: int.parse(favoriteMovie.movieId),
+      title: favoriteMovie.name,
+      rating: favoriteMovie.rating,
+      year: int.parse(favoriteMovie.year),
+      mediumCoverImage: favoriteMovie.imageURL,
+      largeCoverImage: favoriteMovie.imageURL,
+      url: '', imdbCode: '', titleEnglish: '', titleLong: '', slug: '', runtime: 0, genres: [], summary: '', descriptionFull: '', synopsis: '', ytTrailerCode: '', language: '', mpaRating: '', backgroundImage: '', backgroundImageOriginal: '', smallCoverImage: '', state: '', dateUploaded: '', dateUploadedUnix: 0,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'url': url,
-      'hash': hash,
-      'quality': quality,
-      'type': type,
-      'is_repack': isRepack,
-      'video_codec': videoCodec,
-      'bit_depth': bitDepth,
-      'audio_channels': audioChannels,
-      'seeds': seeds,
-      'peers': peers,
-      'size': size,
-      'size_bytes': sizeBytes,
-      'date_uploaded': dateUploaded,
-      'date_uploaded_unix': dateUploadedUnix,
-    };
   }
 }
