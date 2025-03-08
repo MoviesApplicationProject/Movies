@@ -1,24 +1,22 @@
 
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:movies/API/delete_service.dart';
+import 'package:movies/API/update_profile_data.dart';
 import 'package:movies/Model/avatar.dart';
+import 'package:movies/Model/get_profile.dart';
+import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
-import 'package:movies/ui/screens/auth/login/login.dart';
-
+import 'package:movies/ui/shared_widgets/custom_button.dart';
+import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 
 class ProfileUpdate extends StatefulWidget {
   static const String routeName = "updateProfile";
 
   final String? token;
-  int? avatarId;
-  final String? userName;
-  final String? phone;
-  final String? email;
-  //final VoidCallback? onProfileUpdated;
+  final GetUserProfileData? user;
 
-  ProfileUpdate({super.key, this.token, this.avatarId, this.userName, this.phone, this.email ,});
+  const ProfileUpdate({Key? key, this.token, this.user}) : super(key: key);
 
   @override
   State<ProfileUpdate> createState() => _ProfileUpdateState();
@@ -31,113 +29,16 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   @override
   void initState() {
     super.initState();
-    selectedAvatarAsset = Avatar.getAvatarById(widget.avatarId ?? 0);
-    selectedAvatarId = widget.avatarId ?? 0;
+    selectedAvatarAsset =
+        Avatar.getAvatarById(widget.user!.data!.avaterId ?? 0);
+    selectedAvatarId = widget.user!.data!.avaterId ?? 0;
   }
-
-  /// Function to update avatar via API
-  Future<void> updateAvatar() async {
-    if (widget.token == null || widget.email == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Missing authentication data")),
-      );
-      return;
-    }
-
-    final String url = "https://route-movie-apis.vercel.app/profile";
-    final Map<String, String> headers = {
-      "Authorization": "Bearer ${widget.token}",
-      "Content-Type": "application/json"
-    };
-
-    final Map<String, dynamic> body = {
-      "email": widget.email!,
-      "avaterId": selectedAvatarId,
-    };
-
-    try {
-      final response = await http.patch(
-        Uri.parse(url),
-        headers: headers,
-        body: jsonEncode(body),
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Avatar updated successfully")),
-
-        );
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => ProfileTab()),
-        // );
-
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Failed to update avatar")),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
-    }
-  }
-  Future<void> deleteProfile() async {
-    if (widget.token == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Missing authentication token")),
-      );
-      return;
-    }
-
-    final String url = "https://route-movie-apis.vercel.app/profile";
-    final Map<String, String> headers = {
-      "Authorization": "Bearer ${widget.token}",
-      "Content-Type": "application/json"
-    };
-
-    try {
-      final response = await http.delete(
-        Uri.parse(url),
-        headers: headers,
-      );
-
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Profile deleted successfully")),
-        );
-
-        // Navigate to login screen after successful deletion
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LoginScreen()), // Replace with actual login screen
-              (route) => false, // Clears the navigation stack
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Failed to delete profile")),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
-    }
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColors.black,
-        // appBar: AppBar(
-        //   title: const Text("Pick Avatar"),
-        //   backgroundColor: AppColors.black,
-        //   iconTheme: IconThemeData(color: AppColors.yellow),
-        // ),
         appBar: AppBar(
           title: const Text("Pick Avatar"),
           backgroundColor: AppColors.black,
@@ -145,52 +46,79 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context, true); // Return true to indicate an update
+              Navigator.pop(context, true);
             },
           ),
         ),
-
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
                 GestureDetector(
                   onTap: () {
                     showAvatarBottomSheet(context);
                   },
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.gray,
-                    radius: 70,
-                    backgroundImage: AssetImage(selectedAvatarAsset),
-                  ),
-                ),
-                const SizedBox(height: 50),
-                buildTextField("User Name", Icons.person, widget.userName),
-                const SizedBox(height: 20),
-                buildTextField("Phone", Icons.phone, widget.phone),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.only(right: 200),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(context, ForgetpasswordScreen.routeName);
-                    },
-                    child: Text(
-                      "Reset Password",
-                      style: TextStyle(color: AppColors.white),
+                child: Container(
+                  margin: EdgeInsets.all(35),
+                  child: Center(
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.gray,
+                      radius: 70,
+                      backgroundImage: AssetImage(selectedAvatarAsset),
                     ),
                   ),
                 ),
-                const SizedBox(height: 200),
-                buildActionButton("Delete Account", AppColors.red, AppColors.white,deleteProfile),
-                const SizedBox(height: 10),
-                buildActionButton("Update Account", AppColors.yellow, AppColors.black, updateAvatar),
-              ],
+              ),
+              CustomTextField(
+                hint: widget.user!.data!.name.toString(),
+                prefixIcon: ImageIcon(AssetImage(AppIcons.userIcon)),
+              ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                  hint: widget.user!.data!.phone.toString(),
+                  prefixIcon: ImageIcon(AssetImage(AppIcons.phoneIcon))),
+              const SizedBox(height: 10),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(
+                        context, ForgetpasswordScreen.routeName);
+                  },
+                  child: Text(
+                    "Reset Password",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
+              ),
+              Spacer(),
+              CustomButton(
+                title: "Delete Account",
+                onClick: () async {
+                  await DeleteService().deleteProfile(context);
+                },
+                color: AppColors.red,
+                textColor: AppColors.white,
+              ),
+              const SizedBox(height: 20),
+              CustomButton(
+                title: "Update Account",
+                onClick: () async {
+                  final avatarService = AvatarService(token: widget.token!);
+
+                  await avatarService.updateAvatar(
+                    email: widget.user!.data!.email!,
+                    avatarId: selectedAvatarId.toString(),
+                    context: context,
+                  );
+                  setState(() {});
+                },
+              ),
+            ],
             ),
           ),
         ),
-      ),
     );
   }
 
@@ -210,10 +138,6 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    "Change Profile Avatar",
-                    style: TextStyle(fontSize: 20, color: AppColors.white),
-                  ),
                   const SizedBox(height: 20),
                   Expanded(
                     child: GridView.builder(
@@ -230,17 +154,22 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {
-                              selectedAvatarAsset = avatar['asset'];
-                              selectedAvatarId = avatar['id'];
+                              setStateBottomSheet(() {
+                                selectedAvatarAsset = avatar['asset'];
+                                selectedAvatarId = avatar['id'];
+                              });
                             });
                             Navigator.pop(context);
                           },
                           child: Container(
                             decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.yellow.withOpacity(0.6)
+                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: isSelected ? AppColors.red : AppColors.yellow,
-                                width: isSelected ? 5 : 3,
+                                color: AppColors.yellow,
+                                width: 3,
                               ),
                             ),
                             padding: const EdgeInsets.all(5),

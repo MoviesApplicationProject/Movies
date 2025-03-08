@@ -23,7 +23,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   late AppLocalizations appLocalizations;
   PageController _pageController = PageController(initialPage: 5, viewportFraction: 0.5);
   double currentPage = 5.0;
-  int selectedAvatarId = Avatar.avatars[0]['id']; //
+  int selectedAvatarId = Avatar.avatars[5]['id']; //
 
   var usernameController = TextEditingController();
   var emailController = TextEditingController();

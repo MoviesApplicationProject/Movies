@@ -1,7 +1,7 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:movies/Model/fav_movies.dart';
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FetchWishList {

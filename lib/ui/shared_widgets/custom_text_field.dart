@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movies/core/theme/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String hint;
   final IconData? iconData;
   final int minLines;
@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
 
   const CustomTextField({
     super.key,
-    required this.controller,
+    this.controller,
     required this.hint,
     this.iconData,
     this.error,

@@ -33,7 +33,7 @@ class LoginService {
         },
         body: json.encode(loginData),
       );
-
+      hideLoading(context);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> data = json.decode(response.body);
         String token = data['data']; // هذا هو التوكن
@@ -60,6 +60,7 @@ class LoginService {
             title: "Error", posButtonTitle: "ok");
       }
     } catch (e) {
+      hideLoading(context);
       print('Error during login: $e');
       showMessage(context,
           e.toString() ?? "Something went wrong please try again later",
