@@ -19,7 +19,6 @@ class WishList {
     required double movieRating,
     required String imageURL,
     required String releaseYear,
-
   }) async {
     final url = Uri.parse('$baseUrl/favorites/add');
 
@@ -46,14 +45,21 @@ class WishList {
         }),
       );
 
-      if (response.statusCode == 308 || response.statusCode == 301 || response.statusCode == 302) {
+      if (response.statusCode == 308 ||
+          response.statusCode == 301 ||
+          response.statusCode == 302) {
         final redirectUrl = response.headers['location'];
         print('Redirecting to: $redirectUrl');
       } else if (response.statusCode == 201) {
         print('Movie added to favorites successfully!');
         showMessage(context, "Movie added to Wish list successfully!",
-             posButtonTitle: "ok");
-    } else {
+            posButtonTitle: "ok");
+      }else if (response.statusCode == 409) {
+        print('Failed to add movie to favorites: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        showMessage(context, "Movie already added to Wish List",
+            posButtonTitle: "ok");
+      } else {
         print('Failed to add movie to favorites: ${response.statusCode}');
         print('Response body: ${response.body}');
       }
