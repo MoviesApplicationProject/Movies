@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
+import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 
@@ -58,12 +59,6 @@ class ForgetpasswordScreenState extends State<ForgetpasswordScreen> {
       return appLocalizations.invalidEmailOrPhoneNumber;
     }
     return null;
-  }
-
-  void showMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
   }
 
   @override

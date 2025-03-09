@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/get_user_profile_data.dart';
-import 'package:movies/API/history_service.dart';
-import 'package:movies/API/logout_service.dart';
+import 'package:movies/API/auth/logout_service.dart';
+import 'package:movies/API/profile/history_service.dart';
+import 'package:movies/API/profile/profile_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
 import 'package:movies/Model/movie.dart';
@@ -104,8 +104,8 @@ class _ProfileTabState extends State<ProfileTab> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      color: AppColors.gray,
-                      child: Padding(
+                        color: AppColors.grey,
+                        child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 50, 16, 0),
                           child: Column(
                             children: [
@@ -194,8 +194,8 @@ class _ProfileTabState extends State<ProfileTab> {
                       ),
                     ),
                     Container(
-                      color: AppColors.gray,
-                      child: TabBar(
+                        color: AppColors.grey,
+                        child: TabBar(
                         indicatorSize: TabBarIndicatorSize.tab,
                         indicatorColor: AppColors.yellow,
                           // Active tab indicator color

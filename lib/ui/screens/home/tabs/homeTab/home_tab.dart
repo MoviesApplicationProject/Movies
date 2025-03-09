@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/api_service.dart';
-import 'package:movies/API/fetchGenres.dart';
+import 'package:movies/API/movie/fetchGenres.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/home/tabs/homeTab/genre_section.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeTab extends StatefulWidget {
   @override

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:movies/API/login_service.dart';
+import 'package:movies/API/auth/login_service.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
@@ -95,26 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget buildPasswordTextField(BuildContext context) {
-    return CustomTextField(
-      controller: passwordController,
-      obscureText: obscurePassword,
-      hint: appLocalizations.password,
-      prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
-      suffixIcon: IconButton(
-        icon: Icon(
-          obscurePassword ? Icons.visibility_off : Icons.visibility,
-        ),
-        onPressed: () {
-          setState(() {
-            obscurePassword = !obscurePassword;
-          });
-        },
-      ),
-      error: passwordError,
-    );
-  }
-
   Widget buildEmailTextField(BuildContext context) {
     return CustomTextField(
       controller: emailController,
@@ -136,17 +116,35 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Widget buildPasswordTextField(BuildContext context) {
+    return CustomTextField(
+      controller: passwordController,
+      obscureText: obscurePassword,
+      hint: appLocalizations.password,
+      prefixIcon: const ImageIcon(AssetImage(AppIcons.passwordIcon)),
+      suffixIcon: IconButton(
+        icon: Icon(
+          obscurePassword ? Icons.visibility_off : Icons.visibility,
+        ),
+        onPressed: () {
+          setState(() {
+            obscurePassword = !obscurePassword;
+          });
+        },
+      ),
+      error: passwordError,
+    );
+  }
+
   Widget buildLoginButton(BuildContext context) {
     return CustomButton(
       onClick: () {
         if (formKey.currentState!.validate()) {
-          //loginUser();
           LoginService().loginUser(
             context: context,
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           );
-
         }
       },
       title: appLocalizations.login,

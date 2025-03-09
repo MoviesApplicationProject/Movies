@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/fetchMovieSuggestions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movies/API/movie/fetchMovieSuggestions.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Suggestion extends StatefulWidget {
   final Movie movie;

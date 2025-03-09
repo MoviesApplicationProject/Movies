@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/fetchMovieScreenshots.dart';
+import 'package:movies/API/movie/fetchMovieScreenshots.dart';
 import 'package:movies/core/theme/app_colors.dart';
 
 class MovieScreenshots extends StatelessWidget {

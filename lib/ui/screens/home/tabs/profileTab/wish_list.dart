@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/fetch_wish_list.dart'; // لاستيراد API لاسترجاع المفضلة
-import 'package:movies/API/history_service.dart';
+import 'package:movies/API/profile/fetch_wish_list.dart';
+import 'package:movies/API/profile/history_service.dart';
 import 'package:movies/Model/fav_movies.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';

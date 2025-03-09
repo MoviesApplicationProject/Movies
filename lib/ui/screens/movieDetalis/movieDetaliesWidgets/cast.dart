@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/fetchMovieCast.dart';
+import 'package:movies/API/movie/fetchMovieCast.dart';
 import 'package:movies/Model/cast_dm.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
@@ -48,7 +48,7 @@ class _MovieCastWidgetState extends State<MovieCastWidget> {
             width: double.infinity,
             margin: EdgeInsets.symmetric(vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.gray,
+              color: AppColors.grey,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(children: [

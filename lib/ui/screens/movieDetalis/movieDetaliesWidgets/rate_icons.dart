@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/fetch_liked.dart';
+import 'package:movies/API/movie/fetch_liked.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
@@ -42,7 +42,7 @@ class RateIcons extends StatelessWidget {
         margin: EdgeInsets.all(8),
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-          color: AppColors.gray,
+          color: AppColors.grey,
           borderRadius: BorderRadius.all(Radius.circular(18)),
         ),
         child: Center(

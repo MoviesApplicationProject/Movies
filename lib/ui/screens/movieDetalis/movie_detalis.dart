@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/add_to_wish_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/api_service.dart';
+import 'package:movies/API/profile/add_to_wish_list.dart';
 import 'package:movies/Model/fav_movies.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
@@ -11,7 +12,6 @@ import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/movie_screen
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/rate_icons.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/suggestion.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovieDetails extends StatefulWidget {
   static const String routeName = "/movieDetalies";

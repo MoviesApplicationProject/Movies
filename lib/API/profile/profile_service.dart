@@ -1,6 +1,7 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import '../Model/get_profile.dart';
+import 'package:movies/Model/get_profile.dart';
 
 class GetUserProfile {
   String baseUrl;

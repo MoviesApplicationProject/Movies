@@ -56,7 +56,7 @@ class AppTheme {
       ),
     ),
     inputDecorationTheme: InputDecorationTheme(
-      fillColor: AppColors.gray,
+        fillColor: AppColors.grey,
         iconColor: AppColors.yellow,
         contentPadding:
       const EdgeInsets.all(15),
@@ -77,7 +77,7 @@ class AppTheme {
                 fontSize: 16))
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: AppColors.gray,
+      backgroundColor: AppColors.grey,
       selectedItemColor: AppColors.yellow,
       unselectedItemColor: AppColors.white,
     ),

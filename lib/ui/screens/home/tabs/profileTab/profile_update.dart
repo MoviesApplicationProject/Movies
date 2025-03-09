@@ -1,7 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:movies/API/delete_service.dart';
-import 'package:movies/API/update_profile_data.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movies/API/profile/delete_service.dart';
+import 'package:movies/API/profile/update_profile_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
 import 'package:movies/core/assets/app_icons.dart';
@@ -9,7 +10,6 @@ import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileUpdate extends StatefulWidget {
   static const String routeName = "updateProfile";
@@ -67,7 +67,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                   margin: EdgeInsets.all(35),
                   child: Center(
                     child: CircleAvatar(
-                      backgroundColor: AppColors.gray,
+                      backgroundColor: AppColors.grey,
                       radius: 70,
                       backgroundImage: AssetImage(selectedAvatarAsset),
                     ),
@@ -129,7 +129,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   void showAvatarBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: AppColors.gray,
+      backgroundColor: AppColors.grey,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(20)),
       ),
@@ -207,16 +207,16 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
       style: TextStyle(color: AppColors.white, fontSize: 14),
       decoration: InputDecoration(
         filled: true,
-        fillColor: AppColors.gray,
+        fillColor: AppColors.grey,
         labelText: label,
         labelStyle: TextStyle(color: AppColors.white, fontSize: 14),
         contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.gray),
+          borderSide: BorderSide(color: AppColors.grey),
           borderRadius: BorderRadius.circular(8),
         ),
         focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.gray, width: 2),
+          borderSide: BorderSide(color: AppColors.grey, width: 2),
           borderRadius: BorderRadius.circular(8),
         ),
         prefixIcon: Icon(icon, color: AppColors.white, size: 20),

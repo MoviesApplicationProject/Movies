@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'package:movies/Model/cast_dm.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:movies/Model/cast_dm.dart';
 
 Future<List<CastDM>> fetchMovieCast(int movieId) async {
   final url = Uri.parse(

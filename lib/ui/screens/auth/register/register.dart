@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movies/API/auth_service.dart';
+import 'package:movies/API/auth/register_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
@@ -229,7 +229,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   FilledButton buildRegisterButton(BuildContext context) => FilledButton(
       onPressed: () {
-        AuthService().registerUser(
+        RegisterService().registerUser(
             context: context,
             name: usernameController.text.trim(),
             email: emailController.text.trim(),

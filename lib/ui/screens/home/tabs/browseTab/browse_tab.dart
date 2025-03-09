@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/fetchGenres.dart';
+import 'package:movies/API/movie/fetchGenres.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';

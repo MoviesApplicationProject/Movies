@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 
-class AuthService {
+class RegisterService {
   static const String apiUrl = 'https://route-movie-apis.vercel.app/auth/register';
 
   Future<bool> registerUser({

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movies/API/history_service.dart';
+import 'package:movies/API/profile/history_service.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/ui/screens/home/home.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';

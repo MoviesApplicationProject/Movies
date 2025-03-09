@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/history_service.dart';
+import 'package:movies/API/profile/history_service.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';

@@ -31,7 +31,7 @@ class GenresWidget extends StatelessWidget {
       margin: EdgeInsets.all(8),
       height: MediaQuery.of(context).size.height * 0.04,
       decoration: BoxDecoration(
-        color: AppColors.gray,
+        color: AppColors.grey,
         borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
       child: Center(
