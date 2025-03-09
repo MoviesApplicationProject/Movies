@@ -84,7 +84,6 @@ class _MovieDetailsState extends State<MovieDetails> {
                 imageURL: movie.mediumCoverImage,
                 releaseYear: movie.year.toString(), context : context,
               );
-              Navigator.of(context).pop(true);
             },
           ),
         ],

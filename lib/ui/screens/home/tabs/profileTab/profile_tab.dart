@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:movies/API/fetch_wish_list.dart';
 import 'package:movies/API/get_user_profile_data.dart';
 import 'package:movies/API/history_service.dart';
 import 'package:movies/API/logout_service.dart';
+
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
 import 'package:movies/Model/movie.dart';
@@ -14,9 +16,8 @@ import 'package:movies/ui/shared_widgets/movie_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileTab extends StatefulWidget {
-  ProfileTab({super.key, this.wishListCount = 0});
+  ProfileTab({super.key});
 
-  final int wishListCount;
 
   @override
   _ProfileTabState createState() => _ProfileTabState();
@@ -26,8 +27,9 @@ class _ProfileTabState extends State<ProfileTab> {
   GetUserProfileData? userProfile;
   bool isLoading = true;
   String? token;
-  late int historyCount;
+  late int historyCount=0;
   List<Movie> historyMovies = [];
+  late int wishListCount=0;
 
   @override
   void initState() {
@@ -35,6 +37,7 @@ class _ProfileTabState extends State<ProfileTab> {
     fetchToken();
 
     fetchHistory();
+    fetchWishListCount();
   }
 
   Future<void> fetchToken() async {
@@ -76,7 +79,7 @@ class _ProfileTabState extends State<ProfileTab> {
     print("🔍 Stored user_id in SharedPreferences: $userId");
 
     if (userId == null) {
-      print("⚠️ No user_id found! Cannot fetch history.");
+      print("⚠ No user_id found! Cannot fetch history.");
       return;
     }
 
@@ -89,6 +92,13 @@ class _ProfileTabState extends State<ProfileTab> {
     });
 
     print("✅ History loaded: ${historyMovies.map((m) => m.title).toList()}");
+  }
+
+  Future<void> fetchWishListCount() async {
+    int count = await FetchWishList.getFavoriteCount();
+    setState(() {
+      wishListCount = count;
+    });
   }
 
   @override
@@ -106,9 +116,9 @@ class _ProfileTabState extends State<ProfileTab> {
                     Container(
                       color: AppColors.gray,
                       child: Padding(
-                          padding: const EdgeInsets.fromLTRB(16, 50, 16, 0),
-                          child: Column(
-                            children: [
+                        padding: const EdgeInsets.fromLTRB(16, 50, 16, 0),
+                        child: Column(
+                          children: [
                             Row(
                               children: [
                                 Expanded(
@@ -117,9 +127,9 @@ class _ProfileTabState extends State<ProfileTab> {
                                     radius: 55,
                                     child: Image.asset(
                                       Avatar.getAvatarById(
-                                            userProfile!.data!.avaterId ?? 0),
-                                        height: 118,
-                                        width: 118,
+                                          userProfile!.data!.avaterId ?? 0),
+                                      height: 118,
+                                      width: 118,
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -127,15 +137,15 @@ class _ProfileTabState extends State<ProfileTab> {
                                 Expanded(
                                     flex: 2,
                                     child: customWidget(
-                                      widget.wishListCount,
-                                        "Wish List",
-                                      )),
+                                      wishListCount,
+                                      "Wish List",
+                                    )),
                                 Expanded(
                                   flex: 2,
                                   child: customWidget(
-                                      historyCount,
-                                      "History",
-                                    ),
+                                    historyCount,
+                                    "History",
+                                  ),
                                 )
                               ],
                             ),
@@ -159,33 +169,33 @@ class _ProfileTabState extends State<ProfileTab> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileUpdate(
-                                                      token: token,
-                                                      user: userProfile),
-                                            ),
-                                          ).then((value) {
-                                            if (value == true) {
+                                            builder: (context) =>
+                                                ProfileUpdate(
+                                                    token: token,
+                                                    user: userProfile),
+                                          ),
+                                        ).then((value) {
+                                          if (value == true) {
                                             fetchUserProfile(
-                                                  token!); // إعادة تحميل بيانات المستخدم عند العودة
-                                            }
-                                          });
+                                                token!); // إعادة تحميل بيانات المستخدم عند العودة
+                                          }
+                                        });
                                       } else {
                                         print(
                                             "Token is null, cannot proceed to Profile Update");
                                       }
                                     },
-                                      title: "Edit Profile",
-                                    )),
+                                    title: "Edit Profile",
+                                  )),
                               const SizedBox(width: 10),
                               Expanded(
                                   child: CustomButton(
-                                  title: "Exit",
-                                  onClick: () {
-                                    LogoutService().logoutUser(context);
-                                  },
-                                  color: AppColors.red,
-                                  textColor: AppColors.white,
+                                    title: "Exit",
+                                    onClick: () {
+                                      LogoutService().logoutUser(context);
+                                    },
+                                    color: AppColors.red,
+                                    textColor: AppColors.white,
                                   )),
                             ]),
                             const SizedBox(height: 10),
@@ -198,24 +208,24 @@ class _ProfileTabState extends State<ProfileTab> {
                       child: TabBar(
                         indicatorSize: TabBarIndicatorSize.tab,
                         indicatorColor: AppColors.yellow,
-                          // Active tab indicator color
-                          labelColor: AppColors.white,
-                          // Active tab text color
-                          unselectedLabelColor: AppColors.white,
-                          // Inactive tab text color
-                          indicatorWeight: 3,
-                          // Makes the indicator more visible
-                          tabs: [
-                            Tab(
+                        // Active tab indicator color
+                        labelColor: AppColors.white,
+                        // Active tab text color
+                        unselectedLabelColor: AppColors.white,
+                        // Inactive tab text color
+                        indicatorWeight: 3,
+                        // Makes the indicator more visible
+                        tabs: [
+                          Tab(
                             icon: Icon(Icons.list,
                                 size: 34, color: AppColors.yellow),
-                              text: "Wish List",
-                            ),
+                            text: "Wish List",
+                          ),
                           Tab(
                             icon: Icon(Icons.folder,
                                 size: 34, color: AppColors.yellow),
-                              text: "History",
-                            ),
+                            text: "History",
+                          ),
                         ],
                       ),
                     ),
@@ -223,46 +233,46 @@ class _ProfileTabState extends State<ProfileTab> {
                       child: TabBarView(
                         children: [
                           FavoritesScreen(),
-                            isLoading
-                                ? Center(
-                                    child:
-                                        CircularProgressIndicator()) // ✅ في حالة التحميل
-                                : historyMovies.isEmpty
-                                    ? Center(
-                                        child: Image.asset(
-                                          AppAssets.movieHistory,
-                                          color: AppColors.white,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.3,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.13,
-                                        ),
-                                      )
-                                    : GridView.builder(
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          childAspectRatio: 0.7,
-                                          crossAxisSpacing: 16,
-                                          mainAxisSpacing: 16,
-                                        ),
-                                        itemCount: historyMovies.length,
-                                        itemBuilder: (context, index) {
-                                          print(
-                                              "🎬 Displaying movie: ${historyMovies[index].title}");
-                                          return MovieDesign(
-                                              movie: historyMovies[index]);
-                                        },
-                                      ),
-                          ],
-                        ),
+                          isLoading
+                              ? Center(
+                              child:
+                              CircularProgressIndicator()) // ✅ في حالة التحميل
+                              : historyMovies.isEmpty
+                              ? Center(
+                            child: Image.asset(
+                              AppAssets.movieHistory,
+                              color: AppColors.white,
+                              width: MediaQuery.of(context)
+                                  .size
+                                  .width *
+                                  0.3,
+                              height: MediaQuery.of(context)
+                                  .size
+                                  .height *
+                                  0.13,
+                            ),
+                          )
+                              : GridView.builder(
+                            gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              childAspectRatio: 0.7,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                            ),
+                            itemCount: historyMovies.length,
+                            itemBuilder: (context, index) {
+                              print(
+                                  "🎬 Displaying movie: ${historyMovies[index].title}");
+                              return MovieDesign(
+                                  movie: historyMovies[index]);
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                    ])),
-              ),
+                  ])),
+        ),
       ),
     );
   }
