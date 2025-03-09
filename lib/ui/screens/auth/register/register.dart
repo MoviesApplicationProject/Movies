@@ -4,7 +4,6 @@ import 'package:movies/API/auth_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/providers/theme_provider.dart';
-import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 import 'package:movies/ui/shared_widgets/language_switch.dart';
@@ -232,11 +231,11 @@ class _RegisterScreen extends State<RegisterScreen> {
       onPressed: () {
         AuthService().registerUser(
             context: context,
-            name: usernameController.text,
-            email: emailController.text,
-            phone: phoneController.text,
-            password: passwordController.text,
-            confirmPassword: repasswordController.text,
+            name: usernameController.text.trim(),
+            email: emailController.text.trim(),
+            phone: phoneController.text.trim(),
+            password: passwordController.text.trim(),
+            confirmPassword: repasswordController.text.trim(),
             avaterId: selectedAvatarId);
       },
       child: Text(appLocalizations.createAccount));

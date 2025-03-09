@@ -4,6 +4,7 @@ import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieDesign extends StatelessWidget {
   final Movie movie;
@@ -14,7 +15,15 @@ class MovieDesign extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-          await HistoryService.addMovieToHistory(movie);
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String? userId = prefs.getString("user_id");
+
+          if (userId == null) {
+            print("🚨 Error: user_id is NULL, cannot add movie to history!");
+            return;
+          }
+
+          await HistoryService.addMovieToHistory(userId, movie);
           Navigator.of(context).pushNamed(
             MovieDetails.routeName,
             arguments: movie,

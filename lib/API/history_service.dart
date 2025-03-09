@@ -4,42 +4,44 @@ import 'package:movies/Model/movie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoryService {
-  static const String key = "history_movies";
-
-  static Future<void> addMovieToHistory(Movie movie) async {
+  static Future<void> addMovieToHistory(String userId, Movie movie) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    String key = "history_movies_$userId";
+
     List<String> historyList = prefs.getStringList(key) ?? [];
 
-    historyList.remove(movie);
+    // ✅ التأكد من أن الفيلم غير موجود بالفعل في القائمة
+    bool exists = historyList.any((m) {
+      Map<String, dynamic> decodedMovie = jsonDecode(m);
+      return decodedMovie["id"] == movie.id;
+    });
 
-    historyList.insert(0, jsonEncode(movie.toJson()));
+    if (!exists) {
+      historyList.insert(
+          0, jsonEncode(movie.toJson())); // إضافة الفيلم في المقدمة
+      await prefs.setStringList(key, historyList);
+      await prefs.reload(); // تحديث SharedPreferences
+      print("✅ Movie added: ${movie.title}");
+    } else {
+      print("⚠️ Movie already exists in history: ${movie.title}");
+    }
 
-    await prefs.setStringList(key, historyList);
-    print("✅ Movie added to history: ${movie.id}");
+    print("🔍 Updated history list: ${historyList.length} movies");
   }
 
-  static Future<List<Movie>> getHistoryMovies() async {
+  static Future<List<Movie>> getHistoryMovies(String userId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String>? historyList = prefs.getStringList(key);
+    List<String> storedMovies =
+        prefs.getStringList("history_movies_$userId") ?? [];
 
-    if (historyList == null || historyList.isEmpty) {
-      print("❌ No movies in history!");
-      return [];
-    }
+    print("🔍 Raw stored movies: $storedMovies");
 
-    print("📌 Retrieved movie JSON list: $historyList");
+    List<Movie> movies = storedMovies.map((movieString) {
+      Map<String, dynamic> movieMap = jsonDecode(movieString);
+      return Movie.fromJson(movieMap);
+    }).toList();
 
-    try {
-      // تحويل JSON إلى كائنات `Movie`
-      List<Movie> movies = historyList.map((jsonMovie) {
-        return Movie.fromJson(jsonDecode(jsonMovie));
-      }).toList();
-
-      print("✅ Loaded movies from history: ${movies.length}");
-      return movies;
-    } catch (e) {
-      print("🚨 Error fetching history movies: $e");
-      return [];
-    }
+    print("✅ Parsed movies: ${movies.map((m) => m.title).toList()}");
+    return movies;
   }
 }

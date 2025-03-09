@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:movies/API/fetch_wish_list.dart'; // لاستيراد API لاسترجاع المفضلة
+import 'package:movies/API/history_service.dart';
 import 'package:movies/Model/fav_movies.dart';
+import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesScreen extends StatefulWidget {
   @override
@@ -22,7 +25,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   void fetchFavoriteMovies() {
     setState(() {
-      favoriteMoviesFuture = FetchWishList.fetchFavorites() as Future<List<FavoriteMovie>>?;
+      favoriteMoviesFuture =
+          FetchWishList.fetchFavorites() as Future<List<FavoriteMovie>>?;
     });
   }
 
@@ -65,12 +69,23 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 return MovieCard(
                   movie: favoriteMovie,
                   onMovieSelected: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? userId = prefs.getString("user_id");
+
+                    if (userId == null) {
+                      print(
+                          "🚨 Error: user_id is NULL, cannot add movie to history!");
+                      return;
+                    }
+
+                    await HistoryService.addMovieToHistory(
+                        userId, favoriteMovie as Movie);
                     final result = await Navigator.of(context).pushNamed(
                       MovieDetails.routeName,
                       arguments: favoriteMovie,
                     );
 
-                    // عند الرجوع من صفحة الفيلم إذا كانت النتيجة true، قم بتحديث القائمة
                     if (result == true) {
                       fetchFavoriteMovies();
                     }

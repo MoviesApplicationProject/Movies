@@ -143,8 +143,8 @@ class _LoginScreenState extends State<LoginScreen> {
           //loginUser();
           LoginService().loginUser(
             context: context,
-            email: emailController.text,
-            password: passwordController.text,
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
           );
 
         }

@@ -12,12 +12,10 @@ import 'package:movies/ui/screens/home/tabs/profileTab/wish_list.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileTab extends StatefulWidget {
-  ProfileTab({super.key, this.historyCount = 0, this.wishListCount = 0});
+  ProfileTab({super.key, this.wishListCount = 0});
 
-  final int historyCount;
   final int wishListCount;
 
   @override
@@ -25,10 +23,10 @@ class ProfileTab extends StatefulWidget {
 }
 
 class _ProfileTabState extends State<ProfileTab> {
-  late AppLocalizations appLocalizations;
   GetUserProfileData? userProfile;
   bool isLoading = true;
   String? token;
+  late int historyCount;
   List<Movie> historyMovies = [];
 
   @override
@@ -71,30 +69,30 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<void> fetchHistory() async {
-    try {
-      List<Movie> movies = await HistoryService.getHistoryMovies();
-      print("📌 Movie IDs in history: ${movies.map((m) => m.id).toList()}");
+    print("🔄 Fetching history...");
 
-      if (mounted) {
-        setState(() {
-          historyMovies = movies; // ✅ تحديث القائمة
-          isLoading = false;
-        });
-      }
-    } catch (e) {
-      print("🚨 Error fetching history: $e");
-      if (mounted) {
-        setState(() {
-          isLoading = false;
-        });
-      }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? userId = prefs.getString("user_id");
+    print("🔍 Stored user_id in SharedPreferences: $userId");
+
+    if (userId == null) {
+      print("⚠️ No user_id found! Cannot fetch history.");
+      return;
     }
+
+    List<Movie> history = await HistoryService.getHistoryMovies(userId);
+
+    setState(() {
+      historyMovies = history;
+      historyCount = history.length;
+      isLoading = false;
+    });
+
+    print("✅ History loaded: ${historyMovies.map((m) => m.title).toList()}");
   }
 
   @override
   Widget build(BuildContext context) {
-    appLocalizations =
-        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return Scaffold(
       body: userProfile?.data == null
           ? Center(child: CircularProgressIndicator(color: AppColors.yellow))
@@ -110,7 +108,7 @@ class _ProfileTabState extends State<ProfileTab> {
                       child: Padding(
                           padding: const EdgeInsets.fromLTRB(16, 50, 16, 0),
                           child: Column(
-                          children: [
+                            children: [
                             Row(
                               children: [
                                 Expanded(
@@ -121,7 +119,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                       Avatar.getAvatarById(
                                             userProfile!.data!.avaterId ?? 0),
                                         height: 118,
-                                      width: 118,
+                                        width: 118,
                                       fit: BoxFit.contain,
                                     ),
                                   ),
@@ -130,14 +128,14 @@ class _ProfileTabState extends State<ProfileTab> {
                                     flex: 2,
                                     child: customWidget(
                                       widget.wishListCount,
-                                      appLocalizations.wishList,
-                                    )),
+                                        "Wish List",
+                                      )),
                                 Expanded(
                                   flex: 2,
                                   child: customWidget(
-                                    widget.historyCount,
-                                    appLocalizations.history,
-                                  ),
+                                      historyCount,
+                                      "History",
+                                    ),
                                 )
                               ],
                             ),
@@ -167,27 +165,27 @@ class _ProfileTabState extends State<ProfileTab> {
                                                       user: userProfile),
                                             ),
                                           ).then((value) {
-                                          if (value == true) {
+                                            if (value == true) {
                                             fetchUserProfile(
                                                   token!); // إعادة تحميل بيانات المستخدم عند العودة
                                             }
-                                        });
+                                          });
                                       } else {
                                         print(
                                             "Token is null, cannot proceed to Profile Update");
                                       }
                                     },
-                                    title: appLocalizations.editProfile,
-                                  )),
+                                      title: "Edit Profile",
+                                    )),
                               const SizedBox(width: 10),
                               Expanded(
                                   child: CustomButton(
-                                    title: appLocalizations.exit,
+                                  title: "Exit",
                                   onClick: () {
                                     LogoutService().logoutUser(context);
                                   },
                                   color: AppColors.red,
-                                    textColor: AppColors.white,
+                                  textColor: AppColors.white,
                                   )),
                             ]),
                             const SizedBox(height: 10),
@@ -208,16 +206,16 @@ class _ProfileTabState extends State<ProfileTab> {
                           indicatorWeight: 3,
                           // Makes the indicator more visible
                           tabs: [
-                          Tab(
+                            Tab(
                             icon: Icon(Icons.list,
                                 size: 34, color: AppColors.yellow),
-                            text: appLocalizations.wishList,
-                          ),
+                              text: "Wish List",
+                            ),
                           Tab(
                             icon: Icon(Icons.folder,
                                 size: 34, color: AppColors.yellow),
-                            text: appLocalizations.history,
-                          ),
+                              text: "History",
+                            ),
                         ],
                       ),
                     ),
@@ -226,7 +224,9 @@ class _ProfileTabState extends State<ProfileTab> {
                         children: [
                           FavoritesScreen(),
                             isLoading
-                                ? Center(child: CircularProgressIndicator())
+                                ? Center(
+                                    child:
+                                        CircularProgressIndicator()) // ✅ في حالة التحميل
                                 : historyMovies.isEmpty
                                     ? Center(
                                         child: Image.asset(
@@ -259,10 +259,10 @@ class _ProfileTabState extends State<ProfileTab> {
                                         },
                                       ),
                           ],
-                      ),
+                        ),
                     ),
                     ])),
-        ),
+              ),
       ),
     );
   }
