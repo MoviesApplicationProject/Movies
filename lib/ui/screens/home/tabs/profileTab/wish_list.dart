@@ -30,6 +30,36 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     });
   }
 
+  Movie convertFavoriteMovieToMovie(FavoriteMovie favoriteMovie) {
+    return Movie(
+      id: int.parse(favoriteMovie.movieId),
+      title: favoriteMovie.name,
+      rating: favoriteMovie.rating,
+      year: int.parse(favoriteMovie.year),
+      mediumCoverImage: favoriteMovie.imageURL,
+      largeCoverImage: favoriteMovie.imageURL,
+      url: '',
+      imdbCode: '',
+      titleEnglish: '',
+      titleLong: '',
+      slug: '',
+      runtime: 0,
+      genres: [],
+      summary: '',
+      descriptionFull: '',
+      synopsis: '',
+      ytTrailerCode: '',
+      language: '',
+      mpaRating: '',
+      backgroundImage: '',
+      backgroundImageOriginal: '',
+      smallCoverImage: '',
+      state: '',
+      dateUploaded: '',
+      dateUploadedUnix: 0,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,7 +80,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               return Center(
                 child: Image.asset(
                   AppAssets.emptySearch,
-                  color: AppColors.white,
                   width: MediaQuery.of(context).size.width * 0.3,
                   height: MediaQuery.of(context).size.height * 0.13,
                 ),
@@ -80,7 +109,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     }
 
                     await HistoryService.addMovieToHistory(
-                        userId, favoriteMovie as Movie);
+                        userId, convertFavoriteMovieToMovie(favoriteMovie));
                     final result = await Navigator.of(context).pushNamed(
                       MovieDetails.routeName,
                       arguments: favoriteMovie,
