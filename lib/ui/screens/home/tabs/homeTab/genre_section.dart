@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movies/API/history_service.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/ui/screens/home/home.dart';
 import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GenreSection extends StatefulWidget {
   final String genre;
@@ -58,8 +60,19 @@ class _GenreSectionState extends State<GenreSection> {
                   return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
+                      onTap: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        String? userId = prefs.getString("user_id");
+
+                        if (userId == null) {
+                          print(
+                              "🚨 Error: user_id is NULL, cannot add movie to history!");
+                          return;
+                        }
+
+                        await HistoryService.addMovieToHistory(userId, movie);
+                        Navigator.of(context).pushNamed(
                             MovieDetails.routeName,
                             arguments: movie,
                           );
