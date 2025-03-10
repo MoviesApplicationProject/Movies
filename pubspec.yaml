@@ -57,6 +57,9 @@ dependencies:
   flutter_svg: ^2.0.17
   flutter_svg_provider: ^1.0.7
   google_fonts: ^6.2.1
+  flutter_appauth: ^9.0.0
+  google_sign_in: ^6.2.2
+  firebase_auth: ^5.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
