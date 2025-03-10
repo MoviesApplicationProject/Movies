@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/utils/dialog_utils.dart';
+import 'package:movies/ui/screens/auth/forgetpassword/resetpassword.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 
@@ -100,7 +101,7 @@ class ForgetpasswordScreenState extends State<ForgetpasswordScreen> {
                 // if (_formKey.currentState!.validate()) {
                 //   forgetPassword(_inputController.text);
                 // }
-                Navigator.pushNamed(context, LoginScreen.routeName);
+                Navigator.pushNamed(context, ResetpasswordScreen.routeName);
               },
               child: Text(appLocalizations.verifyEmail),
             ),
