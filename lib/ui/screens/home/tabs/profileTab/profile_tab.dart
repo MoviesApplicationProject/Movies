@@ -80,6 +80,9 @@ class _ProfileTabState extends State<ProfileTab> {
       });
     }
   }
+  void updateHistoryCount() {
+    fetchHistoryCount();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +110,7 @@ class _ProfileTabState extends State<ProfileTab> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          FavoritesScreen(),
+                          FavoritesScreen(updateHistoryCount: updateHistoryCount),
                           HistoryTab(),
                         ],
                       ),

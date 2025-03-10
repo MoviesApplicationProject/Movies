@@ -10,6 +10,10 @@ import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesScreen extends StatefulWidget {
+  final Function updateHistoryCount; // المتغير الجديد
+
+  FavoritesScreen({Key? key, required this.updateHistoryCount}) : super(key: key);
+
   @override
   _FavoritesScreenState createState() => _FavoritesScreenState();
 }
@@ -25,8 +29,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   void fetchFavoriteMovies() {
     setState(() {
-      favoriteMoviesFuture =
-          FetchWishList.fetchFavorites() as Future<List<FavoriteMovie>>?;
+      favoriteMoviesFuture = FetchWishList.fetchFavorites() as Future<List<FavoriteMovie>>?;
     });
   }
 
@@ -98,18 +101,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 return MovieCard(
                   movie: favoriteMovie,
                   onMovieSelected: () async {
-                    SharedPreferences prefs =
-                        await SharedPreferences.getInstance();
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
                     String? userId = prefs.getString("user_id");
 
                     if (userId == null) {
-                      print(
-                          "🚨 Error: user_id is NULL, cannot add movie to history!");
+                      print("🚨 Error: user_id is NULL, cannot add movie to history!");
                       return;
                     }
 
                     await HistoryService.addMovieToHistory(
                         userId, convertFavoriteMovieToMovie(favoriteMovie));
+
+                    // استدعاء الـ callback لتحديث historyCount
+                    widget.updateHistoryCount();
+
                     final result = await Navigator.of(context).pushNamed(
                       MovieDetails.routeName,
                       arguments: favoriteMovie,
@@ -128,6 +133,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 }
+
 
 class MovieCard extends StatelessWidget {
   final FavoriteMovie movie;
