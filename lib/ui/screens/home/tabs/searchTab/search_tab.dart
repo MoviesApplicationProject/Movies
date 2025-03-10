@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/Model/movie.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/ui/screens/movieDetalis/movie_detalis.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
+import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class SearchTab extends StatefulWidget {
   const SearchTab({Key? key}) : super(key: key);
@@ -159,20 +159,10 @@ class _SearchTabState extends State<SearchTab> {
                 itemCount: filteredMovies.length,
                 itemBuilder: (context, index) {
                   final movie = filteredMovies[index];
-                  return InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          MovieDetails.routeName,
-                          arguments: movie,
-                        );
-                      },
-                      child: Card(
-                        child: buildSimilarMovies(
-                          context,
-                          movie.largeCoverImage,
-                          movie.rating.toString(),
-                        ),
-                      ));
+                  return Card(
+                      child: MovieDesign(
+                    movie: movie,
+                  ));
                 },
               ),
             )

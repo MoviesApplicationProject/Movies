@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:movies/API/auth/google_service.dart';
 import 'package:movies/API/auth/login_service.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
@@ -192,8 +191,6 @@ class _LoginScreenState extends State<LoginScreen> {
   FilledButton buildGoogleSignInButton(BuildContext context) {
     return FilledButton(
       onPressed: () async {
-        GoogleService googleService = GoogleService();
-        await googleService.signInWithGoogle(context);
       },
       style: FilledButton.styleFrom(),
       child: SizedBox(
