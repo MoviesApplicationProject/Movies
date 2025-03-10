@@ -83,5 +83,6 @@
   "editProfile": "Edit Profile",
   "updateAccount": "Update Account",
   "noCastFound": "No cast found.",
-  "character": "Character"
+  "character": "Character",
+  "oldPass": "Old Password"
 }

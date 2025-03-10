@@ -4,6 +4,7 @@ import 'package:movies/core/providers/locale_provider.dart';
 import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_theme.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
+import 'package:movies/ui/screens/auth/forgetpassword/resetpassword.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/screens/auth/register/register.dart';
 import 'package:movies/ui/screens/home/home.dart';
@@ -59,8 +60,10 @@ class MyApp extends StatelessWidget {
         HomeScreen.routeName: (_) => HomeScreen(),
         MovieDetails.routeName: (_) => MovieDetails(),
         ProfileUpdate.routeName: (_) => ProfileUpdate(),
+        ResetpasswordScreen.routeName: (_) => ResetpasswordScreen(),
+
       },
-      initialRoute: LoginScreen.routeName,
+      initialRoute: HomeScreen.routeName,
       theme: AppTheme.generalTheme,
     );
 

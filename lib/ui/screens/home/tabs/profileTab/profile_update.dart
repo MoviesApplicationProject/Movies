@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/profile/delete_service.dart';
@@ -7,7 +6,7 @@ import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
 import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
+import 'package:movies/ui/screens/auth/forgetpassword/resetpassword.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 
@@ -88,7 +87,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                 child: TextButton(
                   onPressed: () {
                     Navigator.pushReplacementNamed(
-                        context, ForgetpasswordScreen.routeName);
+                        context, ResetpasswordScreen.routeName);
                   },
                   child: Text(
                     appLocalizations.resetPassword,

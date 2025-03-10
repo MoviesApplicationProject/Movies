@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/API/auth/logout_service.dart';
+import 'package:movies/API/profile/fetch_wish_list.dart';
 import 'package:movies/API/profile/history_service.dart';
 import 'package:movies/API/profile/profile_service.dart';
 import 'package:movies/Model/avatar.dart';
@@ -8,33 +9,36 @@ import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/home/tabs/profileTab/profile_update.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/ui/screens/home/tabs/profileTab/wish_list.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileTab extends StatefulWidget {
-  ProfileTab({super.key, this.wishListCount = 0});
+  ProfileTab({super.key});
 
-  final int wishListCount;
 
   @override
   _ProfileTabState createState() => _ProfileTabState();
 }
 
 class _ProfileTabState extends State<ProfileTab> {
+  late AppLocalizations appLocalizations;
   GetUserProfileData? userProfile;
   bool isLoading = true;
   String? token;
   late int historyCount;
   List<Movie> historyMovies = [];
+  late int wishListCount=0;
 
   @override
   void initState() {
     super.initState();
     fetchToken();
-
     fetchHistory();
+    fetchWishListCount();
+
   }
 
   Future<void> fetchToken() async {
@@ -91,13 +95,22 @@ class _ProfileTabState extends State<ProfileTab> {
     print("✅ History loaded: ${historyMovies.map((m) => m.title).toList()}");
   }
 
+  Future<void> fetchWishListCount() async {
+    int count = await FetchWishList.getFavoriteCount();
+    setState(() {
+      wishListCount = count;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    appLocalizations =
+        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
     return Scaffold(
       body: userProfile?.data == null
           ? Center(child: CircularProgressIndicator(color: AppColors.yellow))
           : DefaultTabController(
-        length: 2, // Only two tabs now
+        length: 2,
         child: Scaffold(
           body: SafeArea(
               child: Column(
@@ -127,14 +140,14 @@ class _ProfileTabState extends State<ProfileTab> {
                                 Expanded(
                                     flex: 2,
                                     child: customWidget(
-                                      widget.wishListCount,
-                                        "Wish List",
+                                      wishListCount,
+                                        appLocalizations.wishList,
                                       )),
                                 Expanded(
                                   flex: 2,
                                   child: customWidget(
                                       historyCount,
-                                      "History",
+                                      appLocalizations.history,
                                     ),
                                 )
                               ],
@@ -175,12 +188,12 @@ class _ProfileTabState extends State<ProfileTab> {
                                             "Token is null, cannot proceed to Profile Update");
                                       }
                                     },
-                                      title: "Edit Profile",
+                                      title: appLocalizations.editProfile,
                                     )),
                               const SizedBox(width: 10),
                               Expanded(
                                   child: CustomButton(
-                                  title: "Exit",
+                                  title: appLocalizations.exit,
                                   onClick: () {
                                     LogoutService().logoutUser(context);
                                   },
@@ -209,12 +222,12 @@ class _ProfileTabState extends State<ProfileTab> {
                             Tab(
                             icon: Icon(Icons.list,
                                 size: 34, color: AppColors.yellow),
-                              text: "Wish List",
+                              text: appLocalizations.wishList,
                             ),
                           Tab(
                             icon: Icon(Icons.folder,
                                 size: 34, color: AppColors.yellow),
-                              text: "History",
+                              text: appLocalizations.history,
                             ),
                         ],
                       ),
