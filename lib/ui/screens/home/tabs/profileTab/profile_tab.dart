@@ -51,8 +51,7 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 
   Future<void> fetchUserProfile(String token) async {
-    GetUserProfile fetchUserProfile =
-    GetUserProfile(baseUrl: "https://route-movie-apis.vercel.app/");
+    GetUserProfile fetchUserProfile = GetUserProfile(baseUrl: "https://route-movie-apis.vercel.app/");
     GetUserProfileData? data = await fetchUserProfile.fetchUserProfile(token);
 
     if (mounted) {
@@ -100,6 +99,9 @@ class _ProfileTabState extends State<ProfileTab> {
                       wishListCount: wishListCount,
                       historyCount: historyCount,
                       appLocalizations: appLocalizations,
+                      isLoading: isLoading,
+                      token: token,
+                      fetchUserProfile: fetchUserProfile,
                     ),
                     _buildTabBar(),
                     Expanded(

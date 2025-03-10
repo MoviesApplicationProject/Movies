@@ -154,7 +154,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                         ),
                       ),
                       CustomButton(
-                        title: "Watch",
+                        title: appLocalizations.watch,
                         onClick: () {},
                         color: AppColors.red,
                         textColor: AppColors.white,

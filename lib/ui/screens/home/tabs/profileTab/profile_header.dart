@@ -1,22 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:movies/API/auth/logout_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movies/ui/screens/home/tabs/profileTab/profile_update.dart';
+import 'package:movies/ui/shared_widgets/custom_button.dart';
 
 class ProfileHeader extends StatelessWidget {
   final GetUserProfileData userProfile;
   final int wishListCount;
   final int historyCount;
   final AppLocalizations appLocalizations;
+  final bool isLoading;
+  final String? token;
+  final Function(String) fetchUserProfile;
 
   const ProfileHeader({
-    Key? key,
+    super.key,
     required this.userProfile,
     required this.wishListCount,
     required this.historyCount,
     required this.appLocalizations,
-  }) : super(key: key);
+    required this.isLoading,
+    required this.token,
+    required this.fetchUserProfile,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +63,45 @@ class ProfileHeader extends StatelessWidget {
                     context,
                     historyCount,
                     appLocalizations.history,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: CustomButton(
+                    onClick: () {
+                      if (token != null) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ProfileUpdate(token: token, user: userProfile),
+                          ),
+                        ).then((value) {
+                          if (value == true && token != null) {
+                            fetchUserProfile(token!);
+                          }
+                        });
+                      } else {
+                        print("Token is null, cannot proceed to Profile Update");
+                      }
+                    },
+                    title: appLocalizations.editProfile,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: CustomButton(
+                    title: appLocalizations.exit,
+                    onClick: () {
+                      LogoutService().logoutUser(context);
+                    },
+                    color: AppColors.red,
+                    textColor: AppColors.white,
                   ),
                 ),
               ],
