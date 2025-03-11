@@ -15,10 +15,10 @@ class CustomGradient extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              color.withOpacity(0.1),
+              color.withOpacity(0.5),
               color.withOpacity(1),
             ],
-            stops: [0.0, 1.0],  // Positions the color stops
+            stops: [0.5, 1.0],
           ),
         ),
       )

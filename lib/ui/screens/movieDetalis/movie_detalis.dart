@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/api_service.dart';
 import 'package:movies/API/profile/add_to_wish_list.dart';
+import 'package:movies/API/profile/is_favorite.dart';
+import 'package:movies/API/profile/remove_from_wishList.dart';
 import 'package:movies/Model/fav_movies.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_icons.dart';
@@ -12,6 +14,7 @@ import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/movie_screen
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/rate_icons.dart';
 import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/suggestion.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
+import 'package:movies/ui/shared_widgets/custom_gradient.dart';
 
 class MovieDetails extends StatefulWidget {
   static const String routeName = "/movieDetalies";
@@ -25,11 +28,17 @@ class MovieDetails extends StatefulWidget {
 class _MovieDetailsState extends State<MovieDetails> {
   late Future<List<Movie>> futureMovies;
   late AppLocalizations appLocalizations;
+  bool isFavorite = false;
+  bool isFavoriteChecked = false;
+  late Movie movie;
 
   @override
   void initState() {
     super.initState();
     futureMovies = fetchMovies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkIfFavorite();
+    });
   }
 
   Movie convertFavoriteMovieToMovie(FavoriteMovie favoriteMovie) {
@@ -40,16 +49,50 @@ class _MovieDetailsState extends State<MovieDetails> {
       year: int.parse(favoriteMovie.year),
       mediumCoverImage: favoriteMovie.imageURL,
       largeCoverImage: favoriteMovie.imageURL,
-      url: '', imdbCode: '', titleEnglish: '', titleLong: '', slug: '', runtime: 0, genres: [], summary: '', descriptionFull: '', synopsis: '', ytTrailerCode: '', language: '', mpaRating: '', backgroundImage: '', backgroundImageOriginal: '', smallCoverImage: '', state: '', dateUploaded: '', dateUploadedUnix: 0,
+      url: '',
+      imdbCode: '',
+      titleEnglish: '',
+      titleLong: '',
+      slug: '',
+      runtime: 0,
+      genres: [],
+      summary: '',
+      descriptionFull: '',
+      synopsis: '',
+      ytTrailerCode: '',
+      language: '',
+      mpaRating: '',
+      backgroundImage: '',
+      backgroundImageOriginal: '',
+      smallCoverImage: '',
+      state: '',
+      dateUploaded: '',
+      dateUploadedUnix: 0,
     );
+  }
+
+
+  Future<void> checkIfFavorite() async {
+    final args = ModalRoute.of(context)!.settings.arguments;
+
+    if (args is FavoriteMovie) {
+      movie = convertFavoriteMovieToMovie(args);
+    } else if (args is Movie) {
+      movie = args;
+    }
+
+    bool favoriteStatus = await IsFavoriteMovie.isFavorite(movie.id);
+    setState(() {
+      isFavorite = favoriteStatus;
+      isFavoriteChecked = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
-    appLocalizations =
-        AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
-    late Movie movie;
+    appLocalizations = AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
+
     if (args is FavoriteMovie) {
       movie = convertFavoriteMovieToMovie(args);
     } else if (args is Movie) {
@@ -64,28 +107,45 @@ class _MovieDetailsState extends State<MovieDetails> {
         leading: IconButton(
           icon: const Icon(
             color: AppColors.white,
-            Icons.arrow_back_outlined,
+            Icons.arrow_back_ios_rounded,
           ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         actions: [
-          IconButton(
-            icon: ImageIcon(
-              color: AppColors.white,
-              const AssetImage(AppIcons.saveIcon),
+          if (isFavoriteChecked)
+            IconButton(
+              icon: ImageIcon(
+                const AssetImage(AppIcons.saveIcon),
+                color: isFavorite ? AppColors.yellow : AppColors.white,
+              ),
+              onPressed: () async {
+                if (isFavorite) {
+                  await RemoveFromWishList.removeFromFavorites(movie.id, context);
+                  setState(() {
+                    isFavorite = false;
+                  });
+                } else {
+                  await WishList.addToFavorites(
+                    movieId: movie.id,
+                    movieName: movie.title,
+                    movieRating: movie.rating,
+                    imageURL: movie.mediumCoverImage,
+                    releaseYear: movie.year.toString(),
+                    context: context,
+                  );
+                  setState(() {
+                    isFavorite = true;
+                  });
+                }
+              },
+            )
+          else
+            IconButton(
+              icon: const Icon(Icons.favorite_border, color: Colors.transparent),
+              onPressed: null,
             ),
-            onPressed: () async {
-              await WishList.addToFavorites(
-                movieId: movie.id,
-                movieName: movie.title,
-                movieRating: movie.rating,
-                imageURL: movie.mediumCoverImage,
-                releaseYear: movie.year.toString(), context : context,
-              );
-            },
-          ),
         ],
       ),
       body: FutureBuilder<List<Movie>>(
@@ -112,21 +172,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    Positioned.fill(
-                      child: Container(
-                        height: MediaQuery.of(context).size.height * 0.82,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              AppColors.black.withOpacity(0.9),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                    CustomGradient(),
                     Container(
                       height: MediaQuery.of(context).size.height * 0.70,
                       child: Center(

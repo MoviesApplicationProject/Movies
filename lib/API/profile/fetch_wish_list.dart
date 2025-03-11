@@ -6,13 +6,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FetchWishList {
   static const String baseUrl = 'https://route-movie-apis.vercel.app';
 
-  // دالة لجلب التوكن
   static Future<String?> getToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('auth_token');
   }
 
-  // دالة لجلب قائمة الأفلام المفضلة
   static Future<List<FavoriteMovie>> fetchFavorites() async {
     final url = Uri.parse('$baseUrl/favorites/all');
     final token = await getToken();
@@ -52,7 +50,6 @@ class FetchWishList {
     }
   }
 
-  // دالة لجلب عدد الأفلام في قائمة المفضلة فقط
   static Future<int> getFavoriteCount() async {
     final url = Uri.parse('$baseUrl/favorites/all');
     final token = await getToken();
@@ -78,7 +75,7 @@ class FetchWishList {
             .map((movieJson) => FavoriteMovie.fromJson(movieJson))
             .toList();
 
-        return favoriteMovies.length; // إرجاع عدد الأفلام
+        return favoriteMovies.length;
       } else {
         print('Failed to fetch favorite movies: ${response.statusCode}');
         return 0;
