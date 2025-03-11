@@ -128,7 +128,9 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                         ? widget.user!.data!.email ?? ""
                         : emailController.text.trim(),
                     avatarId: selectedAvatarId.toString(),
-                    phone: phoneController.text,
+                    phone: phoneController.text.trim().isEmpty
+                        ? widget.user!.data!.phone ?? ""
+                        : phoneController.text.trim(),
                     context: context,
                   );
                   setState(() {});

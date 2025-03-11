@@ -22,10 +22,11 @@ class AvatarService {
     };
 
     final Map<String, dynamic> body = {
-      "email": email,
+      // "email": email,
       "avaterId": avatarId,
-      "phone": phone
+      //   "phone": phone
     };
+    print("Email: $email");
 
     try {
       showLoading(context);
@@ -40,7 +41,10 @@ class AvatarService {
         showMessage(context, "Profile updated successfully",
             posButtonTitle: "Done");
       } else {
-        showMessage(context, "Failed to update profile");
+        print("Response Status Code: ${response.statusCode}");
+        print("Response Body: ${response.body}");
+        showMessage(context, "Failed to update profile",
+            posButtonTitle: "Try again");
       }
     } catch (e) {
       showMessage(context, "Error $e", title: "Error");
