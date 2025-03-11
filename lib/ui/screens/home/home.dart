@@ -32,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
           args["indexArg"] >= 0 &&
           args["indexArg"] < 4) {
         currentIndex = args["indexArg"];
+        args["indexArg"] = -1;
       }
 
       genre = args["genres"];
