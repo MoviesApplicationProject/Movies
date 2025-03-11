@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 
 class RegisterService {
   static const String apiUrl = 'https://route-movie-apis.vercel.app/auth/register';
@@ -38,6 +38,8 @@ class RegisterService {
       hideLoading(context);
 
       if (response.statusCode == 201) {
+        showMessage(context, "Registration successful", posButtonTitle: "Done");
+
         Navigator.pushNamed(context, LoginScreen.routeName);
         return true;
       } else {
@@ -49,14 +51,14 @@ class RegisterService {
         } else if (responseData['message'] is String) {
           errorMessage = responseData['message'];
         } else {
-          errorMessage = "حدث خطأ غير متوقع، يرجى المحاولة مرة أخرى.";
+          errorMessage = "Error , Please try again";
         }
 
         showMessage(
           context,
           errorMessage,
           title: "Error",
-          posButtonTitle: "OK",
+          posButtonTitle: "Try again",
         );
         return false;
       }
@@ -65,9 +67,9 @@ class RegisterService {
 
       showMessage(
         context,
-        "خطأ في الاتصال: $e",
+        "$e",
         title: "Network Error",
-        posButtonTitle: "OK",
+        posButtonTitle: "Try again",
       );
 
       return false;

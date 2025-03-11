@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/api_service.dart';
-import 'package:movies/API/profile/is_favorite.dart';
 import 'package:movies/API/profile/add_to_wish_list.dart';
-import 'package:movies/API/profile/remove_from_wishList.dart';
-import 'package:movies/Model/movie.dart';
-import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/ui/screens/movieDetalis/movie_body.dart';
+import 'package:movies/API/profile/is_favorite.dart';
+import 'package:movies/API/profile/remove_from_wish_list.dart';
 import 'package:movies/Model/fav_movies.dart';
+import 'package:movies/Model/movie.dart';
+import 'package:movies/core/assets/app_icons.dart';
+import 'package:movies/core/theme/app_colors.dart';
+import 'package:movies/ui/screens/movieDetalis/movie_body.dart';
 
 class MovieDetails extends StatefulWidget {
   static const String routeName = "/movieDetails";

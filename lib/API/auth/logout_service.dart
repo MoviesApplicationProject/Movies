@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogoutService {
@@ -9,16 +9,13 @@ class LogoutService {
       showLoading(context);
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      String? userId = prefs.getString('user_id'); // ✅ الاحتفاظ بالـ user_id
-      await prefs.clear(); // ❌ يمسح كل شيء، لا نستخدمه هنا
-      await prefs.setString(
-          'user_id', userId ?? ""); // ✅ إعادة تخزين الـ user_id
+      String? userId = prefs.getString('user_id');
+      await prefs.clear();
+      await prefs.setString('user_id', userId ?? "");
 
       await prefs.remove('auth_token');
       await prefs.reload();
 
-      print('🚪 Logout successful');
-      print("Token after logout: ${prefs.getString('auth_token')}");
       hideLoading(context);
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -27,7 +24,6 @@ class LogoutService {
       );
     } catch (e) {
       hideLoading(context);
-      print('❌ Logout error: $e');
       showMessage(context, e.toString());
     }
   }
@@ -35,7 +31,6 @@ class LogoutService {
   Future<bool> isLoggedIn() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool loggedIn = prefs.getString('auth_token') != null;
-    print("🔍 Is user logged in? $loggedIn");
     return loggedIn;
   }
 }

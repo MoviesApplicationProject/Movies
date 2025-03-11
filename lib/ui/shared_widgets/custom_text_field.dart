@@ -13,7 +13,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefix;
   final String? Function(String?)? validator;
   final Function(String)? onChange;
-
+  final bool readOnly;
 
   const CustomTextField({
     super.key,
@@ -28,11 +28,13 @@ class CustomTextField extends StatelessWidget {
     this.onChange,
     this.minLines = 1,
     this.prefix,
+    this.readOnly = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       validator: validator,
       style: Theme.of(context).textTheme.bodyMedium,
       cursorColor: Theme.of(context).primaryColor,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/core/assets/app_assets.dart';
-import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_gradient.dart';
-import 'package:provider/provider.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   static const String routeName = "/onBoarding";
@@ -18,14 +16,12 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class OnBoardingScreenState extends State<OnBoardingScreen> {
-  late ThemeProvider themeProvider;
   late AppLocalizations appLocalizations;
   final PageController pageController = PageController();
   int currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    themeProvider = Provider.of<ThemeProvider>(context);
     appLocalizations =
         AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
 
@@ -125,11 +121,7 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
             Text(
               data["description"]!,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w400),
-            ),
+                style: Theme.of(context).textTheme.labelMedium),
           if (currentIndex != 4) const SizedBox(height: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

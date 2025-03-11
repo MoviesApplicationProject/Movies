@@ -4,14 +4,12 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:movies/API/auth/login_service.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/screens/auth/register/register.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 import 'package:movies/ui/shared_widgets/language_switch.dart';
-import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = "/loginScreen";
@@ -24,7 +22,6 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late AppLocalizations appLocalizations;
-  late ThemeProvider themeProvider;
 
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
@@ -38,7 +35,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    themeProvider = Provider.of<ThemeProvider>(context);
     appLocalizations =
         AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
 

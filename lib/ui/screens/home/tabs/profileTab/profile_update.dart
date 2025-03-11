@@ -16,7 +16,7 @@ class ProfileUpdate extends StatefulWidget {
   final String? token;
   final GetUserProfileData? user;
 
-  const ProfileUpdate({Key? key, this.token, this.user}) : super(key: key);
+  const ProfileUpdate({super.key, this.token, this.user});
 
   @override
   State<ProfileUpdate> createState() => _ProfileUpdateState();
@@ -57,6 +57,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
         ),
         body: ListView(padding: const EdgeInsets.all(16), children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               GestureDetector(
@@ -75,6 +76,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                 ),
               ),
               CustomTextField(
+                readOnly: true,
                 hint: widget.user!.data!.name.toString(),
                 prefixIcon: ImageIcon(AssetImage(AppIcons.user)),
               ),
@@ -103,6 +105,9 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ),
+              ),
+              const SizedBox(
+                height: 40,
               ),
               CustomButton(
                 title: appLocalizations.deleteAccount,

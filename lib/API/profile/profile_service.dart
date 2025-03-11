@@ -23,11 +23,9 @@ class GetUserProfile {
         final Map<String, dynamic> data = json.decode(response.body);
         return GetUserProfileData.fromJson(data);
       } else {
-        print('Failed to load user profile: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error fetching user profile: $e');
       return null;
     }
   }

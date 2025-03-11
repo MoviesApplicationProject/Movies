@@ -19,7 +19,6 @@ class MovieDesign extends StatelessWidget {
           String? userId = prefs.getString("user_id");
 
           if (userId == null) {
-            print("🚨 Error: user_id is NULL, cannot add movie to history!");
             return;
           }
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movies/core/utils/dialog_utils.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WishList {
@@ -26,10 +26,10 @@ class WishList {
     final token = await getToken();
 
     if (token == null) {
-      print('User is not logged in. Token is missing.');
       return;
     }
     try {
+      showLoading(context);
       final client = http.Client();
       final response = await client.post(
         url,
@@ -45,27 +45,24 @@ class WishList {
           'year': releaseYear,
         }),
       );
-
+      hideLoading(context);
       if (response.statusCode == 308 ||
           response.statusCode == 301 ||
           response.statusCode == 302) {
         final redirectUrl = response.headers['location'];
-        print('Redirecting to: $redirectUrl');
       } else if (response.statusCode == 201) {
-        print('Movie added to favorites successfully!');
         showMessage(context, "Movie added to Wish list successfully!",
             posButtonTitle: "ok");
       }else if (response.statusCode == 409) {
-        print('Failed to add movie to favorites: ${response.statusCode}');
-        print('Response body: ${response.body}');
         showMessage(context, "Movie already added to Wish List",
             posButtonTitle: "ok");
       } else {
-        print('Failed to add movie to favorites: ${response.statusCode}');
-        print('Response body: ${response.body}');
+        showMessage(context, response.statusCode.toString(),
+            posButtonTitle: "ok");
       }
     } catch (e) {
-      print('An error occurred: $e');
+      hideLoading(context);
+      showMessage(context, e.toString(), posButtonTitle: "Ok");
     }
   }
 }

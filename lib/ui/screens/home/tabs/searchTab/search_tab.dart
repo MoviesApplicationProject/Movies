@@ -9,7 +9,7 @@ import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class SearchTab extends StatefulWidget {
-  const SearchTab({Key? key}) : super(key: key);
+  const SearchTab({super.key});
 
   @override
   State<SearchTab> createState() => _SearchTabState();

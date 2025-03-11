@@ -3,11 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/auth/register_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
+import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
 import 'package:movies/ui/shared_widgets/language_switch.dart';
-import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = '/register';
@@ -19,9 +18,9 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreen extends State<RegisterScreen> {
-  late ThemeProvider themeProvider;
   late AppLocalizations appLocalizations;
-  PageController _pageController = PageController(initialPage: 5, viewportFraction: 0.5);
+  final PageController _pageController =
+      PageController(initialPage: 5, viewportFraction: 0.5);
   double currentPage = 5.0;
   int selectedAvatarId = Avatar.avatars[5]['id'];
 
@@ -90,7 +89,6 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    themeProvider = Provider.of<ThemeProvider>(context);
     appLocalizations = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -109,7 +107,6 @@ class _RegisterScreen extends State<RegisterScreen> {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 30),
-
               child:  SizedBox(
                   height: MediaQuery.of(context).size.height * 0.25,
                   child: PageView.builder(
@@ -137,30 +134,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         );
                       }
                   )
-                  )
-      //   Transform.scale(
-      //   scale: scaleFactor,
-      //   child: Container(
-      //     width: MediaQuery.of(context).size.width * 0.7 * widthFactor,
-      //     child: Padding(
-      //       padding: const EdgeInsets.symmetric(horizontal: 0),
-      //       child: MovieDesign(movie: movie),
-      //     ),
-      //   ),
-      // ),
-            ),
-            CustomTextField(
-              controller: usernameController,
-              hint: appLocalizations.name,
-              prefixIcon: const ImageIcon(AssetImage(AppIcons.userIcon)),
-            ),
+                  )),
+            buildUserNameField(),
             const SizedBox(height: 24),
-            CustomTextField(
-              controller: emailController,
-              hint: appLocalizations.email,
-              error: _emailError,
-              prefixIcon: const ImageIcon(AssetImage(AppIcons.emailIcon)),
-            ),
+            buildEmailField(),
             const SizedBox(height: 24),
             passwordTextField(context),
             const SizedBox(height: 24),
@@ -184,6 +161,23 @@ class _RegisterScreen extends State<RegisterScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  CustomTextField buildUserNameField() {
+    return CustomTextField(
+      controller: usernameController,
+      hint: appLocalizations.name,
+      prefixIcon: const ImageIcon(AssetImage(AppIcons.userIcon)),
+    );
+  }
+
+  CustomTextField buildEmailField() {
+    return CustomTextField(
+      controller: emailController,
+      hint: appLocalizations.email,
+      error: _emailError,
+      prefixIcon: const ImageIcon(AssetImage(AppIcons.emailIcon)),
     );
   }
 
@@ -227,8 +221,8 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
 
-  FilledButton buildRegisterButton(BuildContext context) => FilledButton(
-      onPressed: () {
+  Widget buildRegisterButton(BuildContext context) => CustomButton(
+      onClick: () {
         RegisterService().registerUser(
             context: context,
             name: usernameController.text.trim(),
@@ -238,7 +232,8 @@ class _RegisterScreen extends State<RegisterScreen> {
             confirmPassword: repasswordController.text.trim(),
             avaterId: selectedAvatarId);
       },
-      child: Text(appLocalizations.createAccount));
+      title: appLocalizations.createAccount);
+
   Row buildSignInTextRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

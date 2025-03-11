@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/onBoarding_screens/on_boarding/onboarding_screen.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_gradient.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExploreNowScreen extends StatelessWidget {
   static const String routeName = "/ExploreNowScreen";
@@ -61,7 +61,7 @@ class ExploreNowScreen extends StatelessWidget {
               left: 16,
               right: 16,
               child: CustomButton(
-                title: "Explore Now",
+                title: appLocalizations.exploreNow,
                 onClick: () {
                   Navigator.pushReplacementNamed(context, OnBoardingScreen.routeName);
                 },

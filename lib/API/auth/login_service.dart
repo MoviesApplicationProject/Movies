@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/home/home.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginService {
@@ -36,14 +36,11 @@ class LoginService {
       hideLoading(context);
       if (response.statusCode == 200 || response.statusCode == 201) {
         final Map<String, dynamic> data = json.decode(response.body);
-        String token = data['data']; // هذا هو التوكن
+        String token = data['data'];
 
-        // ✅ حفظ التوكن في SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('auth_token', token);
 
-        print('Login successful! Token saved.');
-       // hideLoading(context);
         Navigator.pushNamed(context, HomeScreen.routeName);
       } else {
         final responseData = json.decode(response.body);
@@ -55,16 +52,12 @@ class LoginService {
         } else {
           errorMessage = "Something went wrong, please try again later.";
         }
-        print('Login failed! Status code: ${response.statusCode}');
         showMessage(context, errorMessage,
             title: "Error", posButtonTitle: "ok");
       }
     } catch (e) {
       hideLoading(context);
-      print('Error during login: $e');
-      showMessage(context,
-          e.toString() ?? "Something went wrong please try again later",
-          posButtonTitle: "ok");
+      showMessage(context, e.toString(), posButtonTitle: "ok");
     }
   }
 }

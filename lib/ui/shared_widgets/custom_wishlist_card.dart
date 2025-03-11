@@ -48,7 +48,7 @@ class WishListMovieCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    movie.rating != null ? "${movie.rating}" : "N/A",
+                    "${movie.rating}",
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

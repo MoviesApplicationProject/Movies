@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/screens/home/tabs/browseTab/browse_tab.dart';
 import 'package:movies/ui/screens/home/tabs/homeTab/home_tab.dart';
 import 'package:movies/ui/screens/home/tabs/profileTab/profile_tab.dart';
 import 'package:movies/ui/screens/home/tabs/searchTab/search_tab.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home-screen';
@@ -19,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ThemeProvider themeProvider;
   late AppLocalizations appLocalizations;
   late String genre = "";
 
@@ -50,9 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ProfileTab(),
     ];
 
-    themeProvider = Provider.of<ThemeProvider>(context);
-
-    themeProvider = Provider.of<ThemeProvider>(context);
     appLocalizations = AppLocalizations.of(context)!;
 
     return GestureDetector(

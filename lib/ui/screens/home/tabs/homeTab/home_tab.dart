@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/api_service.dart';
-import 'package:movies/API/movie/fetchGenres.dart';
+import 'package:movies/API/movie/fetch_genres.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
@@ -9,6 +9,8 @@ import 'package:movies/ui/screens/home/tabs/homeTab/genre_section.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
 
 class HomeTab extends StatefulWidget {
+  const HomeTab({super.key});
+
   @override
   _HomeTabState createState() => _HomeTabState();
 }
@@ -21,7 +23,8 @@ class _HomeTabState extends State<HomeTab> {
   bool _isGenresLoaded = false;
   bool _isMoviesLoading = true;
   late Future<List<Movie>> futureMovies;
-  PageController _pageController = PageController(initialPage: 5, viewportFraction: 0.5);
+  final PageController _pageController =
+      PageController(initialPage: 5, viewportFraction: 0.5);
   double currentPage = 5.0;
 
   Map<String, List<Movie>> genreMoviesCache = {};
@@ -63,7 +66,6 @@ class _HomeTabState extends State<HomeTab> {
       setState(() {
         _isMoviesLoading = false;
       });
-      print("Error fetching genres or movies: $error");
     }
   }
 

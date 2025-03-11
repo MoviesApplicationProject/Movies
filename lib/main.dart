@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/core/providers/locale_provider.dart';
-import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_theme.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/forgetpassword.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/resetpassword.dart';
@@ -21,9 +20,6 @@ main() {
   runApp(
     MultiProvider(providers: [
       ChangeNotifierProvider(
-        create: (context) => ThemeProvider(),
-      ),
-      ChangeNotifierProvider(
         create: (context) => LocaleProvider(),
       ),
     ], child: MyApp()),
@@ -34,14 +30,12 @@ main() {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
   late LocaleProvider localeProvider;
-  late ThemeProvider themeProvider;
 
 
 
   @override
   Widget build(BuildContext context) {
     localeProvider = Provider.of<LocaleProvider>(context);
-    themeProvider = Provider.of<ThemeProvider>(context);
 
 
 
@@ -63,7 +57,7 @@ class MyApp extends StatelessWidget {
         ResetpasswordScreen.routeName: (_) => ResetpasswordScreen(),
 
       },
-      initialRoute: HomeScreen.routeName,
+      initialRoute: SplashScreen.routeName,
       theme: AppTheme.generalTheme,
     );
 

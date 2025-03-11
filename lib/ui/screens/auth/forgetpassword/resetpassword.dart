@@ -1,12 +1,10 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:http/http.dart' as http;
-import 'package:movies/API/auth/resetPassword_service.dart';
+import 'package:movies/API/auth/reset_password_service.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 
 class ResetpasswordScreen extends StatefulWidget {
   static const String routeName = "/resetpasswordScreen";

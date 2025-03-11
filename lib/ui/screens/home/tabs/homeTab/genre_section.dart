@@ -10,7 +10,7 @@ class GenreSection extends StatefulWidget {
   final String genre;
   final List<Movie> movies;
 
-  const GenreSection({required this.genre, required this.movies});
+  const GenreSection({super.key, required this.genre, required this.movies});
 
   @override
   State<GenreSection> createState() => _GenreSectionState();
@@ -66,8 +66,6 @@ class _GenreSectionState extends State<GenreSection> {
                         String? userId = prefs.getString("user_id");
 
                         if (userId == null) {
-                          print(
-                              "🚨 Error: user_id is NULL, cannot add movie to history!");
                           return;
                         }
 

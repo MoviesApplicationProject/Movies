@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/ui/screens/onBoarding_screens/explore/explore_now.dart';
-import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   static const String routeName = "splash";
@@ -15,7 +13,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  late ThemeProvider themeProvider;
   @override
   void initState() {
     super.initState();
@@ -26,7 +23,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

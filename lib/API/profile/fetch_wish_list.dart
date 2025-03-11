@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:movies/Model/fav_movies.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,7 +17,6 @@ class FetchWishList {
     final token = await getToken();
 
     if (token == null) {
-      print('User is not logged in. Token is missing.');
       return [];
     }
 
@@ -31,21 +31,17 @@ class FetchWishList {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        print('Fetched favorite movies successfully!');
-
         List<FavoriteMovie> favoriteMovies = (data['data'] as List)
             .map((movieJson) => FavoriteMovie.fromJson(movieJson))
+            .toList()
+            .reversed
             .toList();
 
-        print('Number of favorite movies: ${favoriteMovies.length}');
         return favoriteMovies;
       } else {
-        print('Failed to fetch favorite movies: ${response.statusCode}');
-        print('Response body: ${response.body}');
         return [];
       }
     } catch (e) {
-      print('An error occurred: $e');
       return [];
     }
   }
@@ -55,7 +51,6 @@ class FetchWishList {
     final token = await getToken();
 
     if (token == null) {
-      print('User is not logged in. Token is missing.');
       return 0;
     }
 
@@ -77,11 +72,9 @@ class FetchWishList {
 
         return favoriteMovies.length;
       } else {
-        print('Failed to fetch favorite movies: ${response.statusCode}');
         return 0;
       }
     } catch (e) {
-      print('An error occurred: $e');
       return 0;
     }
   }

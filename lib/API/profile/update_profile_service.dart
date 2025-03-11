@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movies/core/utils/dialog_utils.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 
 class AvatarService {
   final String? token;
@@ -35,26 +35,15 @@ class AvatarService {
         body: jsonEncode(body),
       );
       hideLoading(context);
-      print("Response Status Code: ${response.statusCode}");
-      print("Response Body: ${response.body}");
-      print("🔑 Token: $token");
-      print("📤 Sending data: ${jsonEncode(body)}");
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Updated successfully")),
-        );
+        showMessage(context, "Profile updated successfully",
+            posButtonTitle: "Done");
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Failed to update ")),
-        );
+        showMessage(context, "Failed to update profile");
       }
     } catch (e) {
-      print("Error: $e");
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $e")),
-      );
+      showMessage(context, "Error $e", title: "Error");
     }
   }
 }

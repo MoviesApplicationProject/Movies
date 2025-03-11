@@ -16,7 +16,6 @@ class IsFavoriteMovie {
     final token = await getToken();
 
     if (token == null) {
-      print('User is not logged in. Token is missing.');
       return false;
     }
 
@@ -33,12 +32,9 @@ class IsFavoriteMovie {
         final Map<String, dynamic> data = json.decode(response.body);
         return data['data'];
       } else {
-        print('Failed to check favorite status: ${response.statusCode}');
-        print('Response body: ${response.body}');
         return false;
       }
     } catch (e) {
-      print('An error occurred while checking favorite status: $e');
       return false;
     }
   }

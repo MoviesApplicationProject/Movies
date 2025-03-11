@@ -65,8 +65,8 @@ showMessage(
               TextButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(AppColors.yellow),
-                      textStyle: MaterialStateProperty.all(
+                          WidgetStateProperty.all(AppColors.yellow),
+                      textStyle: WidgetStateProperty.all(
                           TextStyle(color: AppColors.black))),
                   onPressed: () {
                     hideLoading(context);

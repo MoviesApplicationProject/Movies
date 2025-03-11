@@ -1,6 +1,6 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ResetPasswordService {
@@ -13,7 +13,6 @@ class ResetPasswordService {
     final token = await _getToken();
 
     if (token == null) {
-      print('Token is null');
       return null;
     }
 
@@ -36,11 +35,9 @@ class ResetPasswordService {
         final Map<String, dynamic> data = jsonDecode(response.body);
         return data['message'];
       } else {
-        print('Failed to reset password: ${response.statusCode}');
         return null;
       }
     } catch (e) {
-      print('Error: $e');
       return null;
     }
   }

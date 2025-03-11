@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:movies/API/movie/fetchMovieSuggestions.dart';
+import 'package:movies/API/movie/fetch_movie_suggestions.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:movies/ui/shared_widgets/movie_design.dart';
@@ -55,9 +55,6 @@ class _SuggestionState extends State<Suggestion> {
             itemCount: moviesToShow.length,
             itemBuilder: (context, index) {
               final movie = moviesToShow[index];
-
-              print('Movie image URL: ${movie
-                  .mediumCoverImage}');
 
               return MovieDesign(movie: movie);
             },

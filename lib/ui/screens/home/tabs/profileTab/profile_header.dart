@@ -71,7 +71,7 @@ class ProfileHeader extends StatelessWidget {
             Container(
                 margin: EdgeInsets.all(15),
                 child: Row(children: [
-                  Text(userProfile!.data!.name ?? 'N/A',
+                  Text(userProfile.data!.name ?? 'N/A',
                       style: Theme.of(context).textTheme.headlineMedium),
                 ])),
             Row(
@@ -93,7 +93,6 @@ class ProfileHeader extends StatelessWidget {
                           }
                         });
                       } else {
-                        print("Token is null, cannot proceed to Profile Update");
                       }
                     },
                     title: appLocalizations.editProfile,

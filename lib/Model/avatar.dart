@@ -16,7 +16,7 @@ class Avatar {
   static String getAvatarById(int id) {
     return avatars.firstWhere(
           (avatar) => avatar['id'] == id,
-      orElse: () => {'asset': 'assets/avatar/default.png'}, // Default avatar
+      orElse: () => {'asset': 'assets/avatar/default.png'},
     )['asset'];
   }
 }

@@ -7,6 +7,8 @@ import 'package:movies/ui/shared_widgets/movie_design.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoryTab extends StatefulWidget {
+  const HistoryTab({super.key});
+
   @override
   _HistoryTabState createState() => _HistoryTabState();
 }

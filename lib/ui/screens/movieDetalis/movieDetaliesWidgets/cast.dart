@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:movies/API/movie/fetchMovieCast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:movies/API/movie/fetch_movie_cast.dart';
 import 'package:movies/Model/cast_dm.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MovieCastWidget extends StatefulWidget {
   final int movieId;
 
-  MovieCastWidget({required this.movieId});
+  MovieCastWidget({super.key, required this.movieId});
 
   @override
   State<MovieCastWidget> createState() => _MovieCastWidgetState();

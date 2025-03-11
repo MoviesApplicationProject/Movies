@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 
-Future<int> fetchLikeCount(int movieId) async {
+Future<int> fetchLikeCount(int movieId, BuildContext context) async {
   final url = 'https://yts.mx/api/v2/movie_details.json?movie_id=$movieId';
 
   try {
@@ -12,7 +14,7 @@ Future<int> fetchLikeCount(int movieId) async {
       return data['data']['movie']['like_count'] ?? 0;
     }
   } catch (e) {
-    print("Error fetching like_count for movie $movieId: $e");
+    showMessage(context, "Error finding like count for movie");
   }
 
   return 0;

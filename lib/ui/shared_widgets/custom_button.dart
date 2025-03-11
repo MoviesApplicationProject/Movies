@@ -22,6 +22,10 @@ class CustomButton extends StatelessWidget {
       onPressed: () async {
         onClick();
       },
+      style: ButtonStyle(
+        foregroundColor: WidgetStateProperty.all(textColor),
+        backgroundColor: WidgetStateProperty.all(color),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -30,10 +34,6 @@ class CustomButton extends StatelessWidget {
             icon!,
           ],
         ],
-      ),
-      style: ButtonStyle(
-        foregroundColor: MaterialStateProperty.all(textColor),
-        backgroundColor: MaterialStateProperty.all(color),
       ),
     );
   }

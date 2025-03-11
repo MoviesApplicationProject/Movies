@@ -20,7 +20,6 @@ class Genres {
     }
   }
 
-
   Future<List<String>> fetchGenres() async {
     final url = Uri.parse('$baseUrl?limit=50');
     final response = await http.get(url);

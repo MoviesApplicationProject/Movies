@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DeleteService {
@@ -29,9 +27,7 @@ class DeleteService {
       );
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
         await prefs.remove('auth_token');
-
         Navigator.pushNamedAndRemoveUntil(
           context,
           LoginScreen.routeName,

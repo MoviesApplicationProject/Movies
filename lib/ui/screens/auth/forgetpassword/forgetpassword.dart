@@ -5,10 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
-import 'package:movies/core/utils/dialog_utils.dart';
 import 'package:movies/ui/screens/auth/forgetpassword/resetpassword.dart';
 import 'package:movies/ui/screens/auth/login/login.dart';
+import 'package:movies/ui/shared_widgets/custom_button.dart';
 import 'package:movies/ui/shared_widgets/custom_text_field.dart';
+import 'package:movies/ui/shared_widgets/utils/dialog_utils.dart';
 
 class ForgetpasswordScreen extends StatefulWidget {
   static const String routeName = "/forgetpasswordScreen";
@@ -32,19 +33,16 @@ class ForgetpasswordScreenState extends State<ForgetpasswordScreen> {
         url,
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'emailOrPhone': input, // Assuming your backend accepts this field
+          'emailOrPhone': input,
         }),
       );
 
       if (response.statusCode == 200) {
-        // API success: Navigate to the verification screen
         Navigator.pushNamed(context, LoginScreen.routeName);
       } else {
-        // API failed: Show error message
         showMessage(context, "error");
       }
     } catch (e) {
-      // Handle network errors
       showMessage(context, 'Error: $e');
     }
   }
@@ -96,14 +94,11 @@ class ForgetpasswordScreenState extends State<ForgetpasswordScreen> {
               }, hint: appLocalizations.email,
             ),
             const SizedBox(height: 32),
-            FilledButton(
-              onPressed: () {
-                // if (_formKey.currentState!.validate()) {
-                //   forgetPassword(_inputController.text);
-                // }
+            CustomButton(
+              onClick: () {
                 Navigator.pushNamed(context, ResetpasswordScreen.routeName);
               },
-              child: Text(appLocalizations.verifyEmail),
+              title: appLocalizations.verifyEmail,
             ),
           ],
         ),

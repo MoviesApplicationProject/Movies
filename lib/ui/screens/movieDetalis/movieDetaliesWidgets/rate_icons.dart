@@ -17,7 +17,7 @@ class RateIcons extends StatelessWidget {
       child: Row(
         children: [
           FutureBuilder<int>(
-            future: fetchLikeCount(movie.id),
+            future: fetchLikeCount(movie.id, context),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return buildRatesIcon(AppIcons.lovedIcon, '...', context);
