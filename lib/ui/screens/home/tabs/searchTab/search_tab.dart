@@ -1,8 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:http/http.dart' as http;
+import 'package:movies/API/movie/search_service.dart';
 import 'package:movies/Model/movie.dart';
 import 'package:movies/core/assets/app_assets.dart';
 import 'package:movies/core/assets/app_icons.dart';
@@ -28,37 +26,13 @@ class _SearchTabState extends State<SearchTab> {
     super.initState();
   }
 
-  Future<void> fetchMovies({String query = ''}) async {
-    if (query.isEmpty) {
-      setState(() {
-        filteredMovies = [];
-      });
-      return;
-    }
-    try {
-      final url =
-          'https://yts.mx/api/v2/list_movies.json?query_term=$query&limit=20';
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<dynamic> movies = data['data']['movies'] ?? [];
-
-        setState(() {
-          List<Movie> allMovies =
-              movies.map((movieMap) => Movie.fromJson(movieMap)).toList();
-          filteredMovies = allMovies;
-        });
-      } else {
-        print('Failed to fetch movies: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error fetching movies: $e');
-    }
-  }
 
   void onSearchChanged(String query) {
-    fetchMovies(query: query);
+    SearchAPI.fetchMovies(query).then((movies) {
+      setState(() {
+        filteredMovies = movies;
+      });
+    });
   }
 
   Stack buildSimilarMovies(BuildContext context, String image, String rating) {

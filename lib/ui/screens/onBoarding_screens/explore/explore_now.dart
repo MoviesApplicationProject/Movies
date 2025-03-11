@@ -20,7 +20,6 @@ class ExploreNowScreen extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // Main Image
             Positioned.fill(
               child: Image.asset(
                 AppAssets.explore,
@@ -28,7 +27,6 @@ class ExploreNowScreen extends StatelessWidget {
               ),
             ),
             CustomGradient(),
-
             Positioned(
               bottom: 100,
               left: 16,
@@ -41,7 +39,7 @@ class ExploreNowScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 36,
                       fontWeight: FontWeight.w500,
-                      color: Colors.white, // Ensure it's visible over the background
+                      color: Colors.white,
                     ),
                   ),
                   const SizedBox(height: 16),

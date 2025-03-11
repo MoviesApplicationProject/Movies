@@ -18,8 +18,8 @@ class FavoriteMovie {
       movieId: json['movieId'] as String,
       name: json['name'] as String,
       rating: (json['rating'] is int)
-          ? (json['rating'] as int).toDouble() // تحويل int إلى double
-          : json['rating'] as double, // أو إذا كانت double بالفعل
+          ? (json['rating'] as int).toDouble()
+          : json['rating'] as double,
       imageURL: json['imageURL'] as String,
       year: json['year'] as String,
     );

@@ -4,7 +4,6 @@ import 'package:movies/core/providers/theme_provider.dart';
 import 'package:movies/core/theme/app_colors.dart';
 import 'package:provider/provider.dart';
 
-// ignore: must_be_immutable
 class LanguageButton extends StatelessWidget {
   LanguageButton({super.key});
 

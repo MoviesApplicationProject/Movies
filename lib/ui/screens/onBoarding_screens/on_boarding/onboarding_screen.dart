@@ -29,7 +29,6 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     appLocalizations =
         AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
 
-    // Onboarding data with color, title, and description
     final List<Map<String, dynamic>> onboardingData = [
       {
         "image": AppAssets.onBoarding1,
@@ -87,8 +86,8 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  Widget buildScreen(
-      BuildContext context, List<Map<String, dynamic>> onboardingData, int index) {
+  Widget buildScreen(BuildContext context,
+      List<Map<String, dynamic>> onboardingData, int index) {
     return Stack(
       children: [
         Image.asset(
@@ -111,33 +110,34 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: AppColors.black, // Card background
+        color: AppColors.black,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(36),
           topRight: Radius.circular(36),
         ),
       ),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // Adjusts card size
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            data["title"]!,
-            style:Theme.of(context).textTheme.bodyLarge
-          ),
+          Text(data["title"]!, style: Theme.of(context).textTheme.bodyLarge),
           const SizedBox(height: 16),
-          if(currentIndex != 4)
+          if (currentIndex != 4)
             Text(
-            data["description"]!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: AppColors.white, fontSize: 20, fontWeight: FontWeight.w400),),
-          if(currentIndex != 4)
-            const SizedBox(height: 16),
+              data["description"]!,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: AppColors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w400),
+            ),
+          if (currentIndex != 4) const SizedBox(height: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomButton(
-                title: currentIndex < 4 ? appLocalizations.next : appLocalizations.finish,
+                title: currentIndex < 4
+                    ? appLocalizations.next
+                    : appLocalizations.finish,
                 onClick: () {
                   if (currentIndex < 4) {
                     pageController.nextPage(
@@ -151,21 +151,27 @@ class OnBoardingScreenState extends State<OnBoardingScreen> {
                 },
               ),
               if (currentIndex > 0)
-                SizedBox(height: 16,),
+                SizedBox(
+                  height: 16,
+                ),
               if (currentIndex > 0)
                 FilledButton(
                   onPressed: () {
                     pageController.previousPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,);},
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    );
+                  },
                   style: FilledButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     foregroundColor: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    side: BorderSide(color: Theme.of(context).primaryColor),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: BorderSide(color: Theme.of(context).primaryColor),
+                    ),
                   ),
-                  ),child: Text(appLocalizations.back),)
+                  child: Text(appLocalizations.back),
+                )
             ],
           ),
         ],

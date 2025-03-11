@@ -104,7 +104,7 @@ class _BrowseTabState extends State<BrowseTab> {
               const SizedBox(height: 20), // Spacing
               Expanded(
                 child: _isMoviesLoading
-                    ? const Center(child: CircularProgressIndicator(color: AppColors.yellow,)) // Show loading spinner for movies
+                    ? const Center(child: CircularProgressIndicator(color: AppColors.yellow,))
                     : FutureBuilder<List<Movie>>(
                   future: movies,
                   builder: (context, snapshot) {
@@ -135,5 +135,4 @@ class _BrowseTabState extends State<BrowseTab> {
       ),
     );
   }
-
 }

@@ -56,9 +56,8 @@ class _SuggestionState extends State<Suggestion> {
             itemBuilder: (context, index) {
               final movie = moviesToShow[index];
 
-              // Print the image URL for debugging purposes
               print('Movie image URL: ${movie
-                  .mediumCoverImage}'); // Check if the URL is valid
+                  .mediumCoverImage}');
 
               return MovieDesign(movie: movie);
             },

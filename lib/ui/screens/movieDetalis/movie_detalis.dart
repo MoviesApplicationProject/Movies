@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/api_service.dart';
-import 'package:movies/API/profile/add_to_wish_list.dart';
 import 'package:movies/API/profile/is_favorite.dart';
+import 'package:movies/API/profile/add_to_wish_list.dart';
 import 'package:movies/API/profile/remove_from_wishList.dart';
-import 'package:movies/Model/fav_movies.dart';
 import 'package:movies/Model/movie.dart';
-import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/cast.dart';
-import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/genres_widget.dart';
-import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/movie_screenshoots.dart';
-import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/rate_icons.dart';
-import 'package:movies/ui/screens/movieDetalis/movieDetaliesWidgets/suggestion.dart';
-import 'package:movies/ui/shared_widgets/custom_button.dart';
-import 'package:movies/ui/shared_widgets/custom_gradient.dart';
+import 'package:movies/core/assets/app_icons.dart';
+import 'package:movies/ui/screens/movieDetalis/movie_body.dart';
+import 'package:movies/Model/fav_movies.dart';
 
 class MovieDetails extends StatefulWidget {
-  static const String routeName = "/movieDetalies";
-
+  static const String routeName = "/movieDetails";
   const MovieDetails({super.key});
 
   @override
@@ -38,6 +31,21 @@ class _MovieDetailsState extends State<MovieDetails> {
     futureMovies = fetchMovies();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       checkIfFavorite();
+    });
+  }
+
+  Future<void> checkIfFavorite() async {
+    final args = ModalRoute.of(context)!.settings.arguments;
+    if (args is FavoriteMovie) {
+      movie = convertFavoriteMovieToMovie(args);
+    } else if (args is Movie) {
+      movie = args;
+    }
+
+    bool favoriteStatus = await IsFavoriteMovie.isFavorite(movie.id);
+    setState(() {
+      isFavorite = favoriteStatus;
+      isFavoriteChecked = true;
     });
   }
 
@@ -71,27 +79,10 @@ class _MovieDetailsState extends State<MovieDetails> {
     );
   }
 
-
-  Future<void> checkIfFavorite() async {
-    final args = ModalRoute.of(context)!.settings.arguments;
-
-    if (args is FavoriteMovie) {
-      movie = convertFavoriteMovieToMovie(args);
-    } else if (args is Movie) {
-      movie = args;
-    }
-
-    bool favoriteStatus = await IsFavoriteMovie.isFavorite(movie.id);
-    setState(() {
-      isFavorite = favoriteStatus;
-      isFavoriteChecked = true;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments;
-    appLocalizations = AppLocalizations.of(context) ?? AppLocalizations.of(context)!;
+    appLocalizations = AppLocalizations.of(context)!;
 
     if (args is FavoriteMovie) {
       movie = convertFavoriteMovieToMovie(args);
@@ -158,103 +149,7 @@ class _MovieDetailsState extends State<MovieDetails> {
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(child: Text(appLocalizations.noMovieFound));
           } else {
-            return ListView(
-              padding: EdgeInsets.all(0),
-              children: [
-                Stack(
-                  children: [
-                    Positioned(
-                      height: MediaQuery.of(context).size.height * 0.82,
-                      child: Image.network(
-                        movie.largeCoverImage.isNotEmpty
-                            ? movie.largeCoverImage
-                            : movie.mediumCoverImage,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    CustomGradient(),
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.70,
-                      child: Center(
-                        child: Image.asset(AppIcons.videoButton),
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        movie.title,
-                        style: Theme.of(context).textTheme.labelLarge,
-                        textAlign: TextAlign.center,
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(16),
-                        child: Text(
-                          movie.year.toString(),
-                          style: Theme.of(context).textTheme.headlineLarge,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      CustomButton(
-                        title: appLocalizations.watch,
-                        onClick: () {},
-                        color: AppColors.red,
-                        textColor: AppColors.white,
-                      ),
-                      SizedBox(height: 16),
-                      RateIcons(movie: movie),
-                      SizedBox(height: 16),
-                      Text(
-                        appLocalizations.screenshot,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      MovieScreenshots(movieId: movie.id),
-                      Text(
-                        appLocalizations.similar,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      Suggestion(movie: movie),
-                      if (movie.descriptionFull.isNotEmpty)
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              appLocalizations.summary,
-                              textAlign: TextAlign.start,
-                              style: Theme.of(context).textTheme.labelLarge,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              movie.descriptionFull,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      SizedBox(height: 8),
-                      Text(
-                        appLocalizations.cast,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      MovieCastWidget(movieId: movie.id),
-                      SizedBox(height: 8),
-                      Text(
-                        appLocalizations.genres,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.labelLarge,
-                      ),
-                      GenresWidget(movie: movie),
-                    ],
-                  ),
-                ),
-              ],
-            );
+            return MovieBody(movie: movie);
           }
         },
       ),

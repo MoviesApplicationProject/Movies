@@ -70,9 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
               currentIndex: currentIndex,
               type: BottomNavigationBarType.fixed,
               selectedItemColor: AppColors.yellow,
-              // لون العنصر النشط
               unselectedItemColor: AppColors.white,
-              // لون العناصر غير النشطة
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
                   icon: ImageIcon(AssetImage(AppIcons.homeIcon)),
