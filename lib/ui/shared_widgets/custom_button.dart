@@ -6,13 +6,15 @@ class CustomButton extends StatelessWidget {
   final String title;
   final Color? color;
   final Color? textColor;
+  final Widget? icon;
 
   const CustomButton(
       {super.key,
         required this.title,
         required this.onClick,
         this.color = AppColors.yellow,
-        this.textColor = AppColors.black});
+      this.textColor = AppColors.black,
+      this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,15 @@ class CustomButton extends StatelessWidget {
       onPressed: () async {
         onClick();
       },
-      child: Text(title),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(title),
+          if (icon != null) ...[
+            icon!,
+          ],
+        ],
+      ),
       style: ButtonStyle(
         foregroundColor: MaterialStateProperty.all(textColor),
         backgroundColor: MaterialStateProperty.all(color),

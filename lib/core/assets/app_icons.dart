@@ -23,4 +23,5 @@ class AppIcons {
 
   // Profile Icons
   static const String exit = "assets/icons/exit.png";
+  static const String user = "assets/icons/user.png";
 }

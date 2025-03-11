@@ -26,6 +26,8 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
   late AppLocalizations appLocalizations;
   late String selectedAvatarAsset;
   late int selectedAvatarId;
+  var emailController = TextEditingController();
+  var phoneController = TextEditingController();
 
   @override
   void initState() {
@@ -53,13 +55,12 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
             },
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
+        body: ListView(padding: const EdgeInsets.all(16), children: [
+          Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-                GestureDetector(
-                  onTap: () {
+              GestureDetector(
+                onTap: () {
                     showAvatarBottomSheet(context);
                   },
                 child: Container(
@@ -75,12 +76,20 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
               ),
               CustomTextField(
                 hint: widget.user!.data!.name.toString(),
-                prefixIcon: ImageIcon(AssetImage(AppIcons.userIcon)),
+                prefixIcon: ImageIcon(AssetImage(AppIcons.user)),
+              ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                hint: widget.user!.data!.email.toString(),
+                prefixIcon: ImageIcon(AssetImage(AppIcons.emailIcon)),
+                controller: emailController,
               ),
               const SizedBox(height: 20),
               CustomTextField(
                   hint: widget.user!.data!.phone.toString(),
-                  prefixIcon: ImageIcon(AssetImage(AppIcons.phoneIcon))),
+                prefixIcon: ImageIcon(AssetImage(AppIcons.phoneIcon)),
+                controller: phoneController,
+              ),
               const SizedBox(height: 10),
               Align(
                 alignment: AlignmentDirectional.centerStart,
@@ -95,7 +104,6 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                   ),
                 ),
               ),
-              Spacer(),
               CustomButton(
                 title: appLocalizations.deleteAccount,
                 onClick: () async {
@@ -111,16 +119,19 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                   final avatarService = AvatarService(token: widget.token!);
 
                   await avatarService.updateAvatar(
-                    email: widget.user!.data!.email!,
+                    email: emailController.text.trim().isEmpty
+                        ? widget.user!.data!.email ?? ""
+                        : emailController.text.trim(),
                     avatarId: selectedAvatarId.toString(),
+                    phone: phoneController.text,
                     context: context,
                   );
                   setState(() {});
                 },
               ),
             ],
-            ),
           ),
+        ]),
         ),
     );
   }
@@ -199,45 +210,4 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
     );
   }
 
-  Widget buildTextField(String label, IconData icon, String? value) {
-    return TextFormField(
-      readOnly: true,
-      initialValue: value,
-      style: TextStyle(color: AppColors.white, fontSize: 14),
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: AppColors.grey,
-        labelText: label,
-        labelStyle: TextStyle(color: AppColors.white, fontSize: 14),
-        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: AppColors.grey, width: 2),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        prefixIcon: Icon(icon, color: AppColors.white, size: 20),
-      ),
-    );
-  }
-
-  Widget buildActionButton(String text, Color bgColor, Color textColor, VoidCallback onPressed) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: bgColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        minimumSize: const Size(double.infinity, 50),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(color: textColor, fontSize: 18),
-      ),
-    );
-  }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/API/auth/logout_service.dart';
 import 'package:movies/Model/avatar.dart';
 import 'package:movies/Model/get_profile.dart';
+import 'package:movies/core/assets/app_icons.dart';
 import 'package:movies/core/theme/app_colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:movies/ui/screens/home/tabs/profileTab/profile_update.dart';
 import 'package:movies/ui/shared_widgets/custom_button.dart';
 
@@ -67,7 +68,12 @@ class ProfileHeader extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            Container(
+                margin: EdgeInsets.all(15),
+                child: Row(children: [
+                  Text(userProfile!.data!.name ?? 'N/A',
+                      style: Theme.of(context).textTheme.headlineMedium),
+                ])),
             Row(
               children: [
                 Expanded(
@@ -102,6 +108,7 @@ class ProfileHeader extends StatelessWidget {
                     },
                     color: AppColors.red,
                     textColor: AppColors.white,
+                    icon: ImageIcon(AssetImage(AppIcons.exit)),
                   ),
                 ),
               ],
