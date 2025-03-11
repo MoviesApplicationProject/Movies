@@ -38,9 +38,11 @@ class RegisterService {
       hideLoading(context);
 
       if (response.statusCode == 201) {
-        showMessage(context, "Registration successful", posButtonTitle: "Done");
+        showMessage(context, "Registration successful", posButtonTitle: "Done",
+            posButtonClick: () {
+          Navigator.pushNamed(context, LoginScreen.routeName);
+        });
 
-        Navigator.pushNamed(context, LoginScreen.routeName);
         return true;
       } else {
         final responseData = json.decode(response.body);
